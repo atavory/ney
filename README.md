@@ -1,27 +1,53 @@
-# ney — Score-Aligned Tuning for Doubly Robust Estimation
+# Score-Aligned Outcome Model Selection for Finite-Capacity DML
 
-Code for "Finite-Capacity Double Machine Learning: Score-Aligned Nuisance Tuning for Robust Causal Inference."
+Code for "Finite-Capacity Double Machine Learning: Score-Aligned Model Selection for Orthogonal Estimation."
+
+## Setup
+
+```bash
+pip install -r requirements.txt
+```
+
+Requires only `numpy`, `scipy`, and `scikit-learn`. No GPU needed.
 
 ## Quick start
 
 ```bash
-pip install numpy scipy scikit-learn
 python demo_kang_schafer.py
 ```
 
+Runs the Kang-Schafer (2007) benchmark with 100 seeds, comparing standard DR-AIPW against score-aligned DR. Prints paired RMSE comparison.
+
 ## What this does
 
-Standard doubly robust estimators (AIPW/DML) tune the outcome nuisance model by cross-validation on respondent prediction error. But the estimator uses that model through a weighted correction where errors in low-overlap regions are amplified by inverse propensity.
+Standard DML tunes the outcome model by ordinary cross-validation on respondent prediction error.
+But the orthogonal correction uses that model through inverse-propensity-weighted residuals, amplifying errors in low-overlap regions.
 
-Score-aligned tuning weights the validation loss by 1/e(x)^2 to match the correction's sensitivity. This is a one-line change to the CV objective that reallocates model capacity toward regions where the score is most fragile.
+Score-aligned model selection weights the validation loss by `1/π̂(x)²`, matching the score's local sensitivity.
+This is a one-line change to the tuning objective. The estimator, cross-fitting, and propensity model are unchanged.
 
 ## Files
 
-- `algs/weighted_dr.py` — Score-aligned DR-AIPW (the method)
-- `algs/dr_aipw.py` — Standard DR-AIPW (baseline)
-- `demo_kang_schafer.py` — Reproduces the main result on Kang-Schafer (2007)
+- `weighted_dr.py` — Score-aligned DR-AIPW estimator (the method)
+- `dr_aipw.py` — Standard DR-AIPW baseline
+- `demo_kang_schafer.py` — Reproduces the main linear-model results
+- `demo_sieve_sweep.py` — Reproduces the sieve phase transition (Figure 4)
 
-## Requirements
+## Method in one equation
 
-- Python 3.10+
-- numpy, scipy, scikit-learn
+Standard CV selects θ by minimizing: `Σ (Yᵢ - m̂_θ(Xᵢ))²`
+
+Score-aligned CV selects θ by minimizing: `Σ wᵢ (Yᵢ - m̂_θ(Xᵢ))²`
+
+where `wᵢ = min(1/π̂(Xᵢ)², c)` and `c` is a clipping threshold (default 20).
+
+## Citation
+
+```bibtex
+@article{tavory2026finite,
+  title={Finite-Capacity Double Machine Learning: Score-Aligned Model Selection for Orthogonal Estimation},
+  author={Tavory, Ami and Sarig, Tal},
+  journal={Transactions on Machine Learning Research},
+  year={2026}
+}
+```
