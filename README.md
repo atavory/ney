@@ -31,7 +31,8 @@ This is a one-line change to the tuning objective. The estimator, cross-fitting,
 - `weighted_dr.py` — Score-aligned DR-AIPW estimator (the method)
 - `dr_aipw.py` — Standard DR-AIPW baseline
 - `demo_kang_schafer.py` — Reproduces the main linear-model results
-- `demo_sieve_sweep.py` — Reproduces the sieve phase transition (Figure 4)
+- `demo_sieve_sweep.py` — Reproduces the sieve phase transition
+- `demo_plm.py` — Partially linear model extension (Var(D|X) alignment)
 
 ## Method in one equation
 
