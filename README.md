@@ -1,6 +1,6 @@
-# Score-Aligned Outcome Model Selection for Finite-Capacity DML
+# Score-Aligned Model Selection for Orthogonal Estimation
 
-Code for "Finite-Capacity Double Machine Learning: Score-Aligned Model Selection for Orthogonal Estimation."
+Code for "Score-Aligned Model Selection for Orthogonal Estimation."
 
 ## Setup
 
@@ -20,19 +20,23 @@ Runs the Kang-Schafer (2007) benchmark with 100 seeds, comparing standard DR-AIP
 
 ## What this does
 
-Standard DML tunes the outcome model by ordinary cross-validation on respondent prediction error.
-But the orthogonal correction uses that model through inverse-propensity-weighted residuals, amplifying errors in low-overlap regions.
+Every orthogonal score induces a sensitivity factor `a(X)` that determines how local outcome-model error translates into estimand variance. Standard model selection ignores this geometry. Score-aligned model selection weights the fitting loss by `a(X)²`, matching the score's deployment geometry.
 
-Score-aligned model selection weights the validation loss by `1/π̂(x)²`, matching the score's local sensitivity.
-This is a one-line change to the tuning objective. The estimator, cross-fitting, and propensity model are unchanged.
+This is a one-line change to model selection. The estimator, cross-fitting scheme, and all other nuisance models are unchanged.
+
+The mechanism is identical across four estimators:
+- **AIPW**: `a(X) = 1/π(X)`, weight `= 1/π(X)²`
+- **ATE**: per-arm inverse propensity
+- **PLM** (Robinson score): `a(X)² = Var(D|X)`
+- **IV** (Robinson score): same structure, compliance-weighted
 
 ## Files
 
 - `weighted_dr.py` — Score-aligned DR-AIPW estimator (the method)
 - `dr_aipw.py` — Standard DR-AIPW baseline
-- `demo_kang_schafer.py` — Reproduces the main linear-model results
-- `demo_sieve_sweep.py` — Reproduces the sieve phase transition
-- `demo_plm.py` — Partially linear model extension (Var(D|X) alignment)
+- `demo_kang_schafer.py` — Reproduces the main linear-model results (AIPW)
+- `demo_sieve_sweep.py` — Reproduces the sieve phase transition (AIPW)
+- `demo_plm.py` — Partially linear model demo (Var(D|X) alignment)
 
 ## Method in one equation
 
@@ -40,13 +44,13 @@ Standard CV selects θ by minimizing: `Σ (Yᵢ - m̂_θ(Xᵢ))²`
 
 Score-aligned CV selects θ by minimizing: `Σ wᵢ (Yᵢ - m̂_θ(Xᵢ))²`
 
-where `wᵢ = min(1/π̂(Xᵢ)², c)` and `c` is a clipping threshold (default 20).
+where `wᵢ = min(a(Xᵢ)², c)` and `c` is a clipping threshold. For AIPW, `a(X) = 1/π̂(X)`; for PLM, `a(X)² = Var(D|X)`.
 
 ## Citation
 
 ```bibtex
-@article{tavory2026finite,
-  title={Finite-Capacity Double Machine Learning: Score-Aligned Model Selection for Orthogonal Estimation},
+@article{tavory2026scorealigned,
+  title={Score-Aligned Model Selection for Orthogonal Estimation},
   author={Tavory, Ami and Sarig, Tal},
   journal={Transactions on Machine Learning Research},
   year={2026}
