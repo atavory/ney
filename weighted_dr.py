@@ -6,8 +6,10 @@ propensity weights to target population risk instead of respondent risk.
 
 Three variants:
   DR         — standard (unweighted outcome)
-  Wt_DR(c)   — outcome weighted by min(1/e_hat, c)
+  Wt_DR(c)   — outcome weighted by min(1/e_hat^2, c)  (default, score-aligned)
   Stab_DR(c) — outcome weighted by min(p_bar/e_hat, c)  (stabilized)
+
+When squared=False, uses 1/e_hat instead of 1/e_hat^2 (stabilized variant).
 
 Clip level selection:
   Fixed grid: c in {3, 5, 10, 20, inf}
@@ -24,10 +26,13 @@ from sklearn.ensemble import (
 from sklearn.model_selection import KFold
 
 
-def _make_weights(ps_train: np.ndarray, clip: float | None, stabilize: bool) -> np.ndarray | None:
+def _make_weights(ps_train: np.ndarray, clip: float | None, stabilize: bool, squared: bool = True) -> np.ndarray | None:
     if clip is None:
         return None
-    raw = 1.0 / ps_train
+    if squared:
+        raw = 1.0 / ps_train ** 2
+    else:
+        raw = 1.0 / ps_train
     if stabilize:
         raw = raw * ps_train.mean()
     w = np.clip(raw, 0.0, clip)
@@ -35,10 +40,13 @@ def _make_weights(ps_train: np.ndarray, clip: float | None, stabilize: bool) -> 
     return w
 
 
-def _weight_diagnostics(ps_train: np.ndarray, clip: float | None, stabilize: bool) -> dict:
+def _weight_diagnostics(ps_train: np.ndarray, clip: float | None, stabilize: bool, squared: bool = True) -> dict:
     if clip is None:
         return {"frac_clipped": 0.0, "mean_w": 1.0, "max_w": 1.0, "ess": float(len(ps_train))}
-    raw = 1.0 / ps_train
+    if squared:
+        raw = 1.0 / ps_train ** 2
+    else:
+        raw = 1.0 / ps_train
     if stabilize:
         raw = raw * ps_train.mean()
     clipped = np.clip(raw, 0.0, clip)
@@ -59,7 +67,10 @@ class WeightedDR:
     clip : float or None
         Max weight for outcome training. None = unweighted (standard DR).
     stabilize : bool
-        Use stabilized weights p_bar/e instead of 1/e.
+        Use stabilized weights p_bar/e instead of 1/e^2.
+    squared : bool
+        When True (default), use 1/e^2 weights (score-aligned).
+        When False, use 1/e weights (stabilized variant).
     max_iter : int
         HGB iterations.
     """
@@ -71,6 +82,7 @@ class WeightedDR:
         outcome_type: str = "auto",
         clip: float | None = None,
         stabilize: bool = False,
+        squared: bool = True,
         max_iter: int = 200,
     ):
         self.pop_X = pop_X
@@ -78,6 +90,7 @@ class WeightedDR:
         self.outcome_type = outcome_type
         self.clip = clip
         self.stabilize = stabilize
+        self.squared = squared
         self.max_iter = max_iter
 
         self.estimate_: float | None = None
@@ -117,15 +130,15 @@ class WeightedDR:
             )
             ps_m.fit(X_all[t_mask], r_all[t_mask])
             ps_oof[val_idx] = np.clip(
-                ps_m.predict_proba(X[val_idx].astype(float))[:, 1], 0.02, 0.98,
+                ps_m.predict_proba(X[val_idx].astype(float))[:, 1], 0.025, 0.975,
             )
 
             # Outcome model weights
             ps_train = np.clip(
-                ps_m.predict_proba(X[train_idx].astype(float))[:, 1], 0.02, 0.98,
+                ps_m.predict_proba(X[train_idx].astype(float))[:, 1], 0.025, 0.975,
             )
-            sw = _make_weights(ps_train, self.clip, self.stabilize)
-            self.weight_diags_.append(_weight_diagnostics(ps_train, self.clip, self.stabilize))
+            sw = _make_weights(ps_train, self.clip, self.stabilize, self.squared)
+            self.weight_diags_.append(_weight_diagnostics(ps_train, self.clip, self.stabilize, self.squared))
 
             # Outcome model
             if binary:

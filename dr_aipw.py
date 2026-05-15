@@ -71,7 +71,7 @@ class DRAIPW:
             )
             ps_m.fit(X_all[t_mask], r_all[t_mask])
             ps_oof[val_idx] = np.clip(
-                ps_m.predict_proba(X[val_idx])[:, 1], 0.01, 0.99
+                ps_m.predict_proba(X[val_idx])[:, 1], 0.025, 0.975
             )
 
             if binary:

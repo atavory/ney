@@ -66,7 +66,7 @@ def run_one(X, Y, R, degree, weighting, seed):
         if weighting == "unwt":
             w = None
         elif weighting == "w2":
-            w = np.minimum(1.0 / pi_hat_r[tr] ** 2, 50)
+            w = np.minimum(1.0 / pi_hat_r[tr] ** 2, 20)
         else:
             w = None
         reg = Ridge(alpha=1.0)
@@ -76,7 +76,7 @@ def run_one(X, Y, R, degree, weighting, seed):
     # Full model for OR
     reg_full = Ridge(alpha=1.0)
     if weighting == "w2":
-        w_full = np.minimum(1.0 / pi_hat_r ** 2, 50)
+        w_full = np.minimum(1.0 / pi_hat_r ** 2, 20)
         reg_full.fit(X_poly_r, Y_r, sample_weight=w_full)
     else:
         reg_full.fit(X_poly_r, Y_r)

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Demo: Score-aligned tuning for the Partially Linear Model (Robinson 1988).
+Demo: Score-aligned estimation for the Partially Linear Model (Robinson 1988).
 
-Shows that the same score-alignment principle applies beyond AIPW:
-in PLM, the alignment weight is Var(D|X) instead of 1/pi^2.
+The sensitivity factor is Var(D|X), the same as in the paper's PLM instance.
+Unlike AIPW, the aligned intervention is theta aggregation weighting,
+not fitting-loss reweighting. The outcome fitting loss is unchanged.
 
 Runs a heteroskedastic PLM with KS-style nonlinear covariate transforms.
 """
@@ -28,7 +29,8 @@ def make_plm_data(n, seed):
     return x, y, d, var_d
 
 
-def estimate_theta(x, y, d, weights=None, n_folds=5, seed=0):
+def estimate_theta(x, y, d, theta_weights=None, n_folds=5, seed=0):
+    """Cross-fitted Robinson estimator with optional theta aggregation weights."""
     kf = KFold(n_folds, shuffle=True, random_state=seed)
     y_resid = np.zeros(len(x))
     d_resid = np.zeros(len(x))
@@ -36,12 +38,16 @@ def estimate_theta(x, y, d, weights=None, n_folds=5, seed=0):
     for tr, te in kf.split(x):
         reg_y = LinearRegression()
         reg_d = LinearRegression()
-        reg_y.fit(x[tr], y[tr], sample_weight=weights[tr] if weights is not None else None)
-        reg_d.fit(x[tr], d[tr], sample_weight=weights[tr] if weights is not None else None)
+        reg_y.fit(x[tr], y[tr])
+        reg_d.fit(x[tr], d[tr])
         y_resid[te] = y[te] - reg_y.predict(x[te])
         d_resid[te] = d[te] - reg_d.predict(x[te])
 
-    return np.sum(d_resid * y_resid) / np.sum(d_resid ** 2)
+    if theta_weights is not None:
+        return np.sum(theta_weights * d_resid * y_resid) / np.sum(
+            theta_weights * d_resid**2
+        )
+    return np.sum(d_resid * y_resid) / np.sum(d_resid**2)
 
 
 def main():
@@ -50,28 +56,29 @@ def main():
     theta_true = 2.0
 
     biases_unwt = []
-    biases_oracle = []
+    biases_aligned = []
 
     for seed in range(n_seeds):
         x, y, d, var_d = make_plm_data(n, seed)
 
-        theta_unwt = estimate_theta(x, y, d, weights=None, seed=seed)
-        theta_oracle = estimate_theta(x, y, d, weights=var_d, seed=seed)
+        theta_unwt = estimate_theta(x, y, d, theta_weights=None, seed=seed)
+        theta_aligned = estimate_theta(x, y, d, theta_weights=var_d, seed=seed)
 
         biases_unwt.append(theta_unwt - theta_true)
-        biases_oracle.append(theta_oracle - theta_true)
+        biases_aligned.append(theta_aligned - theta_true)
 
     rmse_unwt = np.sqrt(np.mean(np.array(biases_unwt) ** 2))
-    rmse_oracle = np.sqrt(np.mean(np.array(biases_oracle) ** 2))
-    imp = (rmse_unwt - rmse_oracle) / rmse_unwt * 100
+    rmse_aligned = np.sqrt(np.mean(np.array(biases_aligned) ** 2))
+    imp = (rmse_unwt - rmse_aligned) / rmse_unwt * 100
 
-    print(f"PLM score-aligned tuning (N={n}, {n_seeds} seeds)")
-    print(f"  Standard OLS:          RMSE = {rmse_unwt:.4f}")
-    print(f"  Var(D|X)-weighted OLS: RMSE = {rmse_oracle:.4f}")
-    print(f"  Improvement:           {imp:+.1f}%")
+    print(f"PLM score-aligned estimation (N={n}, {n_seeds} seeds)")
+    print(f"  Standard Robinson:         RMSE = {rmse_unwt:.4f}")
+    print(f"  Aligned theta aggregation: RMSE = {rmse_aligned:.4f}")
+    print(f"  Improvement:               {imp:+.1f}%")
     print()
-    print("The alignment weight is Var(D|X), not 1/pi^2.")
-    print("Same principle, different score, different weight.")
+    print("The sensitivity factor is Var(D|X), but the aligned stage is")
+    print("the theta aggregation, not the fitting loss.")
+    print("Same diagnostic as AIPW; different aligned stage.")
 
 
 if __name__ == "__main__":

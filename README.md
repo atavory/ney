@@ -20,31 +20,24 @@ Runs the Kang-Schafer (2007) benchmark with 100 seeds, comparing standard DR-AIP
 
 ## What this does
 
-Every orthogonal score induces a sensitivity factor `a(X)` that determines how local outcome-model error translates into estimand variance. Standard model selection ignores this geometry. Score-aligned model selection weights the fitting loss by `a(X)²`, matching the score's deployment geometry.
+Every orthogonal score induces a sensitivity factor `a(X)²` that identifies where nuisance-model error is costly. The *diagnostic* is universal across estimators. The *intervention* depends on how the estimator consumes nuisance error:
 
-This is a one-line change to model selection. The estimator, cross-fitting scheme, and all other nuisance models are unchanged.
-
-The mechanism is identical across four estimators:
-- **AIPW**: `a(X) = 1/π(X)`, weight `= 1/π(X)²`
-- **ATE**: per-arm inverse propensity
-- **PLM** (Robinson score): `a(X)² = Var(D|X)`
-- **IV** (Robinson score): same structure, compliance-weighted
+- **AIPW** (training mismatch): `a(X)² = 1/π(X)²`. Error enters as pointwise weighted prediction error → align the **fitting loss**.
+- **ATE**: same as AIPW, per arm (`1/π²` for treated, `1/(1-π)²` for control).
+- **PLM** (aggregation mismatch): `a(X)² = Var(D|X)`. Error enters through the Robinson regression ratio → align the **θ aggregation step**.
+- **IV** (joint alignment): `a(X)² = γ(X)²Var(Z|X)`. Error enters through fitting and the instrument-weighted moment → align **fitting loss + optimal instrument** jointly.
 
 ## Files
 
-- `weighted_dr.py` — Score-aligned DR-AIPW estimator (the method)
+- `weighted_dr.py` — Score-aligned DR-AIPW estimator (fitting-loss alignment)
 - `dr_aipw.py` — Standard DR-AIPW baseline
 - `demo_kang_schafer.py` — Reproduces the main linear-model results (AIPW)
 - `demo_sieve_sweep.py` — Reproduces the sieve phase transition (AIPW)
-- `demo_plm.py` — Partially linear model demo (Var(D|X) alignment)
+- `demo_plm.py` — PLM demo: θ-aggregation alignment with `Var(D|X)`
 
-## Method in one equation
+## Stage alignment in one sentence
 
-Standard CV selects θ by minimizing: `Σ (Yᵢ - m̂_θ(Xᵢ))²`
-
-Score-aligned CV selects θ by minimizing: `Σ wᵢ (Yᵢ - m̂_θ(Xᵢ))²`
-
-where `wᵢ = min(a(Xᵢ)², c)` and `c` is a clipping threshold. For AIPW, `a(X) = 1/π̂(X)`; for PLM, `a(X)² = Var(D|X)`.
+Derive the score-sensitive geometry first, then align the stage of the estimator that actually uses it.
 
 ## Citation
 
