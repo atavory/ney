@@ -1,6 +1,6 @@
 # Score-Aligned Model Selection for Orthogonal Estimation
 
-Code for "Score-Aligned Model Selection for Orthogonal Estimation" by Ami Tavory and Tal Sarig.
+Code for "Score-Aligned Model Selection for Orthogonal Estimation".
 
 ## Setup
 
@@ -107,11 +107,4 @@ Default hyperparameters match the paper:
 
 ## Citation
 
-```bibtex
-@article{tavory2026scorealigned,
-  title={Score-Aligned Model Selection for Orthogonal Estimation},
-  author={Tavory, Ami and Sarig, Tal},
-  journal={Transactions on Machine Learning Research},
-  year={2026}
-}
-```
+Paper under review.
