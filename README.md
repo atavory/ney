@@ -1,6 +1,6 @@
 # Score-Aligned Model Selection for Orthogonal Estimation
 
-Code for "Score-Aligned Model Selection for Orthogonal Estimation."
+Code for "Score-Aligned Model Selection for Orthogonal Estimation" by Ami Tavory and Tal Sarig.
 
 ## Setup
 
@@ -13,31 +13,42 @@ Requires only `numpy`, `scipy`, and `scikit-learn`. No GPU needed.
 ## Quick start
 
 ```bash
-python demo_kang_schafer.py
+python demo_kang_schafer.py   # AIPW on Kang-Schafer DGP (200 seeds)
+python demo_plm.py            # PLM with aggregation-weighted Robinson
+python demo_ate.py            # ATE with per-arm fitting-loss alignment
+python demo_iv.py             # IV with optimal instrument alignment
+python demo_sieve_sweep.py    # Sieve phase transition (AIPW)
 ```
-
-Runs the Kang-Schafer (2007) benchmark with 100 seeds, comparing standard DR-AIPW against score-aligned DR. Prints paired RMSE comparison.
 
 ## What this does
 
-Every orthogonal score induces a sensitivity factor `a(X)²` that identifies where nuisance-model error is costly. The *diagnostic* is universal across estimators. The *intervention* depends on how the estimator consumes nuisance error:
+Every orthogonal score induces a sensitivity factor `a(X)^2` that identifies where nuisance-model error is costly. The *diagnostic* is universal across estimators. The *intervention* depends on how the estimator consumes nuisance error:
 
-- **AIPW** (training mismatch): `a(X)² = 1/π(X)²`. Error enters as pointwise weighted prediction error → align the **fitting loss**.
-- **ATE**: same as AIPW, per arm (`1/π²` for treated, `1/(1-π)²` for control).
-- **PLM** (aggregation mismatch): `a(X)² = Var(D|X)`. Error enters through the Robinson regression ratio → align the **θ aggregation step**.
-- **IV** (joint alignment): `a(X)² = γ(X)²Var(Z|X)`. Error enters through fitting and the instrument-weighted moment → align **fitting loss + optimal instrument** jointly.
+| Estimator | Sensitivity factor | Aligned stage |
+|-----------|-------------------|---------------|
+| **AIPW** | `1/pi(X)^2` | Fitting loss |
+| **ATE** | `1/pi(X)^2` per arm | Fitting loss (per arm) |
+| **PLM** | `Var(D\|X)` | Theta aggregation |
+| **IV** | `gamma(X)^2 Var(Z\|X)` | Fitting loss + optimal instrument |
 
 ## Files
 
-- `weighted_dr.py` — Score-aligned DR-AIPW estimator (fitting-loss alignment)
-- `dr_aipw.py` — Standard DR-AIPW baseline
-- `demo_kang_schafer.py` — Reproduces the main linear-model results (AIPW)
-- `demo_sieve_sweep.py` — Reproduces the sieve phase transition (AIPW)
-- `demo_plm.py` — PLM demo: θ-aggregation alignment with `Var(D|X)`
+- `algs/weighted_dr.py` -- Score-aligned DR-AIPW estimator with configurable exponent (power=0 unweighted, power=1 stabilized, power=2 score-aligned)
+- `algs/dr_aipw.py` -- Standard DR-AIPW baseline (unweighted)
+- `demo_kang_schafer.py` -- AIPW: compares unweighted, stabilized (1/pi), and aligned (1/pi^2) on Kang-Schafer
+- `demo_plm.py` -- PLM: theta-aggregation alignment with Var(D|X)
+- `demo_ate.py` -- ATE: per-arm fitting-loss alignment
+- `demo_iv.py` -- IV: outcome-fit weighting + optimal instrument alignment
+- `demo_sieve_sweep.py` -- Sieve phase transition showing three regimes
 
-## Stage alignment in one sentence
+## Hyperparameters
 
-Derive the score-sensitive geometry first, then align the stage of the estimator that actually uses it.
+Default hyperparameters match the paper:
+- Clipping threshold: `c = 10`
+- Number of seeds: `200`
+- Propensity clipping: `[0.025, 0.975]`
+- Outcome model: `RidgeCV` (sieve demos) or `HistGradientBoostingRegressor`
+- Cross-fitting: 5 folds, seed derived from experiment seed
 
 ## Citation
 
