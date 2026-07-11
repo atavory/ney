@@ -1,6 +1,35 @@
-# Score-Aligned Model Selection for Orthogonal Estimation
+# Hidden Bias and Regional Repair in Orthogonal Estimator Selection
 
-Code for "Score-Aligned Model Selection for Orthogonal Estimation".
+This repository contains replication material for the current EJS manuscript,
+"Hidden Bias and Regional Repair in Orthogonal Estimator Selection."
+
+The current manuscript package is in
+`replication/hidden_bias_regional_repair/`.
+
+The older top-level `algs/`, `experiments/`, and `demo_*.py` files are legacy
+material from an earlier score-aligned-selection draft. They remain available
+for continuity, but they are not the primary replication surface for the current
+EJS manuscript.
+
+## Current Manuscript Package
+
+```bash
+cd replication/hidden_bias_regional_repair
+python scripts/regional_repair_companion.py --quick
+```
+
+The package includes a reproducibility protocol for the current manuscript, a
+CSV snapshot of the empirical tables currently printed in the paper, and a
+self-contained Python companion simulation for the regional-repair mechanism and
+observed-outcome budget check.
+
+The journal-facing frozen supplement should use this package as the starting
+point. GitHub is a convenience mirror, not the only archival artifact.
+
+## Legacy Material
+
+The material below documents the earlier public release for "Score-Aligned
+Model Selection for Orthogonal Estimation."
 
 ## Setup
 

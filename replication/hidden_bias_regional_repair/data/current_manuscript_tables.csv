@@ -1,0 +1,56 @@
+table,design,method,rmse,coverage,ratio,guard_rate,n,n_G_R,raw_harm,screen_harm,additional_check
+regional_structure_fullscale,lowtail,globalQ,0.0698,0.15,,,,,,,
+regional_structure_fullscale,lowtail,regionQ,0.0379,0.76,0.54,,,,,,
+regional_structure_fullscale,bndbump,globalQ,0.0455,0.73,,,,,,,
+regional_structure_fullscale,bndbump,regionalDegree,0.0253,0.93,0.56,,,,,,
+regional_structure_fullscale,reverse,globalQ,0.0699,0.21,,,,,,,
+regional_structure_fullscale,reverse,regionalDegree,0.0529,0.44,0.76,,,,,,
+regional_structure_fullscale,ctrlhi,globalQ,0.0347,0.63,,,,,,,
+regional_structure_fullscale,ctrlhi,regionQ,0.0326,0.68,0.94,,,,,,
+regional_structure_fullscale,homo,globalQ,0.0163,0.99,,,,,,,
+regional_structure_fullscale,homo,regionalDegree,0.0160,1.00,0.98,,,,,,
+regional_structure_fullscale,bimodal,globalQ,0.1724,0.00,,,,,,,
+regional_structure_fullscale,bimodal,regionalDegree,0.1741,0.00,1.01,,,,,,
+fair_regional_repair,hetero,global_target,0.0778,0.19,,,,,,,
+fair_regional_repair,hetero,regional_target,0.0299,0.91,,,,,,,
+fair_regional_repair,hetero,guarded_repair,0.0358,0.85,,0.86,,,,,
+fair_regional_repair,bump,global_target,0.0471,0.69,,,,,,,
+fair_regional_repair,bump,regional_target,0.0267,0.94,,,,,,,
+fair_regional_repair,bump,guarded_repair,0.0294,0.93,,0.85,,,,,
+fair_regional_repair,reverse,global_target,0.0392,0.76,,,,,,,
+fair_regional_repair,reverse,regional_target,0.0322,0.86,,,,,,,
+fair_regional_repair,reverse,guarded_repair,0.0314,0.90,,0.78,,,,,
+fair_regional_repair,homo,global_target,0.0163,1.00,,,,,,,
+fair_regional_repair,homo,regional_target,0.0162,0.99,,,,,,,
+fair_regional_repair,homo,guarded_repair,0.0171,0.98,,0.17,,,,,
+observed_outcome_budget_sweep,ks_regional_bump,reference,4.310,,,,600,22.0,,,
+observed_outcome_budget_sweep,ks_regional_bump,raw_repair,3.703,,,,600,22.0,0.25,,
+observed_outcome_budget_sweep,ks_regional_bump,screened,4.043,,,,600,22.0,,0.22,
+observed_outcome_budget_sweep,ks_regional_bump,reference,3.171,,,,1200,42.7,,,
+observed_outcome_budget_sweep,ks_regional_bump,raw_repair,2.946,,,,1200,42.7,0.21,,
+observed_outcome_budget_sweep,ks_regional_bump,screened,2.947,,,,1200,42.7,,0.19,
+observed_outcome_budget_sweep,ks_regional_bump,reference,2.522,,,,2400,85.9,,,
+observed_outcome_budget_sweep,ks_regional_bump,raw_repair,2.361,,,,2400,85.9,0.17,,
+observed_outcome_budget_sweep,ks_regional_bump,screened,2.364,,,,2400,85.9,,0.16,
+observed_outcome_budget_sweep,ks_regional_bump,reference,1.969,,,,4800,168.7,,,
+observed_outcome_budget_sweep,ks_regional_bump,raw_repair,1.851,,,,4800,168.7,0.14,,
+observed_outcome_budget_sweep,ks_regional_bump,screened,1.856,,,,4800,168.7,,0.13,
+extended_regional_checks,MAR_mean_heterogeneous,global,0.0568,0.35,,,,,,,56 percent lower RMSE
+extended_regional_checks,MAR_mean_heterogeneous,regional,0.0248,0.93,,,,,,,56 percent lower RMSE
+extended_regional_checks,MAR_mean_reverse,global,0.0533,0.61,,,,,,,54 percent lower RMSE
+extended_regional_checks,MAR_mean_reverse,regional,0.0246,0.92,,,,,,,54 percent lower RMSE
+extended_regional_checks,MAR_mean_homogeneous,global,0.0135,0.99,,,,,,,parity control
+extended_regional_checks,MAR_mean_homogeneous,regional,0.0136,0.99,,,,,,,parity control
+extended_regional_checks,multivariate_d5_localizable,global,0.0635,0.91,,,,,,,27 percent lower RMSE
+extended_regional_checks,multivariate_d5_localizable,regional,0.0466,0.88,,,,,,,27 percent lower RMSE
+extended_regional_checks,multivariate_d5_smooth_null,global,0.0167,0.90,,,,,,,parity control
+extended_regional_checks,multivariate_d5_smooth_null,regional,0.0173,0.91,,,,,,,parity control
+python_companion_paragraph,hetero,global_target,0.0765,,,,,,,,rerunnable Python companion paragraph
+python_companion_paragraph,hetero,guarded_repair,0.0623,,,,,,,,"18.5 percent RMSE reduction; paired MSE gain 0.0020 with interval [0.0016, 0.0023]"
+python_companion_paragraph,homo,global_target,0.01557,,,,,,,,homogeneous control
+python_companion_paragraph,homo,guarded_repair,0.01557,,,0.087,,,,,guard activates on 8.7 percent of folds
+python_companion_paragraph,reverse,guarded_repair,,,,,,,,,6.0 percent gain
+python_companion_paragraph,smooth_boundary_bump,guarded_repair,,,,,,,,,3.5 percent loss
+propensity_known_truth_check,regional_propensity,current_candidate,1.928,,,,,,,,average regional propensity 0.503
+propensity_known_truth_check,regional_propensity,true_process_candidate,2.324,,,,,,,,average regional propensity 0.263
+propensity_known_truth_check,regional_propensity,seed_oracle,1.624,,,,,,,,average regional propensity 0.417
