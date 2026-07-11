@@ -45,13 +45,13 @@ def parse_args() -> RunConfig:
         description="Run regional-repair companion simulations."
     )
     parser.add_argument("--n", type=int, default=4000)
-    parser.add_argument("--reps", type=int, default=80)
-    parser.add_argument("--budget-reps", type=int, default=120)
+    parser.add_argument("--reps", type=int, default=200)
+    parser.add_argument("--budget-reps", type=int, default=200)
     parser.add_argument("--seed", type=int, default=1729)
     parser.add_argument("--tail-fraction", type=float, default=0.15)
     parser.add_argument("--low-response", type=float, default=0.25)
     parser.add_argument("--high-response", type=float, default=0.85)
-    parser.add_argument("--degree", type=int, default=3)
+    parser.add_argument("--degree", type=int, default=2)
     parser.add_argument("--noise-sd", type=float, default=1.0)
     parser.add_argument("--guard-margin", type=float, default=0.01)
     parser.add_argument("--min-guard-observed", type=int, default=12)
@@ -93,24 +93,38 @@ def response_probability(x: np.ndarray, cfg: RunConfig) -> np.ndarray:
     return np.where(region, cfg.low_response, cfg.high_response)
 
 
+def score_probability(x: np.ndarray, cfg: RunConfig) -> np.ndarray:
+    """Misspecified score propensity used by the AIPW estimators.
+
+    The experiment isolates outcome repair under a fixed, globally smoothed
+    response model. The true response probability is low inside G and high
+    outside G; the score instead uses the marginal response probability.
+    """
+    marginal_response = (
+        cfg.tail_fraction * cfg.low_response
+        + (1.0 - cfg.tail_fraction) * cfg.high_response
+    )
+    return np.full_like(x, marginal_response)
+
+
 def outcome_mean(x: np.ndarray, design: str, tail_fraction: float) -> np.ndarray:
-    base = 0.35 * np.sin(2.0 * np.pi * x) + 0.25 * (x - 0.5)
+    base = 0.20 + 0.40 * x - 0.30 * x**2
     region = region_indicator(x, tail_fraction)
     tail_coordinate = np.zeros_like(x)
     tail_coordinate[region] = 1.0 - x[region] / tail_fraction
 
     if design == "hetero":
-        local = 1.25 * tail_coordinate
+        local = 3.00 * tail_coordinate
     elif design == "bump":
-        local = 0.95 * np.exp(-0.5 * ((x - tail_fraction) / 0.045) ** 2)
+        local = 2.30 * np.exp(-0.5 * ((x - tail_fraction) / 0.045) ** 2)
     elif design == "reverse":
-        local = -0.80 * tail_coordinate + 0.30 * np.exp(
+        local = -2.20 * tail_coordinate + 0.70 * np.exp(
             -0.5 * ((x - tail_fraction) / 0.06) ** 2
         )
     elif design == "homo":
         local = np.zeros_like(x)
     elif design == "regional_bump":
-        local = 1.70 * tail_coordinate + 0.45 * np.exp(
+        local = 3.50 * tail_coordinate + 1.00 * np.exp(
             -0.5 * ((x - tail_fraction) / 0.05) ** 2
         )
     else:
@@ -126,14 +140,15 @@ def truth(design: str, cfg: RunConfig) -> float:
 
 def simulate_data(
     rng: np.random.Generator, n: int, design: str, cfg: RunConfig
-) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     x = rng.uniform(size=n)
-    pi = response_probability(x, cfg)
-    observed = rng.binomial(1, pi).astype(bool)
+    true_pi = response_probability(x, cfg)
+    score_pi = score_probability(x, cfg)
+    observed = rng.binomial(1, true_pi).astype(bool)
     y = outcome_mean(x, design, cfg.tail_fraction) + rng.normal(
         scale=cfg.noise_sd, size=n
     )
-    return x, pi, observed, y
+    return x, true_pi, score_pi, observed, y
 
 
 def basis(
@@ -225,18 +240,18 @@ def guarded_fit(
 def run_single(
     rng: np.random.Generator, design: str, n: int, cfg: RunConfig
 ) -> list[dict[str, object]]:
-    x, pi, observed, y = simulate_data(rng, n, design, cfg)
+    x, true_pi, score_pi, observed, y = simulate_data(rng, n, design, cfg)
     theta = truth(design, cfg)
 
     beta_global = fit_outcome(x, y, observed, cfg, regional=False)
     beta_regional = fit_outcome(x, y, observed, cfg, regional=True)
     est_global, se_global = aipw_estimate(
-        x, pi, observed, y, beta_global, cfg, False
+        x, score_pi, observed, y, beta_global, cfg, False
     )
     est_regional, se_regional = aipw_estimate(
-        x, pi, observed, y, beta_regional, cfg, True
+        x, score_pi, observed, y, beta_regional, cfg, True
     )
-    guarded = guarded_fit(rng, x, pi, observed, y, cfg)
+    guarded = guarded_fit(rng, x, score_pi, observed, y, cfg)
 
     rows: list[dict[str, object]] = []
     for method, estimate, se, selected in [
@@ -263,15 +278,34 @@ def run_single(
 
 def summarize_replications(rows: list[dict[str, object]]) -> pd.DataFrame:
     df = pd.DataFrame(rows)
-    grouped = df.groupby(["design", "method"], as_index=False)
-    return grouped.agg(
-        rmse=("error", lambda x: float(np.sqrt(np.mean(np.square(x))))),
-        bias=("error", "mean"),
-        coverage=("covered", "mean"),
-        guard_rate=("selected_regional", "mean"),
-        mean_region_observed=("n_region_observed", "mean"),
-        reps=("error", "size"),
-    )
+    out_rows: list[dict[str, object]] = []
+    for (design, method), part in df.groupby(["design", "method"]):
+        errors = part["error"].to_numpy(dtype=float)
+        covered = part["covered"].to_numpy(dtype=float)
+        selected = part["selected_regional"].to_numpy(dtype=float)
+        sq_errors = errors**2
+        rmse = float(np.sqrt(np.mean(sq_errors)))
+        rmse_mcse = float(np.std(sq_errors, ddof=1) / np.sqrt(len(errors)) / (2 * rmse))
+        coverage = float(np.mean(covered))
+        guard_rate = float(np.mean(selected))
+        out_rows.append(
+            {
+                "design": design,
+                "method": method,
+                "rmse": rmse,
+                "rmse_mcse": rmse_mcse,
+                "bias": float(np.mean(errors)),
+                "coverage": coverage,
+                "coverage_se": float(np.sqrt(coverage * (1.0 - coverage) / len(errors))),
+                "guard_rate": guard_rate,
+                "guard_rate_se": float(
+                    np.sqrt(guard_rate * (1.0 - guard_rate) / len(errors))
+                ),
+                "mean_region_observed": float(part["n_region_observed"].mean()),
+                "reps": int(len(part)),
+            }
+        )
+    return pd.DataFrame(out_rows)
 
 
 def run_regional_summary(cfg: RunConfig) -> pd.DataFrame:
@@ -306,13 +340,30 @@ def run_budget_summary(cfg: RunConfig) -> pd.DataFrame:
                     }
                 )
     df = pd.DataFrame(rows)
-    grouped = df.groupby(["n", "method"], as_index=False)
-    return grouped.agg(
-        rmse=("error", lambda x: float(np.sqrt(np.mean(np.square(x))))),
-        mean_region_observed=("n_region_observed", "mean"),
-        harm_rate=("harm_vs_reference", "mean"),
-        reps=("error", "size"),
-    )
+    out_rows: list[dict[str, object]] = []
+    for (n, method), part in df.groupby(["n", "method"]):
+        errors = part["error"].to_numpy(dtype=float)
+        sq_errors = errors**2
+        rmse = float(np.sqrt(np.mean(sq_errors)))
+        harm = part["harm_vs_reference"].to_numpy(dtype=float)
+        harm_rate = float(np.mean(harm))
+        out_rows.append(
+            {
+                "n": int(n),
+                "method": method,
+                "rmse": rmse,
+                "rmse_mcse": float(
+                    np.std(sq_errors, ddof=1) / np.sqrt(len(errors)) / (2 * rmse)
+                ),
+                "mean_region_observed": float(part["n_region_observed"].mean()),
+                "harm_rate": harm_rate,
+                "harm_rate_se": float(
+                    np.sqrt(harm_rate * (1.0 - harm_rate) / len(errors))
+                ),
+                "reps": int(len(part)),
+            }
+        )
+    return pd.DataFrame(out_rows)
 
 
 def main() -> None:
