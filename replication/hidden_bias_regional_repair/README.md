@@ -1,7 +1,7 @@
 # Hidden Bias and Regional Repair: Replication Package
 
 This directory is the current public replication surface for the EJS manuscript
-"Hidden Bias and Regional Repair in Orthogonal Estimator Selection."
+"Hidden Bias and Regional Repair in Low-Response AIPW."
 
 ## What Is Included
 
@@ -43,6 +43,16 @@ The default run uses 200 replications for the regional-repair benchmark and 200
 replications for each observed-outcome budget cell. The command is synthetic
 only and needs no external data.
 
+The manuscript tables were generated with the default seed `1729`. The main
+regional-repair benchmark uses `numpy.random.default_rng(1729)`. The observed
+outcome budget sweep uses `numpy.random.default_rng(101729)`, so it is
+independent of the first benchmark. The target value `theta` is computed on a
+deterministic grid of 20,001 equally spaced points in `[0, 1]`.
+
+The script was checked with Python 3.9 and 3.12. Runtime dependencies are only
+NumPy and pandas, as listed in `requirements.txt`; on a laptop the default run
+finishes in well under a minute.
+
 ## Protocol
 
 The companion target is the missing-outcome mean
@@ -80,6 +90,16 @@ The observed-outcome budget check repeats the same comparison across sample
 sizes. It reports the average number of observed outcomes in `G`, RMSE for the
 reference, raw regional repair, screened repair, and the fraction of
 replications in which each repair has larger squared error than the reference.
+
+## Scope of This Companion
+
+This companion reproduces the manuscript's displayed empirical tables. It is a
+mechanism check for the outcome-axis repair under a fixed misspecified score
+propensity `p0`. It does not implement the full theoretical grid from the paper:
+there is no propensity-axis search, no same-propensity Goldenshluger--Lepski
+AIPW contrast, and no bootstrap simultaneous band. Those components are part of
+the theoretical protected-score rule, not the simplified empirical screen used
+for Tables 1 and 2.
 
 ## Status Relative to the Manuscript Tables
 
