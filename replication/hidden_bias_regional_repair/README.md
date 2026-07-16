@@ -5,17 +5,16 @@ This directory is the current public replication surface for the EJS manuscript
 
 ## What Is Included
 
-- `data/current_manuscript_tables.csv`: exact numeric entries currently printed
-  in the manuscript empirical tables.
+- `data/current_manuscript_tables.csv`: exact numeric entries for the public
+  companion tables cited in the manuscript.
 - `data/regional_repair_summary.csv` and
-  `data/observed_outcome_budget.csv`: expected output from the default script
-  run used for the manuscript tables.
+  `data/observed_outcome_budget.csv`: expected output from the default
+  companion run.
 - `scripts/regional_repair_companion.py`: a self-contained Python simulation for
   the visible-region repair mechanism and the observed-outcome budget check.
 - `requirements.txt`: Python dependencies for the companion simulation.
 
-No internal development notes, review outputs, shadow drafts, or raw working
-documents are included.
+The package contains only the public replication files listed above.
 
 ## Quick Check
 
@@ -43,9 +42,9 @@ The default run uses 200 replications for the regional-repair benchmark and 200
 replications for each observed-outcome budget cell. The command is synthetic
 only and needs no external data.
 
-The manuscript tables were generated with the default seed `1729`. The main
-regional-repair benchmark uses `numpy.random.default_rng(1729)`. The observed
-outcome budget sweep uses `numpy.random.default_rng(101729)`, so it is
+The public companion tables were generated with the default seed `1729`. The
+main regional-repair benchmark uses `numpy.random.default_rng(1729)`. The
+observed-outcome budget sweep uses `numpy.random.default_rng(101729)`, so it is
 independent of the first benchmark. The target value `theta` is computed on a
 deterministic grid of 20,001 equally spaced points in `[0, 1]`.
 
@@ -93,17 +92,17 @@ replications in which each repair has larger squared error than the reference.
 
 ## Scope of This Companion
 
-This companion reproduces the manuscript's displayed empirical tables. It is a
-mechanism check for the outcome-axis repair under a fixed misspecified score
-propensity `p0`. It does not implement the full theoretical grid from the paper:
-there is no propensity-axis search, no same-propensity Goldenshluger--Lepski
-AIPW contrast, and no bootstrap simultaneous band. Those components are part of
-the theoretical protected-score rule, not the simplified empirical screen used
-for Tables 1 and 2.
+This companion reproduces the visible-regional-repair and observed-outcome
+budget tables bundled here. It is a mechanism check for the outcome-axis repair
+under a fixed misspecified score propensity `p0`. It does not implement the full
+theoretical grid from the paper: there is no propensity-axis search, no
+same-propensity Goldenshluger--Lepski AIPW contrast, and no bootstrap
+simultaneous band. Those components are part of the theoretical protected-score
+rule, not the simplified empirical screen used in this public companion.
 
 ## Status Relative to the Manuscript Tables
 
-The CSV in `data/current_manuscript_tables.csv` records the exact values
-currently printed in the manuscript. The default script run regenerates the
-unrounded expected-output CSVs in `data/regional_repair_summary.csv` and
+The CSV in `data/current_manuscript_tables.csv` records the exact values for
+the public companion tables. The default script run regenerates the unrounded
+expected-output CSVs in `data/regional_repair_summary.csv` and
 `data/observed_outcome_budget.csv`.

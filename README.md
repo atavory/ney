@@ -18,10 +18,10 @@ cd replication/hidden_bias_regional_repair
 python scripts/regional_repair_companion.py --quick
 ```
 
-The package includes a reproducibility protocol for the current manuscript, a
-CSV snapshot of the empirical tables currently printed in the paper, and a
-self-contained Python companion simulation for the regional-repair mechanism and
-observed-outcome budget check.
+The package includes the public reproducibility protocol cited by the current
+manuscript, a CSV snapshot of the bundled companion tables, and a self-contained
+Python simulation for the regional-repair mechanism and observed-outcome budget
+check.
 
 The journal-facing frozen supplement should use this package as the starting
 point. GitHub is a convenience mirror, not the only archival artifact.
