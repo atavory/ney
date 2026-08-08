@@ -45,6 +45,11 @@ The corresponding data release contains the raw per-replication CSVs and the
 aggregation script that regenerates every reported result. Summary CSVs are
 generated artifacts, not hand-maintained inputs.
 
+The manuscript accepts a numerical result only when this public generator is
+pushed, the data release contains complete raw rows and provenance, and the
+checked-in data aggregation script regenerates and verifies the cited summary.
+Interactive calculations and manually edited summaries are not paper evidence.
+
 ## Quick Check
 
 ```bash
