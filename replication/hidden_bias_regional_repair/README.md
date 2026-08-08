@@ -12,9 +12,38 @@ This directory is the current public replication surface for the EJS manuscript
   companion run.
 - `scripts/regional_repair_companion.py`: a self-contained Python simulation for
   the visible-region repair mechanism and the observed-outcome budget check.
+- `scripts/validated_reference_transfer.py`: the exact experiment driver used
+  for the submission-grade nonlinear-MAR reference-transfer run.
+- `scripts/launch_validated_reference_transfer.py`: the chunked, paired-seed
+  launcher used for C-TMLE, AIPW, and the global DR-risk proxy.
 - `requirements.txt`: Python dependencies for the companion simulation.
 
 The package contains only the public replication files listed above.
+
+## Submission-Grade Reference Transfer
+
+The validated driver uses the learned residual-score detector, sequential
+global-then-regional targeting for C-TMLE and the global DR-risk proxy, and a
+regional-only addition to the untargeted outcome regression for AIPW. Thus each
+candidate is compared with its own reference while holding its fitted response
+model fixed. The internal command name `cui_tchetgen` denotes the global
+DR-risk proxy; it is not presented as a faithful implementation of the full
+Cui--Tchetgen procedure.
+
+The full run uses strengths `0, 3, 5, 8`, 96 Monte Carlo replications per cell,
+and 50 whole-procedure bootstraps per replication. The launcher records every
+command and seed, snapshots the driver, and stores SHA-256 hashes for the source
+and executable. Point it to an executable copy of the driver:
+
+```bash
+export USHMOO_EXPERIMENT_BINARY="$PWD/scripts/validated_reference_transfer.py"
+export USHMOO_EXPERIMENT_SOURCE="$PWD/scripts/validated_reference_transfer.py"
+python scripts/launch_validated_reference_transfer.py
+```
+
+The corresponding data release contains the raw per-replication CSVs and the
+aggregation script that regenerates every reported result. Summary CSVs are
+generated artifacts, not hand-maintained inputs.
 
 ## Quick Check
 
