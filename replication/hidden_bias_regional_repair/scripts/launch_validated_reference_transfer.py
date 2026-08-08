@@ -16,7 +16,12 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-RUN_DIR = ROOT / "support/csv/ushmoo_validated_reference_transfer_20260808"
+RUN_DIR = Path(
+    os.environ.get(
+        "USHMOO_RUN_DIR",
+        ROOT / "support/csv/ushmoo_validated_reference_transfer_20260808",
+    )
+).resolve()
 EXPERIMENT_BINARY = Path(os.environ["USHMOO_EXPERIMENT_BINARY"]).resolve()
 EXPERIMENT_SOURCE = Path(os.environ["USHMOO_EXPERIMENT_SOURCE"]).resolve()
 ALL_METHODS = {
@@ -136,9 +141,9 @@ def write_provenance(all_jobs):
         ).strip(),
         "methods": METHODS,
         "note": (
-            "AIPW uses its untargeted outcome regression as the reference and "
-            "adds only the selected regional targeting direction. The other "
-            "arms use global targeting followed by the same regional direction."
+            "Every reference receives the same scalar additive regional endpoint. "
+            "The updated outcome model is not passed through a reference-specific "
+            "score."
         ),
     }
     (RUN_DIR / "provenance.json").write_text(
