@@ -1073,10 +1073,10 @@ def _crossfit_selected(
                     region[test_observed], validation_region_weight
                 ) * region[test_observed].astype(float)
                 baseline_loss = (
-                    validation_weight * (y[test_observed] - ref_test[pos]) ** 2
+                    validation_weight * (y[test_observed] - ref_outcome[pos]) ** 2
                 )
                 losses[tau].append(
-                    float(np.mean((y[test_observed] - ref_test[pos]) ** 2))
+                    float(np.mean((y[test_observed] - ref_outcome[pos]) ** 2))
                 )
             for region_damp in region_damp_grid:
                 if repair_mode == "targeting":
@@ -1104,17 +1104,16 @@ def _crossfit_selected(
                         0.0,
                     )
                     rt_prediction = reweighted_test[region_damp]
-                if reference_method == "aipw":
-                    rt_value = _aipw_score(
-                        y[test],
-                        response[test],
-                        p_test,
-                        rt_prediction,
-                    )
-                    rt_outcome = rt_prediction
-                else:
-                    rt_value = rt_test
-                    rt_outcome = rt_test
+                regional_increment = rt_prediction - ref_outcome
+                rt_value = ref_value + regional_increment
+                rt_outcome = rt_prediction
+                if not np.allclose(
+                    rt_value - ref_value,
+                    regional_increment,
+                    rtol=1e-12,
+                    atol=1e-12,
+                ):
+                    raise AssertionError("candidate endpoint is not additive")
                 rt_values[(tau, region_damp)][test] = rt_value
                 rt_outcome_values[(tau, region_damp)][test] = rt_outcome
                 if test_observed.any():

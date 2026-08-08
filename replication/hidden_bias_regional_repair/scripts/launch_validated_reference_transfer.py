@@ -19,11 +19,21 @@ ROOT = Path(__file__).resolve().parents[2]
 RUN_DIR = ROOT / "support/csv/ushmoo_validated_reference_transfer_20260808"
 EXPERIMENT_BINARY = Path(os.environ["USHMOO_EXPERIMENT_BINARY"]).resolve()
 EXPERIMENT_SOURCE = Path(os.environ["USHMOO_EXPERIMENT_SOURCE"]).resolve()
-METHODS = {
+ALL_METHODS = {
     "ctmle": "ctmle",
     "global_dr_risk_proxy": "cui_tchetgen",
     "aipw": "aipw",
+    "glrisk": "glrisk",
 }
+METHOD_LABELS = tuple(
+    label.strip()
+    for label in os.environ.get("USHMOO_METHODS", ",".join(ALL_METHODS)).split(",")
+    if label.strip()
+)
+unknown_methods = set(METHOD_LABELS) - set(ALL_METHODS)
+if unknown_methods:
+    raise ValueError(f"unknown USHMOO_METHODS labels: {sorted(unknown_methods)}")
+METHODS = {label: ALL_METHODS[label] for label in METHOD_LABELS}
 STRENGTHS = (0, 3, 5, 8)
 CHUNKS_PER_STRENGTH = 24
 REPS_PER_CHUNK = 4
