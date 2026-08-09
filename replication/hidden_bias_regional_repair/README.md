@@ -50,6 +50,20 @@ pushed, the data release contains complete raw rows and provenance, and the
 checked-in data aggregation script regenerates and verifies the cited summary.
 Interactive calculations and manually edited summaries are not paper evidence.
 
+## External Baseline Roadmap
+
+The next public implementations are: plain cross-fitted TMLE;
+Ma--Sant'Anna--Sasaki--Ura bias-corrected trimmed DR; and faithful
+Cui--Tchetgen Tchetgen selective ML. Dorn's thresholded DR is queued after its
+missing-at-random mean specialization is verified. Crump trimming and overlap
+weights target different populations and will be kept out of the main
+same-target MSE comparison.
+
+The existing `global_dr_risk` code is an internal proxy, not a faithful
+Cui--Tchetgen Tchetgen implementation. Historical GL-risk code selects a point
+on the C-TMLE regional path and is a diagnostic rather than an external
+reference family.
+
 ## Quick Check
 
 ```bash
