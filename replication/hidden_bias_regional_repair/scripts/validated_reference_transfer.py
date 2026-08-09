@@ -990,7 +990,13 @@ def _crossfit_selected(
     selector,
     lepski_c,
 ):
-    if reference_method not in {"aipw", "ctmle", "glrisk", "cui_tchetgen"}:
+    if reference_method not in {
+        "aipw",
+        "ctmle",
+        "glrisk",
+        "glrisk_reference",
+        "cui_tchetgen",
+    }:
         raise ValueError(f"unknown reference_method: {reference_method}")
     x, y, response, region, true_pi, _ = data[:6]
     n = len(y)
@@ -1148,21 +1154,26 @@ def _crossfit_selected(
     rt_by_gamma = {g: rt_values[(selected, g)] for g in region_damp_grid}
     ref = ref_values[selected]
     gl_stats = None
-    if selector == "lepski":
+    path_selector = (
+        "glrisk"
+        if reference_method in {"glrisk", "glrisk_reference"}
+        else selector
+    )
+    if path_selector == "lepski":
         selected_damp = _select_first_lepski(
             ref,
             rt_by_gamma,
             region_damp_grid,
             lepski_c,
         )
-    elif selector == "glrisk":
+    elif path_selector == "glrisk":
         selected_damp, gl_stats = _select_gl_risk(
             ref,
             rt_by_gamma,
             region_damp_grid,
             lepski_c,
         )
-    elif selector == "obsval":
+    elif path_selector == "obsval":
         selected_damp = _select_observed_validation_damp(
             region_damp_grid,
             mean_damp_losses,
@@ -1171,7 +1182,7 @@ def _crossfit_selected(
             validation_loss_se,
         )
     else:
-        raise ValueError(f"unknown selector: {selector}")
+        raise ValueError(f"unknown selector: {path_selector}")
     selected_value = (
         ref_values[selected]
         if selected_damp == 0.0
@@ -1182,12 +1193,42 @@ def _crossfit_selected(
         if selected_damp == 0.0
         else rt_outcome_values[(selected, selected_damp)]
     )
+    returned_ref = ref_values[selected]
+    returned_ref_outcome = ref_outcome_values[selected]
+    returned_rt = selected_value
+    returned_rt_outcome = selected_outcome
+    if reference_method == "glrisk_reference":
+        if 1.0 not in region_damp_grid:
+            raise ValueError("glrisk_reference requires gamma=1 in region_damp_grid")
+        returned_ref = selected_value
+        returned_ref_outcome = selected_outcome
+        returned_rt = rt_values[(selected, 1.0)]
+        returned_rt_outcome = rt_outcome_values[(selected, 1.0)]
+        full_increment = rt_values[(selected, 1.0)] - ref_values[selected]
+        remaining_increment = returned_rt - returned_ref
+        if not np.allclose(
+            remaining_increment,
+            (1.0 - selected_damp) * full_increment,
+            rtol=1e-10,
+            atol=1e-10,
+        ):
+            raise AssertionError("GL reference does not leave the expected path remainder")
+        if selected_damp != min(
+            gl_stats,
+            key=lambda g: (
+                gl_stats[g]["risk"],
+                gl_stats[g]["bias_proxy"],
+                gl_stats[g]["variance"],
+                g,
+            ),
+        ):
+            raise AssertionError("emitted GL reference does not minimize GL risk")
     return {
-        "ref": ref_values[selected],
-        "rt": selected_value,
+        "ref": returned_ref,
+        "rt": returned_rt,
         "selected_p": p_values[selected],
-        "ref_outcome": ref_outcome_values[selected],
-        "rt_outcome": selected_outcome,
+        "ref_outcome": returned_ref_outcome,
+        "rt_outcome": returned_rt_outcome,
         "selected_tau": selected,
         "selected_region_damp": selected_damp,
         "gl_original_bias_proxy": (
@@ -1552,7 +1593,11 @@ def run_cell(cell, reps, progress_every, rep_log_path):
         selector_ablation,
         region_detector_c,
     ) = cell
-    effective_selector = "glrisk" if reference_method == "glrisk" else selector
+    effective_selector = (
+        "glrisk"
+        if reference_method in {"glrisk", "glrisk_reference"}
+        else selector
+    )
     label = (
         f"reference_method={reference_method} learner={learner} "
         f"propensity_learner={propensity_learner} "
@@ -1900,11 +1945,19 @@ def main() -> None:
     )
     ap.add_argument(
         "--reference-method",
-        choices=["aipw", "ctmle", "glrisk", "cui_tchetgen"],
+        choices=[
+            "aipw",
+            "ctmle",
+            "glrisk",
+            "glrisk_reference",
+            "cui_tchetgen",
+        ],
         default="ctmle",
         help=(
-            "Reference estimator for the comparison. glrisk uses the same "
-            "C-TMLE reference with the in-driver GL-risk regional selector; "
+            "Reference estimator for the comparison. glrisk is the historical "
+            "C-TMLE repair-path selector ablation; glrisk_reference promotes "
+            "the GL-selected path point to the reference and repairs its "
+            "remaining regional increment; "
             "cui_tchetgen selects the global C-TMLE reference by a DR-risk "
             "criterion over the propensity-floor grid."
         ),

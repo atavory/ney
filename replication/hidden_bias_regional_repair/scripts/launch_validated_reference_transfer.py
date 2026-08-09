@@ -29,10 +29,14 @@ ALL_METHODS = {
     "global_dr_risk_proxy": "cui_tchetgen",
     "aipw": "aipw",
     "glrisk": "glrisk",
+    "glrisk_reference": "glrisk_reference",
 }
+METHOD_SPEC = os.environ.get("USHMOO_METHODS")
+if not METHOD_SPEC:
+    raise ValueError("USHMOO_METHODS must explicitly name the methods to run")
 METHOD_LABELS = tuple(
     label.strip()
-    for label in os.environ.get("USHMOO_METHODS", ",".join(ALL_METHODS)).split(",")
+    for label in METHOD_SPEC.split(",")
     if label.strip()
 )
 unknown_methods = set(METHOD_LABELS) - set(ALL_METHODS)
@@ -92,6 +96,17 @@ def jobs():
                     "--out", str(out),
                     "--rep-out", str(rep_out),
                 ]
+                if method in {"glrisk", "glrisk_reference"}:
+                    cmd.extend(
+                        [
+                            "--region-damp-grid",
+                            "0",
+                            "0.4",
+                            "0.6",
+                            "0.8",
+                            "1",
+                        ]
+                    )
                 yield label, strength, chunk, seed, out, rep_out, log, cmd
 
 
