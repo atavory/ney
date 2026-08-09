@@ -139,6 +139,7 @@ def write_provenance(all_jobs):
         "paper_git_head": subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
         ).strip(),
+        "public_git_head": os.environ.get("USHMOO_PUBLIC_COMMIT", "UNRECORDED"),
         "methods": METHODS,
         "note": (
             "Every reference receives the same scalar additive regional endpoint. "
