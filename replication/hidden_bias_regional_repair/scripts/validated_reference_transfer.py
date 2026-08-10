@@ -992,6 +992,7 @@ def _crossfit_selected(
 ):
     if reference_method not in {
         "aipw",
+        "tmle",
         "ctmle",
         "glrisk",
         "glrisk_reference",
@@ -1006,6 +1007,7 @@ def _crossfit_selected(
     ref_values = {t: np.empty(n) for t in tau_grid}
     p_values = {t: np.empty(n) for t in tau_grid}
     ref_outcome_values = {t: np.empty(n) for t in tau_grid}
+    initial_outcome_values = np.empty(n)
     rt_values = {(t, g): np.empty(n) for t in tau_grid for g in region_damp_grid}
     rt_outcome_values = {
         (t, g): np.empty(n) for t in tau_grid for g in region_damp_grid
@@ -1035,6 +1037,7 @@ def _crossfit_selected(
         model.fit(x[observed], y[observed])
         m_obs = model.predict(x[observed])
         m_test = model.predict(x[test])
+        initial_outcome_values[test] = m_test
         reweighted_obs = {}
         reweighted_test = {}
         if repair_mode == "reweight":
@@ -1131,11 +1134,120 @@ def _crossfit_selected(
                     damp_improvements[(tau, region_damp)].extend(
                         (baseline_loss - candidate_loss).tolist()
                     )
+    targeting_moment = float("nan")
+    targeting_score_gap = float("nan")
+    canonical_plugin_methods = {"tmle", "ctmle", "cui_tchetgen"}
+    targeting_moments = {}
+    targeting_score_gaps = {}
+    if reference_method == "tmle" and len(tau_grid) != 1:
+        raise ValueError("tmle requires one explicit propensity floor")
+    if reference_method in canonical_plugin_methods:
+        # The nuisance regressions above are cross-fitted, but their fold-specific
+        # fluctuations were historically fit on training responders.  Re-solve the
+        # fluctuation on the pooled OOF predictions so every emitted plug-in
+        # reference satisfies its empirical targeting equation.
+        observed = response == 1
+        m_oof = initial_outcome_values
+        for tau in tau_grid:
+            p_oof = np.maximum(p_values[tau], 1e-12)
+            clever = 1.0 / p_oof[observed]
+            denominator = float(np.dot(clever, clever))
+            if denominator <= 0.0:
+                raise RuntimeError(
+                    f"{reference_method} fluctuation has no observed support"
+                )
+            epsilon = float(
+                np.dot(clever, y[observed] - m_oof[observed]) / denominator
+            )
+            targeted = m_oof + epsilon / p_oof
+            moment = float(
+                np.mean(response.astype(float) * (y - targeted) / p_oof)
+            )
+            moment_scale = max(
+                1.0,
+                float(
+                    np.mean(
+                        np.abs(response.astype(float) * (y - targeted) / p_oof)
+                    )
+                ),
+            )
+            if abs(moment) > 1e-10 * moment_scale:
+                raise AssertionError(
+                    f"pooled OOF {reference_method} targeting moment is not zero"
+                )
+            targeted_plugin = float(np.mean(targeted))
+            targeted_aipw = float(
+                np.mean(_aipw_score(y, response, p_oof, targeted))
+            )
+            score_gap = targeted_plugin - targeted_aipw
+            if abs(score_gap) > 1e-10 * max(1.0, abs(targeted_plugin)):
+                raise AssertionError(
+                    f"{reference_method} plug-in does not equal targeted AIPW"
+                )
+            targeting_moments[tau] = moment
+            targeting_score_gaps[tau] = score_gap
+
+            previous_ref = ref_values[tau]
+            previous_ref_outcome = ref_outcome_values[tau]
+            ref_values[tau] = targeted.copy()
+            ref_outcome_values[tau] = targeted.copy()
+            if reference_method == "tmle":
+                losses[tau] = [
+                    float(np.mean((y[observed] - targeted[observed]) ** 2))
+                ]
+            baseline_loss = (y[observed] - targeted[observed]) ** 2
+            if repair_mode == "targeting":
+                regional_clever = region[observed].astype(float) / p_oof[observed]
+                regional_denominator = float(
+                    np.dot(regional_clever, regional_clever)
+                )
+                regional_alpha = (
+                    float(
+                        np.dot(
+                            regional_clever,
+                            y[observed] - targeted[observed],
+                        )
+                        / regional_denominator
+                    )
+                    if regional_denominator > 0.0
+                    else 0.0
+                )
+            for region_damp in region_damp_grid:
+                if repair_mode == "targeting":
+                    regional_increment = (
+                        region_damp
+                        * regional_alpha
+                        * region.astype(float)
+                        / p_oof
+                    )
+                    candidate = targeted + regional_increment
+                    rt_values[(tau, region_damp)] = candidate
+                    rt_outcome_values[(tau, region_damp)] = candidate.copy()
+                else:
+                    endpoint_increment = (
+                        rt_values[(tau, region_damp)] - previous_ref
+                    )
+                    outcome_increment = (
+                        rt_outcome_values[(tau, region_damp)]
+                        - previous_ref_outcome
+                    )
+                    rt_values[(tau, region_damp)] = targeted + endpoint_increment
+                    rt_outcome_values[(tau, region_damp)] = (
+                        targeted + outcome_increment
+                    )
+                    candidate = rt_outcome_values[(tau, region_damp)]
+                candidate_loss = (y[observed] - candidate[observed]) ** 2
+                damp_losses[(tau, region_damp)] = candidate_loss.tolist()
+                damp_improvements[(tau, region_damp)] = (
+                    baseline_loss - candidate_loss
+                ).tolist()
     mean_losses = {
         t: (float(np.mean(v)) if v else float("inf")) for t, v in losses.items()
     }
     global_dr_stats = None
-    if reference_method == "cui_tchetgen":
+    if reference_method == "tmle":
+        selected = min(tau_grid)
+    elif reference_method == "cui_tchetgen":
         selected, global_dr_stats = _select_global_dr_risk(
             ref_values,
             tau_grid,
@@ -1143,6 +1255,9 @@ def _crossfit_selected(
         )
     else:
         selected = min(tau_grid, key=lambda t: (mean_losses[t], t))
+    if reference_method in canonical_plugin_methods:
+        targeting_moment = targeting_moments[selected]
+        targeting_score_gap = targeting_score_gaps[selected]
     mean_damp_losses = {
         g: (
             float(np.mean(damp_losses[(selected, g)]))
@@ -1231,6 +1346,8 @@ def _crossfit_selected(
         "rt_outcome": returned_rt_outcome,
         "selected_tau": selected,
         "selected_region_damp": selected_damp,
+        "targeting_moment": targeting_moment,
+        "targeting_score_gap": targeting_score_gap,
         "gl_original_bias_proxy": (
             gl_stats[0.0]["bias_proxy"] if gl_stats is not None else float("nan")
         ),
@@ -1508,6 +1625,8 @@ def _one_rep(
         "weight": weight,
         "selected_tau": float(fit["selected_tau"]),
         "selected_region_damp": float(fit["selected_region_damp"]),
+        "targeting_moment": float(fit["targeting_moment"]),
+        "targeting_score_gap": float(fit["targeting_score_gap"]),
         "gl_original_bias_proxy": float(fit["gl_original_bias_proxy"]),
         "gl_selected_bias_proxy": float(fit["gl_selected_bias_proxy"]),
         "gl_selected_variance_proxy": float(fit["gl_selected_variance_proxy"]),
@@ -1947,6 +2066,7 @@ def main() -> None:
         "--reference-method",
         choices=[
             "aipw",
+            "tmle",
             "ctmle",
             "glrisk",
             "glrisk_reference",
@@ -1954,7 +2074,10 @@ def main() -> None:
         ],
         default="ctmle",
         help=(
-            "Reference estimator for the comparison. glrisk is the historical "
+            "Reference estimator for the comparison. tmle uses the standard "
+            "global targeting fluctuation at the smallest pre-specified "
+            "propensity floor without collaborative floor selection; glrisk is "
+            "the historical "
             "C-TMLE repair-path selector ablation; glrisk_reference promotes "
             "the GL-selected path point to the reference and repairs its "
             "remaining regional increment; "
