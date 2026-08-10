@@ -16,6 +16,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
+PAPER_ROOT = Path(os.environ.get("USHMOO_PAPER_ROOT", ROOT)).resolve()
 RUN_DIR = Path(
     os.environ.get(
         "USHMOO_RUN_DIR",
@@ -26,22 +27,32 @@ EXPERIMENT_BINARY = Path(os.environ["USHMOO_EXPERIMENT_BINARY"]).resolve()
 EXPERIMENT_SOURCE = Path(os.environ["USHMOO_EXPERIMENT_SOURCE"]).resolve()
 ALL_METHODS = {
     "ctmle": "ctmle",
+    "ctmle_fixed_005": "ctmle",
     "global_dr_risk_proxy": "cui_tchetgen",
     "aipw": "aipw",
+    "tmle": "tmle",
+    "glrisk": "glrisk",
+    "glrisk_reference": "glrisk_reference",
 }
+METHOD_SPEC = os.environ.get("USHMOO_METHODS")
+if not METHOD_SPEC:
+    raise ValueError("USHMOO_METHODS must explicitly name the methods to run")
 METHOD_LABELS = tuple(
     label.strip()
-    for label in os.environ.get("USHMOO_METHODS", ",".join(ALL_METHODS)).split(",")
+    for label in METHOD_SPEC.split(",")
     if label.strip()
 )
 unknown_methods = set(METHOD_LABELS) - set(ALL_METHODS)
 if unknown_methods:
     raise ValueError(f"unknown USHMOO_METHODS labels: {sorted(unknown_methods)}")
 METHODS = {label: ALL_METHODS[label] for label in METHOD_LABELS}
-STRENGTHS = (0, 3, 5, 8)
-CHUNKS_PER_STRENGTH = 24
-REPS_PER_CHUNK = 4
-BOOTSTRAPS = 50
+STRENGTHS = tuple(
+    int(value) for value in os.environ.get("USHMOO_STRENGTHS", "0,3,5,8").split(",")
+)
+CHUNKS_PER_STRENGTH = int(os.environ.get("USHMOO_CHUNKS_PER_STRENGTH", "24"))
+REPS_PER_CHUNK = int(os.environ.get("USHMOO_REPS_PER_CHUNK", "4"))
+BOOTSTRAPS = int(os.environ.get("USHMOO_BOOTSTRAPS", "50"))
+SAMPLE_SIZE = int(os.environ.get("USHMOO_N", "3000"))
 MAX_WORKERS = int(os.environ.get("USHMOO_MAX_WORKERS", "48"))
 HEARTBEAT_SECONDS = 60
 
@@ -67,7 +78,7 @@ def jobs():
                     str(EXPERIMENT_BINARY),
                     "--reps", str(REPS_PER_CHUNK),
                     "--bootstraps", str(BOOTSTRAPS),
-                    "--n", "3000",
+                    "--n", str(SAMPLE_SIZE),
                     "--epsilon", "0.05",
                     "--strength", str(strength),
                     "--design", "regional_shift",
@@ -91,6 +102,19 @@ def jobs():
                     "--out", str(out),
                     "--rep-out", str(rep_out),
                 ]
+                if method in {"glrisk", "glrisk_reference"}:
+                    cmd.extend(
+                        [
+                            "--region-damp-grid",
+                            "0",
+                            "0.4",
+                            "0.6",
+                            "0.8",
+                            "1",
+                        ]
+                    )
+                if method == "tmle" or label == "ctmle_fixed_005":
+                    cmd.extend(["--tau-grid", "0.05"])
                 yield label, strength, chunk, seed, out, rep_out, log, cmd
 
 
@@ -136,7 +160,7 @@ def write_provenance(all_jobs):
         "source_sha256": sha256(EXPERIMENT_SOURCE),
         "source_snapshot_sha256": sha256(RUN_DIR / "experiment_source_snapshot.py"),
         "paper_git_head": subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+            ["git", "rev-parse", "HEAD"], cwd=PAPER_ROOT, text=True
         ).strip(),
         "public_git_head": os.environ.get("USHMOO_PUBLIC_COMMIT", "UNRECORDED"),
         "methods": METHODS,
