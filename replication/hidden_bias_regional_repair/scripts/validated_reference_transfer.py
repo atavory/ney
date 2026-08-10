@@ -38,8 +38,13 @@ from sklearn.datasets import load_diabetes
 from sklearn.ensemble import (
     HistGradientBoostingClassifier,
     HistGradientBoostingRegressor,
+    RandomForestClassifier,
+    RandomForestRegressor,
 )
+from sklearn.linear_model import LassoCV, LogisticRegression
 from sklearn.model_selection import StratifiedKFold
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 
 try:
     from xgboost import XGBClassifier, XGBRegressor
@@ -857,6 +862,217 @@ def _aipw_score(y, response, p, m):
     return m + response.astype(float) * (y - m) / p
 
 
+def _shifted_legendre_derivative_at_zero(degree, order):
+    """Derivatives at zero of P_j(2a-1), j=0,...,degree."""
+    derivatives = np.zeros(degree + 1, dtype=float)
+    for j in range(degree + 1):
+        if j < order:
+            continue
+        basis = np.polynomial.legendre.Legendre.basis(j).deriv(order)
+        derivatives[j] = (2.0**order) * float(basis(-1.0))
+    return derivatives
+
+
+def _ma_dr_bc_reference(
+    y,
+    response,
+    p,
+    m,
+    trim_h=0.05,
+    correction_order=1,
+    sieve_degree=3,
+):
+    """Ma--Sant'Anna--Sasaki--Ura DR-BC for the MAR outcome mean.
+
+    This is equation (3.1) of Ma, Sant'Anna, Sasaki, and Ura (2026),
+    specialized to
+
+        theta = E[m(X)] + E[B/A],
+        A = p(X), B = R * (Y - m(X)).
+
+    The conditional mean xi(a)=E[B|A=a] is estimated with their shifted
+    Legendre sieve.  The returned observation-level values average to the
+    same-target bias-corrected trimmed DR estimator.
+    """
+    if not (0.0 <= trim_h < 1.0):
+        raise ValueError("DR-BC trimming threshold must lie in [0, 1)")
+    if correction_order < 1:
+        raise ValueError("DR-BC correction order must be positive")
+    if sieve_degree < correction_order:
+        raise ValueError("DR-BC sieve degree must cover the correction order")
+
+    y = np.asarray(y, dtype=float)
+    response = np.asarray(response, dtype=float)
+    p = np.clip(np.asarray(p, dtype=float), 1e-12, 1.0)
+    m = np.asarray(m, dtype=float)
+    if not (len(y) == len(response) == len(p) == len(m)):
+        raise ValueError("DR-BC inputs must have equal length")
+
+    b = response * (y - m)
+    shifted = 2.0 * p - 1.0
+    design = np.polynomial.legendre.legvander(shifted, sieve_degree)
+    coefficients, _, rank, _ = np.linalg.lstsq(design, b, rcond=None)
+    if rank < sieve_degree + 1:
+        raise RuntimeError("DR-BC shifted-Legendre sieve is rank deficient")
+
+    trimmed = p < trim_h
+    untrimmed_ratio = np.where(trimmed, 0.0, b / p)
+    correction = np.zeros(len(p), dtype=float)
+    derivatives = {}
+    for order in range(1, correction_order + 1):
+        basis_derivative = _shifted_legendre_derivative_at_zero(
+            sieve_degree, order
+        )
+        xi_derivative = float(np.dot(coefficients, basis_derivative))
+        derivatives[order] = xi_derivative
+        correction += (
+            trimmed.astype(float)
+            * p ** (order - 1)
+            * xi_derivative
+            / math.factorial(order)
+        )
+
+    values = m + untrimmed_ratio + correction
+    return values, {
+        "trim_h": float(trim_h),
+        "correction_order": int(correction_order),
+        "sieve_degree": int(sieve_degree),
+        "trimmed_fraction": float(np.mean(trimmed)),
+        "xi_derivative_1": float(derivatives.get(1, float("nan"))),
+        "bias_correction_mean": float(np.mean(correction)),
+    }
+
+
+def _cui_candidate_propensity(name, seed):
+    if name == "logistic_l1":
+        return make_pipeline(
+            StandardScaler(),
+            LogisticRegression(
+                l1_ratio=1.0,
+                solver="saga",
+                C=1.0,
+                max_iter=2000,
+                random_state=seed,
+            ),
+        )
+    if name == "random_forest":
+        return RandomForestClassifier(
+            n_estimators=100,
+            min_samples_leaf=20,
+            n_jobs=1,
+            random_state=seed,
+        )
+    if name == "gradient_boosting":
+        return _classifier(seed, "histgb")
+    raise ValueError(f"unknown Cui propensity candidate: {name}")
+
+
+def _cui_candidate_outcome(name, seed):
+    if name == "lasso":
+        return make_pipeline(
+            StandardScaler(),
+            LassoCV(cv=3, max_iter=5000, n_jobs=1, random_state=seed),
+        )
+    if name == "random_forest":
+        return RandomForestRegressor(
+            n_estimators=100,
+            min_samples_leaf=20,
+            n_jobs=1,
+            random_state=seed,
+        )
+    if name == "gradient_boosting":
+        return _regressor(seed, "histgb")
+    raise ValueError(f"unknown Cui outcome candidate: {name}")
+
+
+def _cui_mixed_minimax(psi_by_split):
+    """Algorithm 1 mixed-minimax selector from Cui--Tchetgen Tchetgen."""
+    psi = np.asarray(psi_by_split, dtype=float)
+    if psi.ndim != 3:
+        raise ValueError("Cui split estimates must have shape (S, K, L)")
+    _, propensity_count, outcome_count = psi.shape
+    risks = np.empty((propensity_count, outcome_count), dtype=float)
+    for k0 in range(propensity_count):
+        propensity_spread = max(
+            float(np.mean((psi[:, k0, l1] - psi[:, k0, l2]) ** 2))
+            for l1 in range(outcome_count)
+            for l2 in range(outcome_count)
+        )
+        for l0 in range(outcome_count):
+            outcome_spread = max(
+                float(np.mean((psi[:, k1, l0] - psi[:, k2, l0]) ** 2))
+                for k1 in range(propensity_count)
+                for k2 in range(propensity_count)
+            )
+            risks[k0, l0] = propensity_spread + outcome_spread
+    selected = min(
+        np.ndindex(risks.shape),
+        key=lambda pair: (risks[pair], pair[0], pair[1]),
+    )
+    return selected, risks
+
+
+def _cui_selective_ml_reference(x, y, response, seed):
+    """Two-fold Algorithm 1 selective ML for the MAR outcome mean."""
+    propensity_names = ("logistic_l1", "random_forest", "gradient_boosting")
+    outcome_names = ("lasso", "random_forest", "gradient_boosting")
+    split_count = 2
+    labels = np.empty(len(y), dtype=int)
+    splitter = StratifiedKFold(
+        n_splits=split_count,
+        shuffle=True,
+        random_state=seed,
+    )
+    for fold, (_, test_index) in enumerate(
+        splitter.split(np.zeros((len(y), 1)), response)
+    ):
+        labels[test_index] = fold
+
+    psi = np.empty(
+        (split_count, len(propensity_names), len(outcome_names)), dtype=float
+    )
+    p_oof = {name: np.empty(len(y)) for name in propensity_names}
+    m_oof = {name: np.empty(len(y)) for name in outcome_names}
+    for fold in range(split_count):
+        test = labels == fold
+        train = ~test
+        observed = train & (response == 1)
+        if observed.sum() < 20:
+            raise RuntimeError("too few observed outcomes for Cui learner library")
+        for k, name in enumerate(propensity_names):
+            model = _cui_candidate_propensity(name, seed + 1009 * fold + 31 * k)
+            model.fit(x[train], response[train])
+            p_oof[name][test] = np.clip(
+                model.predict_proba(x[test])[:, 1], 1e-6, 1.0
+            )
+        for l, name in enumerate(outcome_names):
+            model = _cui_candidate_outcome(name, seed + 2003 * fold + 37 * l)
+            model.fit(x[observed], y[observed])
+            m_oof[name][test] = model.predict(x[test])
+        for k, propensity_name in enumerate(propensity_names):
+            p_test = p_oof[propensity_name][test]
+            for l, outcome_name in enumerate(outcome_names):
+                m_test = m_oof[outcome_name][test]
+                score = _aipw_score(
+                    y[test], response[test], p_test, m_test
+                )
+                psi[fold, k, l] = float(np.mean(score))
+
+    (selected_k, selected_l), risks = _cui_mixed_minimax(psi)
+    selected_propensity = propensity_names[selected_k]
+    selected_outcome = outcome_names[selected_l]
+    estimate = float(np.mean(psi[:, selected_k, selected_l]))
+    return {
+        "ref": np.full(len(y), estimate, dtype=float),
+        "selected_p": p_oof[selected_propensity],
+        "selected_m": m_oof[selected_outcome],
+        "selected_propensity_learner": selected_propensity,
+        "selected_outcome_learner": selected_outcome,
+        "pseudo_risk": float(risks[selected_k, selected_l]),
+        "split_estimates": psi[:, selected_k, selected_l].copy(),
+    }
+
+
 def _gl_path_stats(ref, rt_by_gamma, region_damp_grid, lepski_c):
     gammas = tuple(sorted({float(g) for g in region_damp_grid} | {0.0}))
     values = {0.0: ref}
@@ -994,6 +1210,8 @@ def _crossfit_selected(
         "aipw",
         "tmle",
         "ctmle",
+        "ma_dr_bc",
+        "cui_selective_ml",
         "glrisk",
         "glrisk_reference",
         "cui_tchetgen",
@@ -1008,6 +1226,7 @@ def _crossfit_selected(
     p_values = {t: np.empty(n) for t in tau_grid}
     ref_outcome_values = {t: np.empty(n) for t in tau_grid}
     initial_outcome_values = np.empty(n)
+    p_raw_values = np.empty(n)
     rt_values = {(t, g): np.empty(n) for t in tau_grid for g in region_damp_grid}
     rt_outcome_values = {
         (t, g): np.empty(n) for t in tau_grid for g in region_damp_grid
@@ -1038,6 +1257,7 @@ def _crossfit_selected(
         m_obs = model.predict(x[observed])
         m_test = model.predict(x[test])
         initial_outcome_values[test] = m_test
+        p_raw_values[test] = p_test_raw
         reweighted_obs = {}
         reweighted_test = {}
         if repair_mode == "reweight":
@@ -1136,6 +1356,8 @@ def _crossfit_selected(
                     )
     targeting_moment = float("nan")
     targeting_score_gap = float("nan")
+    ma_dr_bc_stats = None
+    cui_selective_stats = None
     canonical_plugin_methods = {"tmle", "ctmle", "cui_tchetgen"}
     targeting_moments = {}
     targeting_score_gaps = {}
@@ -1241,11 +1463,123 @@ def _crossfit_selected(
                 damp_improvements[(tau, region_damp)] = (
                     baseline_loss - candidate_loss
                 ).tolist()
+    if reference_method == "ma_dr_bc":
+        if len(tau_grid) != 1:
+            raise ValueError("ma_dr_bc requires one explicit trimming threshold")
+        trim_h = min(tau_grid)
+        p_raw = np.clip(p_raw_values, 1e-12, 1.0)
+        m_oof = initial_outcome_values
+        dr_bc_values, ma_dr_bc_stats = _ma_dr_bc_reference(
+            y,
+            response,
+            p_raw,
+            m_oof,
+            trim_h=trim_h,
+            correction_order=1,
+            sieve_degree=3,
+        )
+        p_repair = np.maximum(p_raw, trim_h)
+        p_values[trim_h] = p_repair
+        ref_values[trim_h] = dr_bc_values
+        ref_outcome_values[trim_h] = m_oof.copy()
+        observed = response == 1
+        losses[trim_h] = [
+            float(np.mean((y[observed] - m_oof[observed]) ** 2))
+        ]
+        baseline_loss = (y[observed] - m_oof[observed]) ** 2
+        regional_clever = region[observed].astype(float) / p_repair[observed]
+        regional_denominator = float(np.dot(regional_clever, regional_clever))
+        regional_alpha = (
+            float(
+                np.dot(regional_clever, y[observed] - m_oof[observed])
+                / regional_denominator
+            )
+            if regional_denominator > 0.0
+            else 0.0
+        )
+        for region_damp in region_damp_grid:
+            regional_increment = (
+                region_damp
+                * regional_alpha
+                * region.astype(float)
+                / p_repair
+            )
+            candidate_value = dr_bc_values + regional_increment
+            candidate_outcome = m_oof + regional_increment
+            if not np.allclose(
+                candidate_value - dr_bc_values,
+                regional_increment,
+                rtol=1e-12,
+                atol=1e-12,
+            ):
+                raise AssertionError("DR-BC candidate endpoint is not additive")
+            rt_values[(trim_h, region_damp)] = candidate_value
+            rt_outcome_values[(trim_h, region_damp)] = candidate_outcome
+            candidate_loss = (
+                y[observed] - candidate_outcome[observed]
+            ) ** 2
+            damp_losses[(trim_h, region_damp)] = candidate_loss.tolist()
+            damp_improvements[(trim_h, region_damp)] = (
+                baseline_loss - candidate_loss
+            ).tolist()
+    if reference_method == "cui_selective_ml":
+        if mode != "estimated":
+            raise ValueError("cui_selective_ml requires estimated nuisances")
+        selected_key = min(tau_grid)
+        cui_selective_stats = _cui_selective_ml_reference(
+            x, y, response, seed + 7001
+        )
+        selected_p = np.asarray(cui_selective_stats["selected_p"], dtype=float)
+        selected_m = np.asarray(cui_selective_stats["selected_m"], dtype=float)
+        selected_ref = np.asarray(cui_selective_stats["ref"], dtype=float)
+        p_values[selected_key] = selected_p
+        ref_values[selected_key] = selected_ref
+        ref_outcome_values[selected_key] = selected_m
+        observed = response == 1
+        losses[selected_key] = [
+            float(np.mean((y[observed] - selected_m[observed]) ** 2))
+        ]
+        baseline_loss = (y[observed] - selected_m[observed]) ** 2
+        regional_clever = region[observed].astype(float) / selected_p[observed]
+        regional_denominator = float(np.dot(regional_clever, regional_clever))
+        regional_alpha = (
+            float(
+                np.dot(regional_clever, y[observed] - selected_m[observed])
+                / regional_denominator
+            )
+            if regional_denominator > 0.0
+            else 0.0
+        )
+        for region_damp in region_damp_grid:
+            regional_increment = (
+                region_damp
+                * regional_alpha
+                * region.astype(float)
+                / selected_p
+            )
+            candidate_value = selected_ref + regional_increment
+            candidate_outcome = selected_m + regional_increment
+            if not np.allclose(
+                candidate_value - selected_ref,
+                regional_increment,
+                rtol=1e-12,
+                atol=1e-12,
+            ):
+                raise AssertionError("Cui candidate endpoint is not additive")
+            rt_values[(selected_key, region_damp)] = candidate_value
+            rt_outcome_values[(selected_key, region_damp)] = candidate_outcome
+            candidate_loss = (
+                y[observed] - candidate_outcome[observed]
+            ) ** 2
+            damp_losses[(selected_key, region_damp)] = candidate_loss.tolist()
+            damp_improvements[(selected_key, region_damp)] = (
+                baseline_loss - candidate_loss
+            ).tolist()
     mean_losses = {
         t: (float(np.mean(v)) if v else float("inf")) for t, v in losses.items()
     }
     global_dr_stats = None
-    if reference_method == "tmle":
+    if reference_method in {"tmle", "ma_dr_bc", "cui_selective_ml"}:
         selected = min(tau_grid)
     elif reference_method == "cui_tchetgen":
         selected, global_dr_stats = _select_global_dr_risk(
@@ -1344,10 +1678,42 @@ def _crossfit_selected(
         "selected_p": p_values[selected],
         "ref_outcome": returned_ref_outcome,
         "rt_outcome": returned_rt_outcome,
-        "selected_tau": selected,
+        "selected_tau": (
+            float("nan") if reference_method == "cui_selective_ml" else selected
+        ),
         "selected_region_damp": selected_damp,
         "targeting_moment": targeting_moment,
         "targeting_score_gap": targeting_score_gap,
+        "ma_trimmed_fraction": (
+            ma_dr_bc_stats["trimmed_fraction"]
+            if ma_dr_bc_stats is not None
+            else float("nan")
+        ),
+        "ma_xi_derivative_1": (
+            ma_dr_bc_stats["xi_derivative_1"]
+            if ma_dr_bc_stats is not None
+            else float("nan")
+        ),
+        "ma_bias_correction_mean": (
+            ma_dr_bc_stats["bias_correction_mean"]
+            if ma_dr_bc_stats is not None
+            else float("nan")
+        ),
+        "cui_selected_propensity_learner": (
+            cui_selective_stats["selected_propensity_learner"]
+            if cui_selective_stats is not None
+            else ""
+        ),
+        "cui_selected_outcome_learner": (
+            cui_selective_stats["selected_outcome_learner"]
+            if cui_selective_stats is not None
+            else ""
+        ),
+        "cui_pseudo_risk": (
+            cui_selective_stats["pseudo_risk"]
+            if cui_selective_stats is not None
+            else float("nan")
+        ),
         "gl_original_bias_proxy": (
             gl_stats[0.0]["bias_proxy"] if gl_stats is not None else float("nan")
         ),
@@ -1627,6 +1993,16 @@ def _one_rep(
         "selected_region_damp": float(fit["selected_region_damp"]),
         "targeting_moment": float(fit["targeting_moment"]),
         "targeting_score_gap": float(fit["targeting_score_gap"]),
+        "ma_trimmed_fraction": float(fit["ma_trimmed_fraction"]),
+        "ma_xi_derivative_1": float(fit["ma_xi_derivative_1"]),
+        "ma_bias_correction_mean": float(fit["ma_bias_correction_mean"]),
+        "cui_selected_propensity_learner": fit[
+            "cui_selected_propensity_learner"
+        ],
+        "cui_selected_outcome_learner": fit[
+            "cui_selected_outcome_learner"
+        ],
+        "cui_pseudo_risk": float(fit["cui_pseudo_risk"]),
         "gl_original_bias_proxy": float(fit["gl_original_bias_proxy"]),
         "gl_selected_bias_proxy": float(fit["gl_selected_bias_proxy"]),
         "gl_selected_variance_proxy": float(fit["gl_selected_variance_proxy"]),
@@ -1826,6 +2202,11 @@ def run_cell(cell, reps, progress_every, rep_log_path):
     global_dr_selected_risk_proxy = np.array(
         [r["global_dr_selected_risk_proxy"] for r in recs]
     )
+    ma_trimmed_fraction = np.array([r["ma_trimmed_fraction"] for r in recs])
+    ma_xi_derivative_1 = np.array([r["ma_xi_derivative_1"] for r in recs])
+    ma_bias_correction_mean = np.array(
+        [r["ma_bias_correction_mean"] for r in recs]
+    )
     analysis_region_mass = np.array([r["analysis_region_mass"] for r in recs])
     true_region_mass = np.array([r["true_region_mass"] for r in recs])
     region_overlap_precision = np.array(
@@ -1940,6 +2321,9 @@ def run_cell(cell, reps, progress_every, rep_log_path):
         "mean_global_dr_selected_risk_proxy": _finite_mean(
             global_dr_selected_risk_proxy
         ),
+        "mean_ma_trimmed_fraction": _finite_mean(ma_trimmed_fraction),
+        "mean_ma_xi_derivative_1": _finite_mean(ma_xi_derivative_1),
+        "mean_ma_bias_correction_mean": _finite_mean(ma_bias_correction_mean),
         "mean_analysis_region_mass": _finite_mean(analysis_region_mass),
         "mean_true_region_mass": _finite_mean(true_region_mass),
         "mean_region_overlap_precision": _finite_mean(region_overlap_precision),
@@ -2068,6 +2452,8 @@ def main() -> None:
             "aipw",
             "tmle",
             "ctmle",
+            "ma_dr_bc",
+            "cui_selective_ml",
             "glrisk",
             "glrisk_reference",
             "cui_tchetgen",
@@ -2076,7 +2462,14 @@ def main() -> None:
         help=(
             "Reference estimator for the comparison. tmle uses the standard "
             "global targeting fluctuation at the smallest pre-specified "
-            "propensity floor without collaborative floor selection; glrisk is "
+            "propensity floor without collaborative floor selection; "
+            "ma_dr_bc uses the Ma--Sant'Anna--Sasaki--Ura same-target "
+            "bias-corrected trimmed DR estimator with fixed h from the "
+            "singleton tau grid, k=1, and shifted-Legendre K=3; "
+            "cui_selective_ml is the published two-fold mixed-minimax "
+            "selector over L1-linear, random-forest, and gradient-boosting "
+            "propensity/outcome learner libraries; "
+            "glrisk is "
             "the historical "
             "C-TMLE repair-path selector ablation; glrisk_reference promotes "
             "the GL-selected path point to the reference and repairs its "
