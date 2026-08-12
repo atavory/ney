@@ -27,7 +27,7 @@ def main() -> None:
     release = args.data_root / "support_csv/dml_section4_release_20260812_v1"
     atlas_data = args.data_root / "support_csv/dml_section4_c_atlas_20260812_v2"
     figure_release = (
-        args.data_root / "support_csv/dml_section4_c_atlas_figures_20260812_v2"
+        args.data_root / "support_csv/dml_section4_c_atlas_figures_20260812_v3"
     )
 
     for line in (release / "SHA256SUMS").read_text().splitlines():
@@ -71,13 +71,12 @@ def main() -> None:
     if atlas_verification.get("primary_c") != 2.0:
         raise SystemExit("unexpected atlas primary c")
 
-    figure_paper = args.paper_root / "figures/section4_c_atlas_20260812_v2"
+    figure_paper = args.paper_root / "figures/section4_c_atlas_20260812_v3"
     figure_files = (
         "README.md", "SHA256SUMS", "provenance.json",
-        "section4_c_natural_1.pdf", "section4_c_natural_1.png",
-        "section4_c_natural_2.pdf", "section4_c_natural_2.png",
-        "section4_c_emphasized_1.pdf", "section4_c_emphasized_1.png",
-        "section4_c_emphasized_2.pdf", "section4_c_emphasized_2.png",
+        "section4_c_natural_efficacy.pdf", "section4_c_natural_efficacy.png",
+        "section4_c_natural_safety.pdf", "section4_c_natural_safety.png",
+        "section4_c_emphasized.pdf", "section4_c_emphasized.png",
         "section4_c_internal.pdf", "section4_c_internal.png",
     )
     for name in figure_files:
@@ -110,14 +109,14 @@ def main() -> None:
     if undefined:
         raise SystemExit(f"undefined generated Section 4 macros: {sorted(undefined)}")
     figure_includes = (
-        "section4_c_natural_1.pdf", "section4_c_natural_2.pdf",
-        "section4_c_emphasized_1.pdf", "section4_c_emphasized_2.pdf",
+        "section4_c_natural_efficacy.pdf", "section4_c_natural_safety.pdf",
+        "section4_c_emphasized.pdf",
         "section4_c_internal.pdf",
     )
     for name in figure_includes:
         figure_include = (
-            "\\includegraphics[width=\\textwidth]"
-            f"{{figures/section4_c_atlas_20260812_v2/{name}}}"
+            "\\includegraphics[width=0.96\\textwidth]"
+            f"{{figures/section4_c_atlas_20260812_v3/{name}}}"
         )
         if figure_include not in manuscript:
             raise SystemExit(f"manuscript does not include verified atlas figure: {name}")

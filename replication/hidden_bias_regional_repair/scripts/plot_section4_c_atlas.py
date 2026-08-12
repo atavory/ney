@@ -16,6 +16,16 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 
+plt.rcParams.update({
+    "font.size": 7.2,
+    "axes.titlesize": 7.8,
+    "axes.labelsize": 7.2,
+    "xtick.labelsize": 6.5,
+    "ytick.labelsize": 6.5,
+    "legend.fontsize": 5.5,
+})
+
+
 C_GRID = (0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0)
 PRIMARY_C = 2.0
 NATURAL = (
@@ -117,12 +127,18 @@ def index_cells(rows: list[dict[str, str]]) -> dict[str, dict[str, dict[float, f
     return result
 
 
-def base_axis(ax: plt.Axes, ylabel: str = "MSE gain (%)") -> None:
+def base_axis(
+    ax: plt.Axes,
+    ylabel: str | None = None,
+    xlabel: str | None = None,
+) -> None:
     ax.axhline(0, color="0.25", linewidth=0.8, zorder=0)
     ax.axvline(PRIMARY_C, color="0.35", linestyle=":", linewidth=1.0, zorder=0)
     ax.set_xticks(C_GRID)
-    ax.set_xlabel("shrinkage constant $c$")
-    ax.set_ylabel(ylabel)
+    if xlabel is not None:
+        ax.set_xlabel(xlabel)
+    if ylabel is not None:
+        ax.set_ylabel(ylabel)
     ax.grid(axis="y", color="0.9", linewidth=0.65)
     ax.spines[["top", "right"]].set_visible(False)
 
@@ -133,6 +149,7 @@ def gain_panel(
     summary: dict[str, dict[float, dict[str, float]]],
     cells: dict[str, dict[str, dict[float, float]]],
     letter: str,
+    title: str | None = None,
 ) -> None:
     for label, values in sorted(cells[panel].items()):
         ax.plot(C_GRID, [values[c] for c in C_GRID], color="0.67", linewidth=0.65, alpha=0.65)
@@ -143,9 +160,9 @@ def gain_panel(
     ax.fill_between(C_GRID, lo, hi, color="#0072B2", alpha=0.16, linewidth=0)
     ax.plot(C_GRID, gain, color="#0072B2", marker="o", markersize=3.4, linewidth=2.0)
     base_axis(ax)
-    ax.set_title(f"({letter}) {TITLE[panel]}", loc="left", fontweight="bold")
-    ax.text(0.98, 0.04, f"{len(cells[panel])} native cells", transform=ax.transAxes,
-            ha="right", va="bottom", fontsize=6.5, color="0.35")
+    ax.set_title(f"({letter}) {title or TITLE[panel]}", loc="left", fontweight="bold")
+    ax.text(0.98, 0.94, f"{len(cells[panel])} native cells", transform=ax.transAxes,
+            ha="right", va="top", fontsize=5.2, color="0.35")
 
 
 def render_gain_atlas(
@@ -155,13 +172,50 @@ def render_gain_atlas(
     cells: dict[str, dict[str, dict[float, float]]],
     path: Path,
 ) -> None:
-    fig, axes = plt.subplots(*shape, figsize=(7.35, 2.35 * shape[0]), constrained_layout=True)
+    fig, axes = plt.subplots(
+        *shape, figsize=(7.2, 1.55 * shape[0] + 0.2), constrained_layout=True
+    )
     flat = list(axes.flat)
     for index, panel in enumerate(panels):
         gain_panel(flat[index], panel, summary, cells, chr(ord("a") + index))
     for ax in flat[len(panels):]:
         ax.axis("off")
+    fig.supxlabel("shrinkage constant $c$", fontsize=7.2)
+    fig.supylabel("MSE gain (%)", fontsize=7.2)
     fig.savefig(path, bbox_inches="tight", metadata={"Creator": "plot_section4_c_atlas.py", "CreationDate": None})
+    fig.savefig(
+        path.with_suffix(".png"), dpi=180, bbox_inches="tight",
+        metadata={"Software": "plot_section4_c_atlas.py"},
+    )
+    plt.close(fig)
+
+
+def render_emphasized_atlas(
+    summary: dict[str, dict[float, dict[str, float]]],
+    cells: dict[str, dict[str, dict[float, float]]],
+    path: Path,
+) -> None:
+    """Arrange estimators by row and designs by column for direct comparison."""
+    matrix = (
+        ("d0_ctmle", "placement_ctmle", "aligned_digits_ctmle", "aligned_breast_ctmle"),
+        ("d0_cui", "placement_cui", "aligned_digits_cui", "aligned_breast_cui"),
+    )
+    titles = ("aligned anchor", "placement", "digits", "breast cancer")
+    fig, axes = plt.subplots(2, 4, figsize=(7.2, 3.25), constrained_layout=True)
+    for row, panels in enumerate(matrix):
+        for column, panel in enumerate(panels):
+            index = row * 4 + column
+            gain_panel(
+                axes[row, column], panel, summary, cells,
+                chr(ord("a") + index), titles[column],
+            )
+    axes[0, 0].set_ylabel("C-TMLE\nMSE gain (%)")
+    axes[1, 0].set_ylabel("selective ML\nMSE gain (%)")
+    fig.supxlabel("shrinkage constant $c$", fontsize=7.2)
+    fig.savefig(
+        path, bbox_inches="tight",
+        metadata={"Creator": "plot_section4_c_atlas.py", "CreationDate": None},
+    )
     fig.savefig(
         path.with_suffix(".png"), dpi=180, bbox_inches="tight",
         metadata={"Software": "plot_section4_c_atlas.py"},
@@ -181,7 +235,7 @@ def render_safety_atlas(
     candidates; the first two panels show harm prevented and harm remaining,
     while the third records the useful MSE reduction retained.
     """
-    fig, axes = plt.subplots(1, 3, figsize=(7.35, 2.65), constrained_layout=True)
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 1.95), constrained_layout=True)
     colors = ("#009E73", "#D55E00", "#0072B2")
     labels = {
         "cui_s2_aipw": "Cui scenario 2 / AIPW",
@@ -205,16 +259,18 @@ def render_safety_atlas(
         "(c) Benefit retained",
     )
     for ax, title in zip(axes, titles):
-        base_axis(ax, "% of reference MSE")
+        base_axis(ax)
         ax.set_ylim(bottom=-0.05)
         ax.set_title(title, loc="left", fontweight="bold")
+    fig.supxlabel("shrinkage constant $c$", fontsize=7.2)
+    fig.supylabel("% of reference MSE", fontsize=7.2)
     axes[1].text(
         0.98, 0.95,
         "TMLE and C-TMLE:\nno admissible candidate",
-        transform=axes[1].transAxes, ha="right", va="top", fontsize=6.4,
+        transform=axes[1].transAxes, ha="right", va="top", fontsize=5.2,
         color="0.35",
     )
-    axes[2].legend(frameon=False, fontsize=6.2, loc="upper right")
+    axes[2].legend(frameon=False, fontsize=5.0, loc="upper right")
     fig.savefig(
         path, bbox_inches="tight",
         metadata={"Creator": "plot_section4_c_atlas.py", "CreationDate": None},
@@ -245,7 +301,7 @@ def diagnostic_lines(
 
 
 def render_internal(summary: dict[str, dict[float, dict[str, float]]], path: Path) -> None:
-    fig, axes = plt.subplots(2, 2, figsize=(7.35, 5.5), constrained_layout=True)
+    fig, axes = plt.subplots(2, 2, figsize=(7.2, 3.75), constrained_layout=True)
     diagnostic_lines(axes[0, 0], NATURAL, summary, "activation", "(a) Natural: activation")
     diagnostic_lines(axes[0, 1], NATURAL, summary, "harm", "(b) Natural: individual harm")
     diagnostic_lines(axes[1, 0], EMPHASIZED, summary, "activation", "(c) Emphasized: activation")
@@ -256,9 +312,10 @@ def render_internal(summary: dict[str, dict[float, dict[str, float]]], path: Pat
     ):
         axes[1, 1].plot(C_GRID, [curve[c]["gain"] for c in C_GRID], color=color,
                         marker="o", markersize=3, linewidth=1.8, label=label)
-    base_axis(axes[1, 1])
+    base_axis(axes[1, 1], "MSE gain (%)")
     axes[1, 1].set_title("(d) Plain TMLE adapter ablation", loc="left", fontweight="bold")
-    axes[1, 1].legend(frameon=False, fontsize=7)
+    axes[1, 1].legend(frameon=False, fontsize=5.8)
+    fig.supxlabel("shrinkage constant $c$", fontsize=7.2)
     fig.savefig(path, bbox_inches="tight", metadata={"Creator": "plot_section4_c_atlas.py", "CreationDate": None})
     fig.savefig(
         path.with_suffix(".png"), dpi=180, bbox_inches="tight",
@@ -280,13 +337,14 @@ def main() -> None:
         raise SystemExit("incomplete c grid")
     args.out_dir.mkdir(parents=True, exist_ok=True)
     outputs = {
-        "section4_c_natural_1.pdf": (NATURAL[:6], (3, 2)),
-        "section4_c_emphasized_1.pdf": (EMPHASIZED[:4], (2, 2)),
-        "section4_c_emphasized_2.pdf": (EMPHASIZED[4:], (2, 2)),
+        "section4_c_natural_efficacy.pdf": (NATURAL[:6], (2, 3)),
     }
     for name, (panels, shape) in outputs.items():
         render_gain_atlas(panels, shape, summary, cells, args.out_dir / name)
-    render_safety_atlas(summary, args.out_dir / "section4_c_natural_2.pdf")
+    render_safety_atlas(summary, args.out_dir / "section4_c_natural_safety.pdf")
+    render_emphasized_atlas(
+        summary, cells, args.out_dir / "section4_c_emphasized.pdf"
+    )
     render_internal(summary, args.out_dir / "section4_c_internal.pdf")
     provenance = {
         "status": "COMPLETE",
@@ -311,13 +369,15 @@ def main() -> None:
     )
     (args.out_dir / "README.md").write_text(
         "# Section 4 c-curve atlases\n\n"
-        "The efficacy atlases contain one panel for every reported missing-outcome "
+        "The efficacy atlases contain one curve for every reported missing-outcome "
         "dataset/design by upstream-estimator combination. Thin gray lines are "
         "native cells; the heavy blue line is the equal-cell target and its paired-"
         "bootstrap interval. Natural part II is purpose-built for safety: it "
         "separates harmful-tail MSE prevented, harmful-tail MSE remaining, and "
         "helpful-tail MSE retained instead of presenting stand-down as failed "
-        "efficacy. The internal atlas reports activation, "
+        "efficacy. The natural efficacy curves use a compact 2-by-3 layout, and all "
+        "eight emphasized curves use one 2-by-4 estimator-by-design matrix. The "
+        "internal atlas reports activation, "
         "individual harm, and the plain-TMLE adapter ablation. The dotted line is "
         "the frozen primary `c=2`.\n",
         encoding="utf-8",
