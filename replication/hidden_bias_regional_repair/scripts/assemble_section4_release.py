@@ -324,20 +324,20 @@ def main() -> None:
         ("Kang--Schafer", "selective ML", "ks_cui"),
         ("Kang--Schafer", "AIPW", "ks_aipw"),
         ("Cui scenarios", "AIPW", "cui_scenarios_aipw"),
-        ("Kang--Schafer $+$ Cui scenarios", "plain TMLE", "tmle_projection_16"),
+        ("Kang--Schafer $+$ Cui", "plain TMLE", "tmle_projection_16"),
         ("real covariates, wider/partial", "C-TMLE", "real_safety_ctmle"),
         ("real covariates, wider/partial", "selective ML", "real_safety_cui"),
     )
     emphasized_specs = (
-        ("aligned anchor, signal $s\\in\\{3,5,8\\}$", "C-TMLE", "d0_signal_ctmle"),
-        ("aligned anchor, signal $s\\in\\{3,5,8\\}$", "selective ML", "d0_signal_cui"),
-        ("placement stress, all placements/null", "C-TMLE", "placement_all_ctmle"),
-        ("placement stress, aligned", "selective ML", "placement_aligned_cui"),
-        ("placement stress, partial/disjoint/null", "selective ML", "placement_other_cui"),
-        ("aligned real covariates, signal $s\\in\\{1,2\\}$", "C-TMLE", "aligned_real_signal_ctmle"),
-        ("aligned real covariates, signal $s\\in\\{1,2\\}$", "selective ML", "aligned_real_signal_cui_selective_ml"),
-        ("aligned real covariates, null $s=0$", "C-TMLE", "aligned_real_null_ctmle"),
-        ("aligned real covariates, null $s=0$", "selective ML", "aligned_real_null_cui_selective_ml"),
+        ("aligned anchor, $s\\in\\{3,5,8\\}$", "C-TMLE", "d0_signal_ctmle"),
+        ("aligned anchor, $s\\in\\{3,5,8\\}$", "selective ML", "d0_signal_cui"),
+        ("placement, all/null", "C-TMLE", "placement_all_ctmle"),
+        ("placement, aligned", "selective ML", "placement_aligned_cui"),
+        ("placement, other/null", "selective ML", "placement_other_cui"),
+        ("aligned real, signal $s\\in\\{1,2\\}$", "C-TMLE", "aligned_real_signal_ctmle"),
+        ("aligned real, signal $s\\in\\{1,2\\}$", "selective ML", "aligned_real_signal_cui_selective_ml"),
+        ("aligned real, null $s=0$", "C-TMLE", "aligned_real_null_ctmle"),
+        ("aligned real, null $s=0$", "selective ML", "aligned_real_null_cui_selective_ml"),
     )
 
     def table_tex(

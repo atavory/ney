@@ -1,0 +1,15 @@
+{
+  "outputs": {
+    "README.md": "5a4dd71ce57a85c4435d39008ac66a5a0fc7700df31f58b332b45d7c23413999",
+    "paper_values.csv": "d155d84e50f330a17bb5463cd7dfa37c8cc6b3fc8387384d177b44ac4edf48b4",
+    "section4_c_sensitivity.csv": "a90aed6ebd9f0e7529172025ee146ec9f71f2e6c0b350a54f8404e6af91c8284",
+    "section4_emphasized_table.tex": "80dfebc732c620e34d6d854024e701a2025482c57cf024370980aa82255e2c66",
+    "section4_natural_table.tex": "086fa877b6f3fe3a0d9c6947cd05f6f4e585d58c38c98ae38785a817114048b4",
+    "section4_sensitivity_rows.tex": "000751dbbf77391781af10f34fb4b6cf9f3a8ca60893b841e4e6030458d4787f",
+    "section4_values.tex": "a4ad4cf92bee5fe67f8b4d691875929e8b8aab556222eaed0045125e46a95f6a",
+    "source_map.csv": "6bc2f57f038b7785399031486d593d3b464e27cc87efc552f37e87f3f98fd540"
+  },
+  "paper_values": 21,
+  "source_bundles": 7,
+  "status": "COMPLETE"
+}

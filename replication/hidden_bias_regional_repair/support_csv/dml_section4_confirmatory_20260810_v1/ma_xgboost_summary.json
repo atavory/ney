@@ -1,0 +1,34 @@
+{
+  "bootstrap": "stratified paired percentile bootstrap",
+  "bootstrap_seed": 20260810,
+  "cells": {
+    "2": {
+      "activation": 0.0,
+      "gain": 0.0,
+      "gain_hi": 0.0,
+      "gain_lo": 0.0,
+      "harm": 0.0,
+      "ref_mse": 0.0021843681690466776,
+      "repair_mse": 0.0021843681690466776,
+      "reps": 384
+    },
+    "3": {
+      "activation": 1.0,
+      "gain": 0.17725888846401316,
+      "gain_hi": 0.25208250184376363,
+      "gain_lo": 0.09624035412472204,
+      "harm": 0.4036458333333333,
+      "ref_mse": 0.005774789891835646,
+      "repair_mse": 0.00475115705449564,
+      "reps": 384
+    }
+  },
+  "estimand": "equal-DGP mean of pooled relative ATT-MSE gains",
+  "family": {
+    "gain": 0.08862944423200658,
+    "gain_hi": 0.12604125092188181,
+    "gain_lo": 0.04812017706236102
+  },
+  "nboot": 20000,
+  "run_dir": "support_csv/dml_section4_confirmatory_20260810_v1/ma_xgboost_shards"
+}

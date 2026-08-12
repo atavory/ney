@@ -1,0 +1,169 @@
+block,panel,dataset,method,method_label,c,cells,equal_cell_relative_mse_reduction,ci_lo,ci_hi,mean_activation,mean_harm_rate,equal_cell_gross_harm_mse,equal_cell_gross_benefit_mse
+emphasized,aligned_breast_ctmle,aligned breast cancer,ctmle,C-TMLE,0,2,0,0,0,0,0,0,0
+emphasized,aligned_breast_ctmle,aligned breast cancer,ctmle,C-TMLE,1,2,0,0,0,0,0,0,0
+emphasized,aligned_breast_ctmle,aligned breast cancer,ctmle,C-TMLE,2,2,0,0,0,0,0,0,0
+emphasized,aligned_breast_ctmle,aligned breast cancer,ctmle,C-TMLE,3,2,0,0,0,0,0,0,0
+emphasized,aligned_breast_ctmle,aligned breast cancer,ctmle,C-TMLE,4,2,0,0,0,0,0,0,0
+emphasized,aligned_breast_ctmle,aligned breast cancer,ctmle,C-TMLE,5,2,0,0,0,0,0,0,0
+emphasized,aligned_breast_ctmle,aligned breast cancer,ctmle,C-TMLE,6,2,0,0,0,0,0,0,0
+emphasized,aligned_breast_ctmle,aligned breast cancer,ctmle,C-TMLE,8,2,0,0,0,0,0,0,0
+emphasized,aligned_breast_cui,aligned breast cancer,cui_selective_ml,selective ML,0,2,0.007352438758951918,-0.0015454289553978595,0.016822688050840015,0.21875,0.072916666666666657,0.0065976159588996795,0.013950054717851651
+emphasized,aligned_breast_cui,aligned breast cancer,cui_selective_ml,selective ML,1,2,0.00030131222051216211,-0.0019547918189694174,0.0023706374342417321,0.020833333333333332,0.005208333333333333,0.00077045946628704406,0.0010717716867992429
+emphasized,aligned_breast_cui,aligned breast cancer,cui_selective_ml,selective ML,2,2,-0.00048549505029704676,-0.0016282975050623482,0,0.005208333333333333,0.005208333333333333,0.00048549505029708097,0
+emphasized,aligned_breast_cui,aligned breast cancer,cui_selective_ml,selective ML,3,2,-0.00025458378698817175,-0.00085973737676312283,0,0.005208333333333333,0.005208333333333333,0.00025458378698812512,0
+emphasized,aligned_breast_cui,aligned breast cancer,cui_selective_ml,selective ML,4,2,-7.7725676360107521e-05,-0.00026137567919159446,0,0.005208333333333333,0.005208333333333333,7.7725676360176611e-05,0
+emphasized,aligned_breast_cui,aligned breast cancer,cui_selective_ml,selective ML,5,2,0,0,0,0,0,0,0
+emphasized,aligned_breast_cui,aligned breast cancer,cui_selective_ml,selective ML,6,2,0,0,0,0,0,0,0
+emphasized,aligned_breast_cui,aligned breast cancer,cui_selective_ml,selective ML,8,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_ctmle,aligned digits,ctmle,C-TMLE,0,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_ctmle,aligned digits,ctmle,C-TMLE,1,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_ctmle,aligned digits,ctmle,C-TMLE,2,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_ctmle,aligned digits,ctmle,C-TMLE,3,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_ctmle,aligned digits,ctmle,C-TMLE,4,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_ctmle,aligned digits,ctmle,C-TMLE,5,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_ctmle,aligned digits,ctmle,C-TMLE,6,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_ctmle,aligned digits,ctmle,C-TMLE,8,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_cui,aligned digits,cui_selective_ml,selective ML,0,2,1.1706108240916446e-05,-0.0013131393188447666,0.0013073457944806914,0.046875,0.020833333333333332,0.00074218431272324607,0.00075389042096429782
+emphasized,aligned_digits_cui,aligned digits,cui_selective_ml,selective ML,1,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_cui,aligned digits,cui_selective_ml,selective ML,2,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_cui,aligned digits,cui_selective_ml,selective ML,3,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_cui,aligned digits,cui_selective_ml,selective ML,4,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_cui,aligned digits,cui_selective_ml,selective ML,5,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_cui,aligned digits,cui_selective_ml,selective ML,6,2,0,0,0,0,0,0,0
+emphasized,aligned_digits_cui,aligned digits,cui_selective_ml,selective ML,8,2,0,0,0,0,0,0,0
+natural,cui_s1_aipw,Cui scenario 1,aipw,AIPW,0,4,0.016998219899500289,0.0042618974255212759,0.031168130145505572,0.028645833333333332,0.005208333333333333,0.00048905227990100582,0.017487272179401343
+natural,cui_s1_aipw,Cui scenario 1,aipw,AIPW,1,4,0.0067400908664994597,0,0.014601505166900137,0.0078125,0,0,0.0067400908664994605
+natural,cui_s1_aipw,Cui scenario 1,aipw,AIPW,2,4,0.0024265734043681653,0,0.0078704559443338665,0.005208333333333333,0,0,0.0024265734043681822
+natural,cui_s1_aipw,Cui scenario 1,aipw,AIPW,3,4,0.0019172787447825079,0,0.0065412913943464056,0.0026041666666666665,0,0,0.0019172787447825411
+natural,cui_s1_aipw,Cui scenario 1,aipw,AIPW,4,4,0.001524137552307292,0,0.0051938128126594353,0.0026041666666666665,0,0,0.0015241375523073113
+natural,cui_s1_aipw,Cui scenario 1,aipw,AIPW,5,4,0.0011100229963094399,0,0.0037502846405417633,0.0026041666666666665,0,0,0.0011100229963094891
+natural,cui_s1_aipw,Cui scenario 1,aipw,AIPW,6,4,0.00067493507678903497,0,0.0022830234550450662,0.0026041666666666665,0,0,0.00067493507678907227
+natural,cui_s1_aipw,Cui scenario 1,aipw,AIPW,8,4,0,0,0,0,0,0,0
+natural,cui_s1_tmle,Cui scenario 1,tmle,plain TMLE (projection),0,4,0,0,0,0,0,0,0
+natural,cui_s1_tmle,Cui scenario 1,tmle,plain TMLE (projection),1,4,0,0,0,0,0,0,0
+natural,cui_s1_tmle,Cui scenario 1,tmle,plain TMLE (projection),2,4,0,0,0,0,0,0,0
+natural,cui_s1_tmle,Cui scenario 1,tmle,plain TMLE (projection),3,4,0,0,0,0,0,0,0
+natural,cui_s1_tmle,Cui scenario 1,tmle,plain TMLE (projection),4,4,0,0,0,0,0,0,0
+natural,cui_s1_tmle,Cui scenario 1,tmle,plain TMLE (projection),5,4,0,0,0,0,0,0,0
+natural,cui_s1_tmle,Cui scenario 1,tmle,plain TMLE (projection),6,4,0,0,0,0,0,0,0
+natural,cui_s1_tmle,Cui scenario 1,tmle,plain TMLE (projection),8,4,0,0,0,0,0,0,0
+natural,cui_s2_aipw,Cui scenario 2,aipw,AIPW,0,4,0.0031715922317693546,-1.889286830922404e-05,0.0077076212007405982,0.015625,0.0026041666666666665,0.00026486221840993981,0.0034364544501793467
+natural,cui_s2_aipw,Cui scenario 2,aipw,AIPW,1,4,0,0,0,0,0,0,0
+natural,cui_s2_aipw,Cui scenario 2,aipw,AIPW,2,4,0,0,0,0,0,0,0
+natural,cui_s2_aipw,Cui scenario 2,aipw,AIPW,3,4,0,0,0,0,0,0,0
+natural,cui_s2_aipw,Cui scenario 2,aipw,AIPW,4,4,0,0,0,0,0,0,0
+natural,cui_s2_aipw,Cui scenario 2,aipw,AIPW,5,4,0,0,0,0,0,0,0
+natural,cui_s2_aipw,Cui scenario 2,aipw,AIPW,6,4,0,0,0,0,0,0,0
+natural,cui_s2_aipw,Cui scenario 2,aipw,AIPW,8,4,0,0,0,0,0,0,0
+natural,cui_s2_tmle,Cui scenario 2,tmle,plain TMLE (projection),0,4,0,0,0,0,0,0,0
+natural,cui_s2_tmle,Cui scenario 2,tmle,plain TMLE (projection),1,4,0,0,0,0,0,0,0
+natural,cui_s2_tmle,Cui scenario 2,tmle,plain TMLE (projection),2,4,0,0,0,0,0,0,0
+natural,cui_s2_tmle,Cui scenario 2,tmle,plain TMLE (projection),3,4,0,0,0,0,0,0,0
+natural,cui_s2_tmle,Cui scenario 2,tmle,plain TMLE (projection),4,4,0,0,0,0,0,0,0
+natural,cui_s2_tmle,Cui scenario 2,tmle,plain TMLE (projection),5,4,0,0,0,0,0,0,0
+natural,cui_s2_tmle,Cui scenario 2,tmle,plain TMLE (projection),6,4,0,0,0,0,0,0,0
+natural,cui_s2_tmle,Cui scenario 2,tmle,plain TMLE (projection),8,4,0,0,0,0,0,0,0
+emphasized,d0_ctmle,aligned anchor,ctmle,C-TMLE,0,3,0.058048006403637463,0.04470690238359127,0.073376003513688948,0.2986111111111111,0,0,0.058048006403637435
+emphasized,d0_ctmle,aligned anchor,ctmle,C-TMLE,1,3,0.019330812033131584,0.010087505789151158,0.030122940588870363,0.097222222222222224,0,0,0.019330812033131545
+emphasized,d0_ctmle,aligned anchor,ctmle,C-TMLE,2,3,0.013033987486735787,0.0055688068917647713,0.022633576719427548,0.062500000000000014,0,0,0.01303398748673576
+emphasized,d0_ctmle,aligned anchor,ctmle,C-TMLE,3,3,0.010024459867923255,0.0032561037542293727,0.018530517812629779,0.03125,0,0,0.010024459867923212
+emphasized,d0_ctmle,aligned anchor,ctmle,C-TMLE,4,3,0.0083960501614967677,0.002308202233103566,0.016166666524713925,0.03125,0,0,0.00839605016149674
+emphasized,d0_ctmle,aligned anchor,ctmle,C-TMLE,5,3,0.0070034049295013929,0.0015054500649291627,0.01422002609222619,0.020833333333333332,0,0,0.0070034049295013973
+emphasized,d0_ctmle,aligned anchor,ctmle,C-TMLE,6,3,0.0061046102956511987,0.0011032016451112975,0.012683876587096228,0.020833333333333332,0,0,0.0061046102956512109
+emphasized,d0_ctmle,aligned anchor,ctmle,C-TMLE,8,3,0.0045377980579723127,0.00050818702440123549,0.0099459371369113626,0.017361111111111108,0,0,0.0045377980579723179
+emphasized,d0_cui,aligned anchor,cui_selective_ml,selective ML,0,3,0.040482780315771162,0.0097916501639907418,0.070342328521769915,0.56597222222222221,0.22569444444444442,0.044197008557951188,0.084679788873722336
+emphasized,d0_cui,aligned anchor,cui_selective_ml,selective ML,1,3,-0.002866826787235969,-0.010526839706142953,0.002926860357699223,0.024305555555555552,0.010416666666666666,0.0050107416289291848,0.002143914841693309
+emphasized,d0_cui,aligned anchor,cui_selective_ml,selective ML,2,3,0.00036647749825613474,-0.00087366182539886739,0.0022381849240331771,0.010416666666666666,0.0069444444444444441,0.00037459676371911534,0.00074107426197522318
+emphasized,d0_cui,aligned anchor,cui_selective_ml,selective ML,3,3,0.00039739189633543798,0,0.0013360538152909973,0.003472222222222222,0,0,0.00039739189633544459
+emphasized,d0_cui,aligned anchor,cui_selective_ml,selective ML,4,3,2.6710217703988331e-05,0,9.0944458351390264e-05,0.003472222222222222,0,0,2.6710217704007907e-05
+emphasized,d0_cui,aligned anchor,cui_selective_ml,selective ML,5,3,0,0,0,0,0,0,0
+emphasized,d0_cui,aligned anchor,cui_selective_ml,selective ML,6,3,0,0,0,0,0,0,0
+emphasized,d0_cui,aligned anchor,cui_selective_ml,selective ML,8,3,0,0,0,0,0,0,0
+natural,ks_aipw,Kang--Schafer,aipw,AIPW,0,8,0.020636319882454499,0.0061213187976226239,0.037448495536078374,0.024739583333333332,0.0091145833333333322,0.0019118146313654306,0.022548134513819922
+natural,ks_aipw,Kang--Schafer,aipw,AIPW,1,8,0.015772980794523481,0.0027904797078921492,0.031380778579990547,0.014322916666666668,0.00390625,0.00085433922054702874,0.016627320015070498
+natural,ks_aipw,Kang--Schafer,aipw,AIPW,2,8,0.015434375003652995,0.0027932219552837269,0.030421318663058212,0.010416666666666666,0.0013020833333333333,0.0004156276466331258,0.015850002650286139
+natural,ks_aipw,Kang--Schafer,aipw,AIPW,3,8,0.014934748852775875,0.0027516131824884636,0.029348023955713891,0.010416666666666666,0.0013020833333333333,0.00027231879925481643,0.015207067652030658
+natural,ks_aipw,Kang--Schafer,aipw,AIPW,4,8,0.014322045915331705,0.0026939848252749716,0.02823371386692633,0.0091145833333333322,0.0013020833333333333,0.00014987114599193674,0.014471917061323662
+natural,ks_aipw,Kang--Schafer,aipw,AIPW,5,8,0.013663655007063694,0.0026247597015706015,0.026566403008016461,0.0078125,0.0013020833333333333,4.8284686844486912e-05,0.013711939693908153
+natural,ks_aipw,Kang--Schafer,aipw,AIPW,6,8,0.012907839147938263,0.0024953769883013597,0.025083555024639798,0.0065104166666666661,0,0,0.012907839147938291
+natural,ks_aipw,Kang--Schafer,aipw,AIPW,8,8,0.011132230473546695,0.0021010685113662655,0.021731436179578525,0.0065104166666666661,0,0,0.011132230473546677
+natural,ks_ctmle,Kang--Schafer,ctmle,C-TMLE,0,8,0.14892872052329947,0.12523583945637967,0.17184426151276008,0.77734375,0.24739583333333331,0.041739815960705723,0.19066853648400528
+natural,ks_ctmle,Kang--Schafer,ctmle,C-TMLE,1,8,0.060926153478550127,0.044543953215661507,0.078289530582686201,0.23697916666666666,0.05078125,0.0106237172711512,0.071549870749701455
+natural,ks_ctmle,Kang--Schafer,ctmle,C-TMLE,2,8,0.034115600553697945,0.021376934751536965,0.048007041112781972,0.12369791666666666,0.027343749999999997,0.0046893884822086446,0.038804989035906734
+natural,ks_ctmle,Kang--Schafer,ctmle,C-TMLE,3,8,0.023183846862217444,0.013397402508029404,0.034376479265448026,0.069010416666666671,0.014322916666666666,0.002373827382216634,0.025557674244434177
+natural,ks_ctmle,Kang--Schafer,ctmle,C-TMLE,4,8,0.016500559511917021,0.0087392642536519866,0.025885387831872941,0.052083333333333329,0.010416666666666668,0.00086563414550997766,0.017366193657427136
+natural,ks_ctmle,Kang--Schafer,ctmle,C-TMLE,5,8,0.011148128211720232,0.0047797950810932188,0.018970863157448198,0.032552083333333336,0.0026041666666666665,0.00012229904867940507,0.01127042726039976
+natural,ks_ctmle,Kang--Schafer,ctmle,C-TMLE,6,8,0.0082819530989128864,0.0028764064587567598,0.01505879680396166,0.020833333333333332,0.0013020833333333333,1.0438115715208067e-06,0.0082829969104844855
+natural,ks_ctmle,Kang--Schafer,ctmle,C-TMLE,8,8,0.0050917702030746914,0.0012047035628805914,0.010156109748462495,0.01171875,0,0,0.0050917702030747174
+natural,ks_cui,Kang--Schafer,cui_selective_ml,selective ML,0,8,0.14051924494769016,0.10335675429422368,0.17350587665147796,0.47786458333333331,0.18359375,0.055766949741950365,0.19628619468964054
+natural,ks_cui,Kang--Schafer,cui_selective_ml,selective ML,1,8,0.096559508870063787,0.069404299474205719,0.12244255159373517,0.16015625,0.040364583333333329,0.012136223151807977,0.1086957320218718
+natural,ks_cui,Kang--Schafer,cui_selective_ml,selective ML,2,8,0.057579589535292283,0.035267441364167901,0.078429291099970849,0.09375,0.01171875,0.0055896477767271892,0.063169237312019483
+natural,ks_cui,Kang--Schafer,cui_selective_ml,selective ML,3,8,0.033505157345969858,0.015157648726297749,0.051557651478749578,0.057291666666666657,0.0065104166666666661,0.0032966538682246945,0.036801811214194527
+natural,ks_cui,Kang--Schafer,cui_selective_ml,selective ML,4,8,0.021803683103863908,0.0058911264779711436,0.037597183217014066,0.032552083333333329,0.00390625,0.0018848337381365907,0.023688516842000528
+natural,ks_cui,Kang--Schafer,cui_selective_ml,selective ML,5,8,0.01438312610979095,0.0012228477809421792,0.028007003701121587,0.020833333333333336,0.0026041666666666665,0.0010447529783052258,0.015427879088096168
+natural,ks_cui,Kang--Schafer,cui_selective_ml,selective ML,6,8,0.0099491234822008806,-0.00040446323985215033,0.02112274372331973,0.010416666666666666,0.0026041666666666665,0.00052201572717259516,0.010471139209373464
+natural,ks_cui,Kang--Schafer,cui_selective_ml,selective ML,8,8,0.0044484491989340569,-0.00012242719028976375,0.010206733975982684,0.00390625,0.0013020833333333333,5.4609438351745248e-05,0.0045030586372857987
+natural,ks_tmle,Kang--Schafer,tmle,plain TMLE (projection),0,8,0,0,0,0,0,0,0
+natural,ks_tmle,Kang--Schafer,tmle,plain TMLE (projection),1,8,0,0,0,0,0,0,0
+natural,ks_tmle,Kang--Schafer,tmle,plain TMLE (projection),2,8,0,0,0,0,0,0,0
+natural,ks_tmle,Kang--Schafer,tmle,plain TMLE (projection),3,8,0,0,0,0,0,0,0
+natural,ks_tmle,Kang--Schafer,tmle,plain TMLE (projection),4,8,0,0,0,0,0,0,0
+natural,ks_tmle,Kang--Schafer,tmle,plain TMLE (projection),5,8,0,0,0,0,0,0,0
+natural,ks_tmle,Kang--Schafer,tmle,plain TMLE (projection),6,8,0,0,0,0,0,0,0
+natural,ks_tmle,Kang--Schafer,tmle,plain TMLE (projection),8,8,0,0,0,0,0,0,0
+internal,ks_tmle_residual,Kang--Schafer,tmle,plain TMLE (residual),0,8,-0.17109816470998668,-0.28429925482711332,-0.084508895702807507,0.57942708333333326,0.32421875,0.33478784678318008,0.1636896820731934
+internal,ks_tmle_residual,Kang--Schafer,tmle,plain TMLE (residual),1,8,-0.077169898180047145,-0.16154450528966441,-0.013106251424304341,0.16276041666666669,0.08984375,0.14009681167834095,0.062926913498293879
+internal,ks_tmle_residual,Kang--Schafer,tmle,plain TMLE (residual),2,8,-0.048972136390087379,-0.12145029615161418,0.0039189701713278962,0.10026041666666666,0.049479166666666664,0.089448327503657832,0.040476191113570467
+internal,ks_tmle_residual,Kang--Schafer,tmle,plain TMLE (residual),3,8,-0.038526912209457712,-0.1018274232060911,0.0078236063634382069,0.05859375,0.02734375,0.066707538130970745,0.028180625921513009
+internal,ks_tmle_residual,Kang--Schafer,tmle,plain TMLE (residual),4,8,-0.033137624883161645,-0.089893120600508192,0.0068984452349403359,0.0390625,0.018229166666666664,0.053758582646880153,0.020620957763718493
+internal,ks_tmle_residual,Kang--Schafer,tmle,plain TMLE (residual),5,8,-0.028779322815681699,-0.080716546742576417,0.0070025907279979514,0.031249999999999997,0.015624999999999998,0.045084882960124167,0.016305560144442462
+internal,ks_tmle_residual,Kang--Schafer,tmle,plain TMLE (residual),6,8,-0.024486934427223467,-0.073193045034270446,0.0073295470229437195,0.026041666666666664,0.01171875,0.038112887309881022,0.013625952882657555
+internal,ks_tmle_residual,Kang--Schafer,tmle,plain TMLE (residual),8,8,-0.018343988141302323,-0.061472757070955925,0.0076866716786282863,0.020833333333333332,0.0091145833333333322,0.027576037727856023,0.0092320495865536763
+emphasized,placement_ctmle,placement stress,ctmle,C-TMLE,0,10,0,0,0,0,0,0,0
+emphasized,placement_ctmle,placement stress,ctmle,C-TMLE,1,10,0,0,0,0,0,0,0
+emphasized,placement_ctmle,placement stress,ctmle,C-TMLE,2,10,0,0,0,0,0,0,0
+emphasized,placement_ctmle,placement stress,ctmle,C-TMLE,3,10,0,0,0,0,0,0,0
+emphasized,placement_ctmle,placement stress,ctmle,C-TMLE,4,10,0,0,0,0,0,0,0
+emphasized,placement_ctmle,placement stress,ctmle,C-TMLE,5,10,0,0,0,0,0,0,0
+emphasized,placement_ctmle,placement stress,ctmle,C-TMLE,6,10,0,0,0,0,0,0,0
+emphasized,placement_ctmle,placement stress,ctmle,C-TMLE,8,10,0,0,0,0,0,0,0
+emphasized,placement_cui,placement stress,cui_selective_ml,selective ML,0,10,0.0087378272510916684,0.00076395216036609815,0.016534624451459212,0.1854166666666667,0.074999999999999997,0.012731880818886196,0.021469708069977861
+emphasized,placement_cui,placement stress,cui_selective_ml,selective ML,1,10,0.0032349346673828383,-0.00040047382733079446,0.0079217653712150924,0.018749999999999996,0.008333333333333335,0.0011805886059323739,0.0044155232733151971
+emphasized,placement_cui,placement stress,cui_selective_ml,selective ML,2,10,0.0028016866643748471,4.0721060730710749e-05,0.0067303692765732729,0.0083333333333333332,0.0031250000000000002,0.00022181853787768888,0.0030235052022525239
+emphasized,placement_cui,placement stress,cui_selective_ml,selective ML,3,10,0.0022536907452777922,0.00010919751671446599,0.0055606540857932223,0.005208333333333333,0,0,0.0022536907452778087
+emphasized,placement_cui,placement stress,cui_selective_ml,selective ML,4,10,0.0016529246321874025,1.1718568379524007e-05,0.0044325815215508655,0.0041666666666666666,0,0,0.001652924632187414
+emphasized,placement_cui,placement stress,cui_selective_ml,selective ML,5,10,0.0012856742715529833,0,0.0036397091497307036,0.0020833333333333333,0,0,0.0012856742715529601
+emphasized,placement_cui,placement stress,cui_selective_ml,selective ML,6,10,0.00094824085121548714,0,0.0027189011443510612,0.0020833333333333333,0,0,0.00094824085121550784
+emphasized,placement_cui,placement stress,cui_selective_ml,selective ML,8,10,0.00037005247319670253,0,0.0011748927795231169,0.0010416666666666667,0,0,0.00037005247319670811
+natural,real_breast_ctmle,"breast cancer, wider/partial",ctmle,C-TMLE,0,3,0,0,0,0,0,0,0
+natural,real_breast_ctmle,"breast cancer, wider/partial",ctmle,C-TMLE,1,3,0,0,0,0,0,0,0
+natural,real_breast_ctmle,"breast cancer, wider/partial",ctmle,C-TMLE,2,3,0,0,0,0,0,0,0
+natural,real_breast_ctmle,"breast cancer, wider/partial",ctmle,C-TMLE,3,3,0,0,0,0,0,0,0
+natural,real_breast_ctmle,"breast cancer, wider/partial",ctmle,C-TMLE,4,3,0,0,0,0,0,0,0
+natural,real_breast_ctmle,"breast cancer, wider/partial",ctmle,C-TMLE,5,3,0,0,0,0,0,0,0
+natural,real_breast_ctmle,"breast cancer, wider/partial",ctmle,C-TMLE,6,3,0,0,0,0,0,0,0
+natural,real_breast_ctmle,"breast cancer, wider/partial",ctmle,C-TMLE,8,3,0,0,0,0,0,0,0
+natural,real_breast_cui,"breast cancer, wider/partial",cui_selective_ml,selective ML,0,3,0.062623331595957413,0.036152390381359874,0.090983945275098232,0.33333333333333331,0.12152777777777779,0.018841294668271748,0.081464626264229276
+natural,real_breast_cui,"breast cancer, wider/partial",cui_selective_ml,selective ML,1,3,0.013181847929998769,0.0041172909519544415,0.024738744247895721,0.038194444444444441,0.0069444444444444441,0.00074623449721693096,0.013928082427215729
+natural,real_breast_cui,"breast cancer, wider/partial",cui_selective_ml,selective ML,2,3,0.0026147631858607356,-3.9709971100365671e-05,0.0075571331519366956,0.013888888888888888,0.003472222222222222,4.1431232887125685e-05,0.0026561944187478742
+natural,real_breast_cui,"breast cancer, wider/partial",cui_selective_ml,selective ML,3,3,0.0018725914818034835,0,0.0065318285324077437,0.003472222222222222,0,0,0.0018725914818034813
+natural,real_breast_cui,"breast cancer, wider/partial",cui_selective_ml,selective ML,4,3,0.0018174136997859043,0,0.0063918087604103316,0.003472222222222222,0,0,0.0018174136997858483
+natural,real_breast_cui,"breast cancer, wider/partial",cui_selective_ml,selective ML,5,3,0.0017363701985938507,0,0.0060726951187770736,0.003472222222222222,0,0,0.0017363701985938205
+natural,real_breast_cui,"breast cancer, wider/partial",cui_selective_ml,selective ML,6,3,0.0016294609782273595,0,0.0056370514870372141,0.003472222222222222,0,0,0.0016294609782273985
+natural,real_breast_cui,"breast cancer, wider/partial",cui_selective_ml,selective ML,8,3,0.0013380453799713237,0,0.0045942737393477855,0.003472222222222222,0,0,0.0013380453799713709
+natural,real_digits_ctmle,"digits, wider/partial",ctmle,C-TMLE,0,3,0,0,0,0,0,0,0
+natural,real_digits_ctmle,"digits, wider/partial",ctmle,C-TMLE,1,3,0,0,0,0,0,0,0
+natural,real_digits_ctmle,"digits, wider/partial",ctmle,C-TMLE,2,3,0,0,0,0,0,0,0
+natural,real_digits_ctmle,"digits, wider/partial",ctmle,C-TMLE,3,3,0,0,0,0,0,0,0
+natural,real_digits_ctmle,"digits, wider/partial",ctmle,C-TMLE,4,3,0,0,0,0,0,0,0
+natural,real_digits_ctmle,"digits, wider/partial",ctmle,C-TMLE,5,3,0,0,0,0,0,0,0
+natural,real_digits_ctmle,"digits, wider/partial",ctmle,C-TMLE,6,3,0,0,0,0,0,0,0
+natural,real_digits_ctmle,"digits, wider/partial",ctmle,C-TMLE,8,3,0,0,0,0,0,0,0
+natural,real_digits_cui,"digits, wider/partial",cui_selective_ml,selective ML,0,3,0.0073364799036123403,-0.0094280992831136893,0.025869660042840442,0.22222222222222221,0.1076388888888889,0.018501055814354881,0.025837535717967246
+natural,real_digits_cui,"digits, wider/partial",cui_selective_ml,selective ML,1,3,0.00043206294362603998,0,0.0014564211654706763,0.003472222222222222,0,0,0.00043206294362603694
+natural,real_digits_cui,"digits, wider/partial",cui_selective_ml,selective ML,2,3,0,0,0,0,0,0,0
+natural,real_digits_cui,"digits, wider/partial",cui_selective_ml,selective ML,3,3,0,0,0,0,0,0,0
+natural,real_digits_cui,"digits, wider/partial",cui_selective_ml,selective ML,4,3,0,0,0,0,0,0,0
+natural,real_digits_cui,"digits, wider/partial",cui_selective_ml,selective ML,5,3,0,0,0,0,0,0,0
+natural,real_digits_cui,"digits, wider/partial",cui_selective_ml,selective ML,6,3,0,0,0,0,0,0,0
+natural,real_digits_cui,"digits, wider/partial",cui_selective_ml,selective ML,8,3,0,0,0,0,0,0,0

@@ -1,0 +1,23 @@
+{
+  "bootstrap_draws": 20000,
+  "c_grid": [
+    0.0,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0,
+    6.0,
+    8.0
+  ],
+  "cell_curve_rows": 864,
+  "emphasized_panels": 8,
+  "internal_panels": 1,
+  "native_cells": 108,
+  "natural_panels": 12,
+  "panel_curve_rows": 168,
+  "panels": 21,
+  "primary_c": 2.0,
+  "script_sha256": "3d524b24bd95e14f68a2f71a049097ab8aaabcac0be6d88b949d8a48a8fabd0d",
+  "status": "COMPLETE"
+}

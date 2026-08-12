@@ -1,0 +1,3 @@
+method,family,cells,reps_per_cell_min,reps_per_cell_max,equal_cell_relative_mse_reduction,ci_lo,ci_hi
+ctmle,real,6,96,96,0,0,0
+cui_selective_ml,real,6,96,96,0.0013073815929303678,-1.9449099124753862e-05,0.0037785463454252334

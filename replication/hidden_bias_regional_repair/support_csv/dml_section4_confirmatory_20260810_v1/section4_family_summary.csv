@@ -1,0 +1,13 @@
+method,family,cells,reps_per_cell_min,reps_per_cell_max,equal_cell_relative_mse_reduction,ci_lo,ci_hi,equal_cell_absolute_mse_reduction
+ctmle,alignment_aligned,3,96,96,0,0,0,0
+ctmle,alignment_disjoint,3,96,96,0,0,0,0
+ctmle,alignment_null,1,96,96,0,0,0,0
+ctmle,alignment_partial,3,96,96,0,0,0,0
+ctmle,kang_schafer,8,96,96,0.034115600553697945,0.021399920370624628,0.047849547344216266,0.16661389191565606
+ctmle,suite,18,96,96,0.015162489134976864,0.0096000929953265531,0.021293410875959998,0.074050618629180456
+cui_selective_ml,alignment_aligned,3,96,96,0.0093389555479161581,4.6842370721192436e-05,0.022371978337490807,0.00049707219469448068
+cui_selective_ml,alignment_disjoint,3,96,96,0,0,0,0
+cui_selective_ml,alignment_null,1,96,96,0,0,0,0
+cui_selective_ml,alignment_partial,3,96,96,0,0,0,0
+cui_selective_ml,kang_schafer,8,96,96,0.057579589535292283,0.035271206293124496,0.078664904784212841,0.61412373293072564
+cui_selective_ml,suite,18,96,96,0.027147421273671486,0.017090727197078732,0.036591031617358015,0.27302672666832717

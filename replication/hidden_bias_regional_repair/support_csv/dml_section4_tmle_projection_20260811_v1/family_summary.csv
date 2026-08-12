@@ -1,0 +1,6 @@
+method,family,cells,reps_per_cell_min,reps_per_cell_max,equal_cell_relative_mse_reduction,ci_lo,ci_hi
+aipw,cui_published_scenario1,4,96,96,0.0024265734043681653,0,0.0079906905732228459
+aipw,cui_published_scenario2,4,96,96,0,0,0
+tmle,cui_published_scenario1,4,96,96,0,0,0
+tmle,cui_published_scenario2,4,96,96,0,0,0
+tmle,kang_schafer,8,96,96,0,0,0

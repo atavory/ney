@@ -1,0 +1,18 @@
+{
+  "archive_sha256": {
+    "d0_region_local_confirm_20260811T0512Z.tar.zst": "61ac39d362ed8274600ed5ac32a4b1b35f96aebd186c8881f8384a5f56abd469"
+  },
+  "expected_c": 2.0,
+  "jobs": 192,
+  "nboot": 20000,
+  "outputs": {
+    "cell_summary.csv": "9ec23fc8db86c44b9a423d449654d9de384639f5fcb9f0445114443e997036a1",
+    "family_summary.csv": "808c4d535cb89de84691785e31daccb5e7aeed33edb414dfc45c60eda2534fd3",
+    "raw_rows.csv": "4c5184b3186f39bf1482928891fe0bea893bfeb89c773f272ef01214688856b6",
+    "release_manifest.csv": "0865569ddcd3b8332a948e896d59c0aa05e0d814372bf61707badf1150cdfc8a"
+  },
+  "reps_per_job": 4,
+  "rows": 768,
+  "seed": 20260812,
+  "status": "COMPLETE"
+}
