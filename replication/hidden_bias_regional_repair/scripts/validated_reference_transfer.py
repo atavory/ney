@@ -480,6 +480,10 @@ def _estimated_residual_lowp_region(
     region_detector_c,
     folds,
 ):
+    standdown_ablations = {
+        "empty_standdown",
+        "crossfit_rank_empty_standdown",
+    }
     response_score = _estimated_response_score(
         x,
         response,
@@ -494,7 +498,7 @@ def _estimated_residual_lowp_region(
     observed_lowp = observed & lowp
     empty = np.zeros(len(y), dtype=bool)
     if observed_lowp.sum() < max(3, min_observed):
-        return empty if selector_ablation == "empty_standdown" else lowp
+        return empty if selector_ablation in standdown_ablations else lowp
 
     m0 = _oof_outcome_prediction(x, y, response, learner, seed + 7001, folds)
     weighted_residual = np.full(len(y), np.nan)
@@ -504,10 +508,33 @@ def _estimated_residual_lowp_region(
     )
     direction = float(np.mean(weighted_residual[observed_lowp]))
     if direction == 0.0 or not np.isfinite(direction):
-        return empty if selector_ablation == "empty_standdown" else lowp
+        return empty if selector_ablation in standdown_ablations else lowp
 
     direction_sign = float(np.sign(direction))
-    if selector_ablation == "raw_rank_only":
+    if selector_ablation == "crossfit_rank_empty_standdown":
+        # The legacy detector fits the residual-ranking model and evaluates
+        # candidate prefixes on the same residuals. Flexible learners can then
+        # certify their own in-sample overfit. Give every observed unit a rank
+        # predicted by a model that did not train on that unit's residual.
+        target = np.zeros(len(y), dtype=float)
+        target[observed] = direction_sign * weighted_residual[observed]
+        full_model = _regressor(seed + 9001, learner)
+        full_model.fit(x[observed], target[observed])
+        rank_signal = full_model.predict(x)
+        labels = np.random.default_rng(seed + 9002).integers(0, folds, len(y))
+        for fold in range(folds):
+            test = observed & (labels == fold)
+            train = observed & (labels != fold)
+            if not np.any(test):
+                continue
+            if int(np.sum(train)) < 20:
+                rank_signal[test] = float(np.mean(target[train])) if np.any(train) else 0.0
+                continue
+            residual_model = _regressor(seed + 9101 + 211 * fold, learner)
+            residual_model.fit(x[train], target[train])
+            rank_signal[test] = residual_model.predict(x[test])
+        rank_signs = (1.0,)
+    elif selector_ablation == "raw_rank_only":
         rank_signal = np.zeros(len(y), dtype=float)
         rank_signal[observed] = direction_sign * weighted_residual[observed]
         rank_signs = (1.0,)
@@ -527,8 +554,8 @@ def _estimated_residual_lowp_region(
 
     inside = np.flatnonzero(lowp)
     if len(inside) == 0:
-        return empty if selector_ablation == "empty_standdown" else lowp
-    best_mask = empty if selector_ablation == "empty_standdown" else lowp
+        return empty if selector_ablation in standdown_ablations else lowp
+    best_mask = empty if selector_ablation in standdown_ablations else lowp
     best_score = 0.0
     for rank_sign in rank_signs:
         order = inside[np.argsort(-(rank_sign * rank_signal[inside]), kind="mergesort")]
@@ -804,6 +831,10 @@ def _region_damp() -> float:
     return float(os.environ.get("USHMOO_REGION_DAMP", "1.0"))
 
 
+def _validation_risk() -> str:
+    return os.environ.get("USHMOO_VALIDATION_RISK", "balanced_mse")
+
+
 def _targets(
     y_obs,
     p_obs,
@@ -852,6 +883,16 @@ def _weighted_loss(y, prediction, region, validation_region_weight):
     return float(np.average((y - prediction) ** 2, weights=weights))
 
 
+def _observed_validation_weights(p, region, validation_region_weight):
+    """Weights for a loss evaluated only on observed outcomes."""
+    if _validation_risk() == "aipw_variance":
+        p = np.clip(np.asarray(p, dtype=float), 1e-6, 1.0)
+        return (1.0 - p) / (p * p)
+    return 1.0 + _region_balance_weight(
+        region, validation_region_weight
+    ) * region.astype(float)
+
+
 def _mean_variance_of_mean(values):
     if len(values) < 2:
         return float(np.mean(values)) if len(values) else 0.0, float("inf")
@@ -860,6 +901,90 @@ def _mean_variance_of_mean(values):
 
 def _aipw_score(y, response, p, m):
     return m + response.astype(float) * (y - m) / p
+
+
+def _fit_with_sample_weight(model, x, y, sample_weight):
+    """Route weights through a sklearn Pipeline when an adapter wraps a learner."""
+    steps = getattr(model, "steps", None)
+    if steps:
+        final_name = steps[-1][0]
+        model.fit(
+            x,
+            y,
+            **{f"{final_name}__sample_weight": sample_weight},
+        )
+    else:
+        model.fit(x, y, sample_weight=sample_weight)
+
+
+def _crossfit_weighted_residual_correction(
+    x, y, response, p, base_prediction, learner, seed, folds
+):
+    """Learn an honest residual correction for the MAR variance risk."""
+    labels = np.random.default_rng(seed).integers(0, folds, len(y))
+    observed = response.astype(bool)
+    p = np.clip(np.asarray(p, dtype=float), 1e-6, 1.0)
+    correction = np.zeros(len(y), dtype=float)
+    for fold in range(folds):
+        test = labels == fold
+        train = observed & (labels != fold)
+        if int(np.sum(train)) < 20:
+            continue
+        # On responders, these sample weights identify
+        # E[(1-pi)/pi * {m-m_star}^2].
+        sample_weight = (1.0 - p[train]) / (p[train] * p[train])
+        if not np.any(sample_weight > 0.0):
+            continue
+        residual_model = _regressor(seed + 401 * fold, learner)
+        _fit_with_sample_weight(
+            residual_model,
+            x[train],
+            y[train] - base_prediction[train],
+            sample_weight,
+        )
+        correction[test] = residual_model.predict(x[test])
+    return correction
+
+
+def _crossfit_influence_projection(
+    x, response, p, base_score, learner, seed, folds
+):
+    """Learn the variance-optimal MAR control variate for any expert score.
+
+    For ``a = 1 - R / pi(X)``, every correction ``a * g(X)`` has population
+    mean zero under MAR.  The conditional least-squares projection
+
+        g*(X) = -E[a * phi_0 | X] / E[a**2 | X]
+
+    minimizes ``Var(phi_0 + a * g(X))``.  We fit the equivalent weighted
+    regression of ``-phi_0 / a`` on X with weights ``a**2`` on independent
+    folds.  Centering ``base_score`` is harmless because E[a | X] = 0 and
+    improves numerical stability.
+    """
+    labels = np.random.default_rng(seed).integers(0, folds, len(base_score))
+    response = np.asarray(response, dtype=float)
+    p = np.clip(np.asarray(p, dtype=float), 1e-6, 1.0 - 1e-6)
+    score = np.asarray(base_score, dtype=float)
+    a = 1.0 - response / p
+    correction = np.zeros(len(score), dtype=float)
+    for fold in range(folds):
+        test = labels == fold
+        train = labels != fold
+        usable = train & (np.abs(a) > 1e-8) & np.isfinite(score)
+        if int(np.sum(usable)) < 20:
+            continue
+        centered_score = score - float(np.mean(score[usable]))
+        pseudo_outcome = -centered_score[usable] / a[usable]
+        sample_weight = a[usable] * a[usable]
+        projection_model = _regressor(seed + 503 * fold, learner)
+        _fit_with_sample_weight(
+            projection_model,
+            x[usable],
+            pseudo_outcome,
+            sample_weight,
+        )
+        correction[test] = projection_model.predict(x[test])
+    return correction
 
 
 def _shifted_legendre_derivative_at_zero(degree, order):
@@ -941,6 +1066,59 @@ def _ma_dr_bc_reference(
         "xi_derivative_1": float(derivatives.get(1, float("nan"))),
         "bias_correction_mean": float(np.mean(correction)),
     }
+
+
+def _crossfit_ma_dr_bc_score(
+    y,
+    response,
+    p,
+    m,
+    seed,
+    folds,
+    trim_h=0.05,
+    correction_order=1,
+    sieve_degree=3,
+):
+    """Honest DR-BC score used only to learn and validate a repair.
+
+    The published full-sample DR-BC estimator remains the reference endpoint.
+    Here each observation's boundary-correction coefficient is estimated on
+    other folds, preventing the repair projection from learning or validating
+    on a score whose sieve coefficient used that observation.
+    """
+    y = np.asarray(y, dtype=float)
+    response = np.asarray(response, dtype=float)
+    p = np.clip(np.asarray(p, dtype=float), 1e-12, 1.0)
+    m = np.asarray(m, dtype=float)
+    labels = np.random.default_rng(seed).integers(0, folds, len(y))
+    values = np.empty(len(y), dtype=float)
+    b = response * (y - m)
+    shifted = 2.0 * p - 1.0
+    full_design = np.polynomial.legendre.legvander(shifted, sieve_degree)
+    for fold in range(folds):
+        test = labels == fold
+        train = ~test
+        coefficients, _, rank, _ = np.linalg.lstsq(
+            full_design[train], b[train], rcond=None
+        )
+        if rank < sieve_degree + 1:
+            raise RuntimeError("cross-fitted DR-BC sieve is rank deficient")
+        trimmed = p[test] < trim_h
+        untrimmed_ratio = np.where(trimmed, 0.0, b[test] / p[test])
+        correction = np.zeros(int(np.sum(test)), dtype=float)
+        for order in range(1, correction_order + 1):
+            basis_derivative = _shifted_legendre_derivative_at_zero(
+                sieve_degree, order
+            )
+            xi_derivative = float(np.dot(coefficients, basis_derivative))
+            correction += (
+                trimmed.astype(float)
+                * p[test] ** (order - 1)
+                * xi_derivative
+                / math.factorial(order)
+            )
+        values[test] = m[test] + untrimmed_ratio + correction
+    return values
 
 
 def _cui_candidate_propensity(name, seed):
@@ -1234,6 +1412,11 @@ def _crossfit_selected(
     losses = {t: [] for t in tau_grid}
     damp_losses = {(t, g): [] for t in tau_grid for g in region_damp_grid}
     damp_improvements = {(t, g): [] for t in tau_grid for g in region_damp_grid}
+    candidate_kind = {
+        (t, g): ("reference" if g == 0.0 else "regional")
+        for t in tau_grid
+        for g in region_damp_grid
+    }
     for fold in range(folds):
         test = labels == fold
         train = ~test
@@ -1268,10 +1451,17 @@ def _crossfit_selected(
                     continue
                 weights = 1.0 + region_damp * region[observed].astype(float)
                 repair = _regressor(seed + 307 * fold + int(1000 * region_damp), learner)
-                repair.fit(x[observed], y[observed], sample_weight=weights)
+                _fit_with_sample_weight(
+                    repair, x[observed], y[observed], weights
+                )
                 reweighted_obs[region_damp] = repair.predict(x[observed])
                 reweighted_test[region_damp] = repair.predict(x[test])
-        elif repair_mode != "targeting":
+        elif repair_mode not in {
+            "targeting",
+            "if_residual",
+            "if_projection",
+            "if_library",
+        }:
             raise ValueError(f"unknown repair_mode: {repair_mode}")
         for tau in tau_grid:
             p_train = np.maximum(p_train_raw, tau)
@@ -1298,9 +1488,16 @@ def _crossfit_selected(
             ref_outcome_values[tau][test] = ref_outcome
             if test_observed.any():
                 pos = np.flatnonzero(test_observed[test])
-                validation_weight = 1.0 + _region_balance_weight(
-                    region[test_observed], validation_region_weight
-                ) * region[test_observed].astype(float)
+                # For psi_m = m(X) + R/pi(X)*{Y-m(X)}, the m-dependent part
+                # of Var(psi_m) is E[(1-pi)/pi*{m-m_star}^2].  Under MAR its
+                # observable loss is R*(1-pi)/pi^2*{Y-m}^2.  This helper also
+                # supplies the historical balanced-MSE weights for the
+                # explicit comparison arm.
+                validation_weight = _observed_validation_weights(
+                    p_test[pos],
+                    region[test_observed],
+                    validation_region_weight,
+                )
                 baseline_loss = (
                     validation_weight * (y[test_observed] - ref_outcome[pos]) ** 2
                 )
@@ -1308,7 +1505,7 @@ def _crossfit_selected(
                     float(np.mean((y[test_observed] - ref_outcome[pos]) ** 2))
                 )
             for region_damp in region_damp_grid:
-                if repair_mode == "targeting":
+                if repair_mode in {"targeting", "if_library"}:
                     _, rt_test = _targets(
                         y[observed],
                         p_obs,
@@ -1321,7 +1518,7 @@ def _crossfit_selected(
                         target_global=reference_method != "aipw",
                     )
                     rt_prediction = rt_test
-                else:
+                elif repair_mode == "reweight":
                     rt_test, _ = _targets(
                         y[observed],
                         p_obs,
@@ -1333,6 +1530,12 @@ def _crossfit_selected(
                         0.0,
                     )
                     rt_prediction = reweighted_test[region_damp]
+                else:
+                    # Placeholder.  Once the reference-specific OOF outcome
+                    # expert is finalized below, the influence-function
+                    # residual path overwrites every candidate array.
+                    rt_test = ref_outcome.copy()
+                    rt_prediction = ref_outcome.copy()
                 regional_increment = rt_prediction - ref_outcome
                 rt_value = ref_value + regional_increment
                 rt_outcome = rt_prediction
@@ -1357,6 +1560,7 @@ def _crossfit_selected(
     targeting_moment = float("nan")
     targeting_score_gap = float("nan")
     ma_dr_bc_stats = None
+    ma_projection_score = None
     cui_selective_stats = None
     canonical_plugin_methods = {"tmle", "ctmle", "cui_tchetgen"}
     targeting_moments = {}
@@ -1417,8 +1621,13 @@ def _crossfit_selected(
                 losses[tau] = [
                     float(np.mean((y[observed] - targeted[observed]) ** 2))
                 ]
-            baseline_loss = (y[observed] - targeted[observed]) ** 2
-            if repair_mode == "targeting":
+            validation_weight = _observed_validation_weights(
+                p_oof[observed], region[observed], validation_region_weight
+            )
+            baseline_loss = validation_weight * (
+                y[observed] - targeted[observed]
+            ) ** 2
+            if repair_mode in {"targeting", "if_library"}:
                 regional_clever = region[observed].astype(float) / p_oof[observed]
                 regional_denominator = float(
                     np.dot(regional_clever, regional_clever)
@@ -1435,7 +1644,7 @@ def _crossfit_selected(
                     else 0.0
                 )
             for region_damp in region_damp_grid:
-                if repair_mode == "targeting":
+                if repair_mode in {"targeting", "if_library"}:
                     regional_increment = (
                         region_damp
                         * regional_alpha
@@ -1458,7 +1667,9 @@ def _crossfit_selected(
                         targeted + outcome_increment
                     )
                     candidate = rt_outcome_values[(tau, region_damp)]
-                candidate_loss = (y[observed] - candidate[observed]) ** 2
+                candidate_loss = validation_weight * (
+                    y[observed] - candidate[observed]
+                ) ** 2
                 damp_losses[(tau, region_damp)] = candidate_loss.tolist()
                 damp_improvements[(tau, region_damp)] = (
                     baseline_loss - candidate_loss
@@ -1478,6 +1689,17 @@ def _crossfit_selected(
             correction_order=1,
             sieve_degree=3,
         )
+        ma_projection_score = _crossfit_ma_dr_bc_score(
+            y,
+            response,
+            p_raw,
+            m_oof,
+            seed + 11003,
+            folds,
+            trim_h=trim_h,
+            correction_order=1,
+            sieve_degree=3,
+        )
         p_repair = np.maximum(p_raw, trim_h)
         p_values[trim_h] = p_repair
         ref_values[trim_h] = dr_bc_values
@@ -1486,7 +1708,12 @@ def _crossfit_selected(
         losses[trim_h] = [
             float(np.mean((y[observed] - m_oof[observed]) ** 2))
         ]
-        baseline_loss = (y[observed] - m_oof[observed]) ** 2
+        validation_weight = _observed_validation_weights(
+            p_repair[observed], region[observed], validation_region_weight
+        )
+        baseline_loss = validation_weight * (
+            y[observed] - m_oof[observed]
+        ) ** 2
         regional_clever = region[observed].astype(float) / p_repair[observed]
         regional_denominator = float(np.dot(regional_clever, regional_clever))
         regional_alpha = (
@@ -1515,7 +1742,7 @@ def _crossfit_selected(
                 raise AssertionError("DR-BC candidate endpoint is not additive")
             rt_values[(trim_h, region_damp)] = candidate_value
             rt_outcome_values[(trim_h, region_damp)] = candidate_outcome
-            candidate_loss = (
+            candidate_loss = validation_weight * (
                 y[observed] - candidate_outcome[observed]
             ) ** 2
             damp_losses[(trim_h, region_damp)] = candidate_loss.tolist()
@@ -1539,7 +1766,12 @@ def _crossfit_selected(
         losses[selected_key] = [
             float(np.mean((y[observed] - selected_m[observed]) ** 2))
         ]
-        baseline_loss = (y[observed] - selected_m[observed]) ** 2
+        validation_weight = _observed_validation_weights(
+            selected_p[observed], region[observed], validation_region_weight
+        )
+        baseline_loss = validation_weight * (
+            y[observed] - selected_m[observed]
+        ) ** 2
         regional_clever = region[observed].astype(float) / selected_p[observed]
         regional_denominator = float(np.dot(regional_clever, regional_clever))
         regional_alpha = (
@@ -1568,13 +1800,146 @@ def _crossfit_selected(
                 raise AssertionError("Cui candidate endpoint is not additive")
             rt_values[(selected_key, region_damp)] = candidate_value
             rt_outcome_values[(selected_key, region_damp)] = candidate_outcome
-            candidate_loss = (
+            candidate_loss = validation_weight * (
                 y[observed] - candidate_outcome[observed]
             ) ** 2
             damp_losses[(selected_key, region_damp)] = candidate_loss.tolist()
             damp_improvements[(selected_key, region_damp)] = (
                 baseline_loss - candidate_loss
             ).tolist()
+    if repair_mode == "if_projection":
+        projection_taus = (
+            (min(tau_grid),)
+            if reference_method in {"tmle", "ma_dr_bc", "cui_selective_ml"}
+            else tau_grid
+        )
+        for tau in projection_taus:
+            p_oof = np.clip(np.asarray(p_values[tau], dtype=float), 1e-6, 1.0)
+            base_score = np.asarray(ref_values[tau], dtype=float)
+            selection_score = (
+                np.asarray(ma_projection_score, dtype=float)
+                if reference_method == "ma_dr_bc"
+                else base_score
+            )
+            base_outcome = np.asarray(ref_outcome_values[tau], dtype=float)
+            projection = _crossfit_influence_projection(
+                x,
+                response,
+                p_oof,
+                selection_score,
+                learner,
+                seed + 14009 + int(1000 * tau),
+                folds,
+            )
+            control = (1.0 - response.astype(float) / p_oof) * projection
+            # All candidates preserve the same population target.  Use the
+            # reference score mean as their common finite-sample center; giving
+            # each candidate its own center would hide a dangerous nonzero
+            # correction mean.
+            common_center = float(np.mean(selection_score))
+            baseline_centered = selection_score - common_center
+            baseline_loss = baseline_centered * baseline_centered
+            losses[tau] = [float(np.mean(baseline_loss))]
+            for region_damp in region_damp_grid:
+                candidate_value = base_score + region_damp * control
+                candidate_selection_score = (
+                    selection_score + region_damp * control
+                )
+                candidate_centered = candidate_selection_score - common_center
+                candidate_loss = candidate_centered * candidate_centered
+                rt_values[(tau, region_damp)] = candidate_value
+                # This generic control-variate repair changes the expert score,
+                # not a uniquely defined outcome regression.
+                rt_outcome_values[(tau, region_damp)] = base_outcome.copy()
+                damp_losses[(tau, region_damp)] = candidate_loss.tolist()
+                damp_improvements[(tau, region_damp)] = (
+                    baseline_loss - candidate_loss
+                ).tolist()
+                candidate_kind[(tau, region_damp)] = (
+                    "reference" if region_damp == 0.0 else "if_projection"
+                )
+    if repair_mode in {"if_residual", "if_library"}:
+        residual_taus = (
+            (min(tau_grid),)
+            if reference_method in {"tmle", "ma_dr_bc", "cui_selective_ml"}
+            else tau_grid
+        )
+        observed = response == 1
+        for tau in residual_taus:
+            p_oof = np.clip(np.asarray(p_values[tau], dtype=float), 1e-6, 1.0)
+            base_outcome = np.asarray(ref_outcome_values[tau], dtype=float)
+            base_score = np.asarray(ref_values[tau], dtype=float)
+            correction = _crossfit_weighted_residual_correction(
+                x,
+                y,
+                response,
+                p_oof,
+                base_outcome,
+                learner,
+                seed + 12001 + int(1000 * tau),
+                folds,
+            )
+            validation_weight = _observed_validation_weights(
+                p_oof[observed], region[observed], validation_region_weight
+            )
+            baseline_loss = validation_weight * (
+                y[observed] - base_outcome[observed]
+            ) ** 2
+            losses[tau] = [float(np.mean(baseline_loss))]
+            base_aipw = _aipw_score(y, response, p_oof, base_outcome)
+            for region_damp in region_damp_grid:
+                regional_value = np.asarray(
+                    rt_values[(tau, region_damp)], dtype=float
+                ).copy()
+                regional_outcome = np.asarray(
+                    rt_outcome_values[(tau, region_damp)], dtype=float
+                ).copy()
+                regional_loss = np.asarray(
+                    damp_losses[(tau, region_damp)], dtype=float
+                )
+                candidate_outcome = base_outcome + region_damp * correction
+                score_contrast = (
+                    _aipw_score(y, response, p_oof, candidate_outcome)
+                    - base_aipw
+                )
+                candidate_value = base_score + score_contrast
+                rt_values[(tau, region_damp)] = candidate_value
+                rt_outcome_values[(tau, region_damp)] = candidate_outcome
+                candidate_loss = validation_weight * (
+                    y[observed] - candidate_outcome[observed]
+                ) ** 2
+                regional_is_eligible = False
+                if (
+                    repair_mode == "if_library"
+                    and len(regional_loss) == len(candidate_loss)
+                    and len(candidate_loss) >= 2
+                ):
+                    # The influence-residual correction is the theory-backed
+                    # default.  Charge the optional regional candidate for the
+                    # extra library choice: it must beat the generic candidate
+                    # by the same one-SE margin used against the reference.
+                    regional_improvement = candidate_loss - regional_loss
+                    mean_improvement, variance = _mean_variance_of_mean(
+                        regional_improvement
+                    )
+                    regional_is_eligible = mean_improvement > (
+                        validation_loss_se * math.sqrt(variance)
+                    )
+                if regional_is_eligible:
+                    candidate_value = regional_value
+                    candidate_outcome = regional_outcome
+                    candidate_loss = regional_loss
+                    candidate_kind[(tau, region_damp)] = (
+                        "reference" if region_damp == 0.0 else "regional"
+                    )
+                else:
+                    candidate_kind[(tau, region_damp)] = (
+                        "reference" if region_damp == 0.0 else "if_residual"
+                    )
+                damp_losses[(tau, region_damp)] = candidate_loss.tolist()
+                damp_improvements[(tau, region_damp)] = (
+                    baseline_loss - candidate_loss
+                ).tolist()
     mean_losses = {
         t: (float(np.mean(v)) if v else float("inf")) for t, v in losses.items()
     }
@@ -1682,6 +2047,7 @@ def _crossfit_selected(
             float("nan") if reference_method == "cui_selective_ml" else selected
         ),
         "selected_region_damp": selected_damp,
+        "selected_repair_kind": candidate_kind[(selected, selected_damp)],
         "targeting_moment": targeting_moment,
         "targeting_score_gap": targeting_score_gap,
         "ma_trimmed_fraction": (
@@ -1991,6 +2357,7 @@ def _one_rep(
         "weight": weight,
         "selected_tau": float(fit["selected_tau"]),
         "selected_region_damp": float(fit["selected_region_damp"]),
+        "selected_repair_kind": fit["selected_repair_kind"],
         "targeting_moment": float(fit["targeting_moment"]),
         "targeting_score_gap": float(fit["targeting_score_gap"]),
         "ma_trimmed_fraction": float(fit["ma_trimmed_fraction"]),
@@ -2152,6 +2519,7 @@ def run_cell(cell, reps, progress_every, rep_log_path):
                 "repair_mode": repair_mode,
                 "region_damp": _region_damp(),
                 "region_damp_grid": "|".join(str(g) for g in region_damp_grid),
+                "validation_risk": _validation_risk(),
                 "validation_region_weight": validation_region_weight,
                 "validation_loss_se": validation_loss_se,
                 "selector": effective_selector,
@@ -2269,6 +2637,7 @@ def run_cell(cell, reps, progress_every, rep_log_path):
         "repair_mode": repair_mode,
         "region_damp": _region_damp(),
         "region_damp_grid": "|".join(str(g) for g in region_damp_grid),
+        "validation_risk": _validation_risk(),
         "validation_region_weight": validation_region_weight,
         "validation_loss_se": validation_loss_se,
         "selector": effective_selector,
@@ -2432,6 +2801,7 @@ def main() -> None:
             "whole_sample_score",
             "all_prefixes",
             "empty_standdown",
+            "crossfit_rank_empty_standdown",
             "both_signs",
         ],
         default="legacy",
@@ -2501,11 +2871,19 @@ def main() -> None:
     )
     ap.add_argument(
         "--repair-mode",
-        choices=["targeting", "reweight"],
+        choices=[
+            "targeting",
+            "reweight",
+            "if_residual",
+            "if_projection",
+            "if_library",
+        ],
         default="targeting",
         help=(
-            "Regional candidate construction: add a regional targeting fluctuation "
-            "or refit the initial outcome learner with regional sample weights."
+            "Candidate construction: add a regional targeting fluctuation, "
+            "refit with regional weights, learn a cross-fitted residual "
+            "correction, or learn the generic mean-zero MAR influence-score "
+            "projection."
         ),
     )
     ap.add_argument(
@@ -2517,6 +2895,16 @@ def main() -> None:
     ap.add_argument("--progress-every", type=int, default=4)
     ap.add_argument("--region-damp", type=float, default=1.0)
     ap.add_argument("--region-damp-grid", type=float, nargs="+")
+    ap.add_argument(
+        "--validation-risk",
+        choices=["balanced_mse", "aipw_variance"],
+        default="balanced_mse",
+        help=(
+            "Loss used to choose the regional damping path. aipw_variance "
+            "uses the MAR-identifiable outcome-risk term that determines the "
+            "one-step influence-function variance."
+        ),
+    )
     ap.add_argument(
         "--validation-loss-se",
         type=float,
@@ -2551,6 +2939,7 @@ def main() -> None:
     ap.add_argument("--rep-out", type=Path)
     args = ap.parse_args()
     os.environ["USHMOO_REGION_DAMP"] = str(args.region_damp)
+    os.environ["USHMOO_VALIDATION_RISK"] = args.validation_risk
     region_damp_grid = (
         tuple(float(g) for g in args.region_damp_grid)
         if args.region_damp_grid

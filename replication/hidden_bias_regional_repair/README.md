@@ -13,14 +13,44 @@ This directory is the current public replication surface for the EJS manuscript
 - `scripts/regional_repair_companion.py`: a self-contained Python simulation for
   the visible-region repair mechanism and the observed-outcome budget check.
 - `scripts/validated_reference_transfer.py`: the exact experiment driver used
-  for the submission-grade nonlinear-MAR reference-transfer run.
+  for the frozen influence-residual reference-transfer run.
 - `scripts/launch_validated_reference_transfer.py`: the chunked, paired-seed
   launcher used for C-TMLE, AIPW, and the global DR-risk proxy.
+- `scripts/section4_breadth_experiments.py`: frozen adapter for Kang--Schafer,
+  alignment, and real-covariate Section 4 designs.
+- `scripts/launch_section4_breadth_shards.py`: deterministic, resumable,
+  manifest-producing breadth launcher.
+- `scripts/ma_published_did_projection.py`: exact published Ma DiD/ATT design
+  with the target-preserving bounded influence-score projection.
 - `requirements.txt`: Python dependencies for the companion simulation.
 
 The package contains only the public replication files listed above.
 
-## Submission-Grade Reference Transfer
+## Frozen Section 4 implementation
+
+The current repair learns an influence-residual correction by cross-fitting,
+selects from a path containing the reference action using held-out
+influence-relevant loss, and applies the positive-part contrast rule.  The
+Section 4 primary constant is `c=2`; the fixed damping grid is
+`0, .25, .5, 1`.  The breadth adapter changes only the generated design and,
+for Kang--Schafer, the covariates exposed to each nuisance fit.  It delegates
+estimation, selection, shrinkage, and output construction to
+`validated_reference_transfer.py`.
+
+The public file SHA-256 values used for the 2026-08-10 confirmation are:
+
+```text
+validated_reference_transfer.py  7f193f39159a554738b5a1fdd9ccbd9abd3fccfb62e639b04462caf5ce925991
+section4_breadth_experiments.py    8681e6cbfdd41a7d5046de7113202283a2772e32af38c3f6bc3a61598fc56f35
+launch_section4_breadth_shards.py  13594bbf3d7491b234dc0e26663b730e594f68738a8a68a4d2eef108cf84dfac
+ma_published_did_projection.py     5ce093a091dbb37e1a58a807160d5b3efa42ada80acaa7ce20c63b4231ec5101
+```
+
+The data release contains raw paired rows, manifests, provenance, and
+checked-in aggregators.  Generator output is not manuscript evidence until
+that data-side chain verifies full coverage.
+
+## Earlier reference-transfer interface
 
 The validated driver uses the learned residual-score detector, sequential
 global-then-regional targeting for C-TMLE and the global DR-risk proxy, and a
@@ -49,6 +79,20 @@ The manuscript accepts a numerical result only when this public generator is
 pushed, the data release contains complete raw rows and provenance, and the
 checked-in data aggregation script regenerates and verifies the cited summary.
 Interactive calculations and manually edited summaries are not paper evidence.
+
+## External Baseline Roadmap
+
+The next public implementations are: plain cross-fitted TMLE;
+Ma--Sant'Anna--Sasaki--Ura bias-corrected trimmed DR; and faithful
+Cui--Tchetgen Tchetgen selective ML. Dorn's thresholded DR is queued after its
+missing-at-random mean specialization is verified. Crump trimming and overlap
+weights target different populations and will be kept out of the main
+same-target MSE comparison.
+
+The existing `global_dr_risk` code is an internal proxy, not a faithful
+Cui--Tchetgen Tchetgen implementation. Historical GL-risk code selects a point
+on the C-TMLE regional path and is a diagnostic rather than an external
+reference family.
 
 ## Quick Check
 
