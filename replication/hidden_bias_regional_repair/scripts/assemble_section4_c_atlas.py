@@ -211,7 +211,15 @@ def main() -> None:
     summary_rows: list[dict[str, object]] = []
     for panel, native in sorted(cells.items()):
         block, dataset, method, method_label = PANEL_META[panel]
-        computed: dict[tuple[str, int, float, float], tuple[float, float, float, np.ndarray]] = {}
+        # The two gross components retain the paired harmful and helpful tails
+        # instead of allowing them to cancel in the net MSE gain.  They are the
+        # natural safety estimands: gross_harm is the normalized MSE increase
+        # on replications made worse, and gross_benefit is the corresponding
+        # decrease on replications made better.  Net gain = benefit - harm.
+        computed: dict[
+            tuple[str, int, float, float],
+            tuple[float, float, float, float, float, np.ndarray],
+        ] = {}
         for (design, n, strength), values in sorted(native.items()):
             array = np.asarray(values, dtype=float)
             ref, delta, vd = array.T
@@ -226,13 +234,20 @@ def main() -> None:
                 weight = np.maximum(0.0, 1.0 - ratio)
                 repaired = ref + weight * delta
                 repaired2 = repaired * repaired
+                mse_change = repaired2 - ref2
                 gain = 1.0 - float(repaired2.mean()) / float(ref2.mean())
                 activation = float(np.mean(weight > 0))
                 harm = float(np.mean(repaired2 > ref2))
+                gross_harm = float(np.maximum(mse_change, 0.0).mean()) / float(ref2.mean())
+                gross_benefit = float(np.maximum(-mse_change, 0.0).mean()) / float(ref2.mean())
+                if abs(gain - (gross_benefit - gross_harm)) > 1e-12:
+                    raise SystemExit(f"{panel}: gross-component identity failed")
                 rng = np.random.default_rng(stable_seed(args.seed, panel, design, n, strength, c_value))
                 indices = rng.integers(0, len(ref), size=(args.nboot, len(ref)))
                 draws = 1.0 - repaired2[indices].mean(axis=1) / ref2[indices].mean(axis=1)
-                computed[(design, n, strength, c_value)] = (gain, activation, harm, draws)
+                computed[(design, n, strength, c_value)] = (
+                    gain, activation, harm, gross_harm, gross_benefit, draws
+                )
                 cell_rows.append(
                     {
                         "block": block,
@@ -251,6 +266,8 @@ def main() -> None:
                         "ci_hi": f"{float(np.percentile(draws, 97.5)):.17g}",
                         "activation": f"{activation:.17g}",
                         "harm": f"{harm:.17g}",
+                        "gross_harm_mse": f"{gross_harm:.17g}",
+                        "gross_benefit_mse": f"{gross_benefit:.17g}",
                     }
                 )
         for c_value in C_GRID:
@@ -260,7 +277,7 @@ def main() -> None:
                 if c == c_value and use_in_summary(panel, strength)
             ]
             gains = [value[0] for value in selected]
-            family_draws = np.mean(np.stack([value[3] for value in selected]), axis=0)
+            family_draws = np.mean(np.stack([value[5] for value in selected]), axis=0)
             summary_rows.append(
                 {
                     "block": block,
@@ -275,6 +292,8 @@ def main() -> None:
                     "ci_hi": f"{float(np.percentile(family_draws, 97.5)):.17g}",
                     "mean_activation": f"{float(np.mean([value[1] for value in selected])):.17g}",
                     "mean_harm_rate": f"{float(np.mean([value[2] for value in selected])):.17g}",
+                    "equal_cell_gross_harm_mse": f"{float(np.mean([value[3] for value in selected])):.17g}",
+                    "equal_cell_gross_benefit_mse": f"{float(np.mean([value[4] for value in selected])):.17g}",
                 }
             )
 

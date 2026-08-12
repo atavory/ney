@@ -25,9 +25,9 @@ def main() -> None:
     parser.add_argument("--paper-root", required=True, type=Path)
     args = parser.parse_args()
     release = args.data_root / "support_csv/dml_section4_release_20260812_v1"
-    atlas_data = args.data_root / "support_csv/dml_section4_c_atlas_20260812_v1"
+    atlas_data = args.data_root / "support_csv/dml_section4_c_atlas_20260812_v2"
     figure_release = (
-        args.data_root / "support_csv/dml_section4_c_atlas_figures_20260812_v1"
+        args.data_root / "support_csv/dml_section4_c_atlas_figures_20260812_v2"
     )
 
     for line in (release / "SHA256SUMS").read_text().splitlines():
@@ -71,7 +71,7 @@ def main() -> None:
     if atlas_verification.get("primary_c") != 2.0:
         raise SystemExit("unexpected atlas primary c")
 
-    figure_paper = args.paper_root / "figures/section4_c_atlas_20260812_v1"
+    figure_paper = args.paper_root / "figures/section4_c_atlas_20260812_v2"
     figure_files = (
         "README.md", "SHA256SUMS", "provenance.json",
         "section4_c_natural_1.pdf", "section4_c_natural_1.png",
@@ -90,6 +90,10 @@ def main() -> None:
         raise SystemExit("unexpected natural atlas panel count")
     if len(figure_provenance.get("emphasized_panels", [])) != 8:
         raise SystemExit("unexpected emphasized atlas panel count")
+    if len(figure_provenance.get("natural_safety_panels", [])) != 3:
+        raise SystemExit("unexpected natural safety panel count")
+    if len(figure_provenance.get("natural_exact_standdown_panels", [])) != 3:
+        raise SystemExit("unexpected natural exact-standdown panel count")
     if figure_provenance.get("panel_csv_sha256") != sha256(atlas_data / "panel_c_curves.csv"):
         raise SystemExit("figure input hash does not match panel curves")
     if figure_provenance.get("cell_csv_sha256") != sha256(atlas_data / "cell_c_curves.csv"):
@@ -113,7 +117,7 @@ def main() -> None:
     for name in figure_includes:
         figure_include = (
             "\\includegraphics[width=\\textwidth]"
-            f"{{figures/section4_c_atlas_20260812_v1/{name}}}"
+            f"{{figures/section4_c_atlas_20260812_v2/{name}}}"
         )
         if figure_include not in manuscript:
             raise SystemExit(f"manuscript does not include verified atlas figure: {name}")

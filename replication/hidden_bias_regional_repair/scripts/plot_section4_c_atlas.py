@@ -28,6 +28,7 @@ EMPHASIZED = (
     "aligned_digits_ctmle", "aligned_digits_cui",
     "aligned_breast_ctmle", "aligned_breast_cui",
 )
+SAFETY_ACTIVE = ("cui_s2_aipw", "real_digits_cui", "real_breast_cui")
 TITLE = {
     "ks_ctmle": "Kang–Schafer × C-TMLE",
     "ks_cui": "Kang–Schafer × selective ML",
@@ -101,6 +102,8 @@ def index_summary(rows: list[dict[str, str]]) -> dict[str, dict[float, dict[str,
             "hi": 100 * float(row["ci_hi"]),
             "activation": 100 * float(row["mean_activation"]),
             "harm": 100 * float(row["mean_harm_rate"]),
+            "gross_harm": 100 * float(row["equal_cell_gross_harm_mse"]),
+            "gross_benefit": 100 * float(row["equal_cell_gross_benefit_mse"]),
         }
     return result
 
@@ -166,6 +169,63 @@ def render_gain_atlas(
     plt.close(fig)
 
 
+def render_safety_atlas(
+    summary: dict[str, dict[float, dict[str, float]]],
+    path: Path,
+) -> None:
+    """Show what the safeguard does in natural low-opportunity settings.
+
+    At c=0 the positive-part rule applies every available candidate in full.
+    The harmful and helpful tails are kept separate so that cancellation in
+    average MSE cannot masquerade as safety.  Increasing c suppresses noisy
+    candidates; the first two panels show harm prevented and harm remaining,
+    while the third records the useful MSE reduction retained.
+    """
+    fig, axes = plt.subplots(1, 3, figsize=(7.35, 2.65), constrained_layout=True)
+    colors = ("#009E73", "#D55E00", "#0072B2")
+    labels = {
+        "cui_s2_aipw": "Cui scenario 2 / AIPW",
+        "real_digits_cui": "digits / selective ML",
+        "real_breast_cui": "breast cancer / selective ML",
+    }
+    for panel, color in zip(SAFETY_ACTIVE, colors):
+        curve = summary[panel]
+        baseline_harm = curve[0.0]["gross_harm"]
+        residual_harm = [curve[c]["gross_harm"] for c in C_GRID]
+        prevented_harm = [baseline_harm - value for value in residual_harm]
+        retained_benefit = [curve[c]["gross_benefit"] for c in C_GRID]
+        for ax, values in zip(axes, (prevented_harm, residual_harm, retained_benefit)):
+            ax.plot(
+                C_GRID, values, color=color, linewidth=1.8, marker="o",
+                markersize=3.0, label=labels[panel],
+            )
+    titles = (
+        "(a) Harm prevented",
+        "(b) Harm remaining",
+        "(c) Benefit retained",
+    )
+    for ax, title in zip(axes, titles):
+        base_axis(ax, "% of reference MSE")
+        ax.set_ylim(bottom=-0.05)
+        ax.set_title(title, loc="left", fontweight="bold")
+    axes[1].text(
+        0.98, 0.95,
+        "TMLE and C-TMLE:\nno admissible candidate",
+        transform=axes[1].transAxes, ha="right", va="top", fontsize=6.4,
+        color="0.35",
+    )
+    axes[2].legend(frameon=False, fontsize=6.2, loc="upper right")
+    fig.savefig(
+        path, bbox_inches="tight",
+        metadata={"Creator": "plot_section4_c_atlas.py", "CreationDate": None},
+    )
+    fig.savefig(
+        path.with_suffix(".png"), dpi=180, bbox_inches="tight",
+        metadata={"Software": "plot_section4_c_atlas.py"},
+    )
+    plt.close(fig)
+
+
 def diagnostic_lines(
     ax: plt.Axes,
     panels: tuple[str, ...],
@@ -221,12 +281,12 @@ def main() -> None:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     outputs = {
         "section4_c_natural_1.pdf": (NATURAL[:6], (3, 2)),
-        "section4_c_natural_2.pdf": (NATURAL[6:], (3, 2)),
         "section4_c_emphasized_1.pdf": (EMPHASIZED[:4], (2, 2)),
         "section4_c_emphasized_2.pdf": (EMPHASIZED[4:], (2, 2)),
     }
     for name, (panels, shape) in outputs.items():
         render_gain_atlas(panels, shape, summary, cells, args.out_dir / name)
+    render_safety_atlas(summary, args.out_dir / "section4_c_natural_2.pdf")
     render_internal(summary, args.out_dir / "section4_c_internal.pdf")
     provenance = {
         "status": "COMPLETE",
@@ -235,6 +295,10 @@ def main() -> None:
         "script_sha256": sha256(Path(__file__)),
         "natural_panels": list(NATURAL),
         "emphasized_panels": list(EMPHASIZED),
+        "natural_safety_panels": list(SAFETY_ACTIVE),
+        "natural_exact_standdown_panels": [
+            "cui_s2_tmle", "real_digits_ctmle", "real_breast_ctmle"
+        ],
         "internal_diagnostic": "activation, harm, and TMLE adapter ablation",
         "outputs": {
             path.name: sha256(path)
@@ -247,10 +311,13 @@ def main() -> None:
     )
     (args.out_dir / "README.md").write_text(
         "# Section 4 c-curve atlases\n\n"
-        "The natural and emphasized atlases contain one panel for every reported "
-        "missing-outcome dataset/design by upstream-estimator combination. Thin "
-        "gray lines are native cells; the heavy blue line is the equal-cell target "
-        "and its paired-bootstrap interval. The internal atlas reports activation, "
+        "The efficacy atlases contain one panel for every reported missing-outcome "
+        "dataset/design by upstream-estimator combination. Thin gray lines are "
+        "native cells; the heavy blue line is the equal-cell target and its paired-"
+        "bootstrap interval. Natural part II is purpose-built for safety: it "
+        "separates harmful-tail MSE prevented, harmful-tail MSE remaining, and "
+        "helpful-tail MSE retained instead of presenting stand-down as failed "
+        "efficacy. The internal atlas reports activation, "
         "individual harm, and the plain-TMLE adapter ablation. The dotted line is "
         "the frozen primary `c=2`.\n",
         encoding="utf-8",
