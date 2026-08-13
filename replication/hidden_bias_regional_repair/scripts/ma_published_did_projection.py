@@ -15,7 +15,8 @@ from pathlib import Path
 
 import numpy as np
 from sklearn.linear_model import LinearRegression, LogisticRegression
-from xgboost import XGBRegressor
+from sklearn.model_selection import StratifiedKFold
+from xgboost import XGBClassifier, XGBRegressor
 
 
 def parse_args() -> argparse.Namespace:
@@ -25,6 +26,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dgp", type=int, choices=[1, 2, 3, 4], nargs="+", default=[2, 3])
     parser.add_argument("--h", type=float, default=0.05)
     parser.add_argument("--folds", type=int, default=3)
+    parser.add_argument(
+        "--adapter",
+        choices=("projection", "regional_residual"),
+        default="projection",
+    )
     parser.add_argument(
         "--projection-learner",
         choices=("linear", "xgboost"),
@@ -48,6 +54,102 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=1_108_202_026)
     parser.add_argument("--out", type=Path, required=True)
     return parser.parse_args()
+
+
+def estimated_supported_region(
+    x: np.ndarray,
+    dy: np.ndarray,
+    response: np.ndarray,
+    folds: int,
+    seed: int,
+    quantile: float = 0.10,
+    min_responders: int = 30,
+    detector_c: float = 1.0,
+) -> np.ndarray:
+    """Frozen residual-rank detector inside the estimated low-response tail."""
+    labels = np.empty(len(response), dtype=int)
+    splitter = StratifiedKFold(
+        n_splits=folds, shuffle=True, random_state=seed
+    )
+    for fold, (_, test_index) in enumerate(
+        splitter.split(x, response.astype(int))
+    ):
+        labels[test_index] = fold
+    response_score = np.empty(len(response))
+    outcome_prediction = np.empty(len(response))
+    global_mean = float(np.mean(dy[response.astype(bool)]))
+    for fold in range(folds):
+        test = labels == fold
+        train = ~test
+        classifier = XGBClassifier(
+            random_state=seed + 101 * fold, n_jobs=1, verbosity=0
+        )
+        classifier.fit(x[train], response[train].astype(int))
+        response_score[test] = classifier.predict_proba(x[test])[:, 1]
+        observed_train = train & response.astype(bool)
+        if int(np.sum(observed_train)) < 20:
+            outcome_prediction[test] = global_mean
+        else:
+            model = XGBRegressor(
+                random_state=seed + 211 * fold, n_jobs=1, verbosity=0
+            )
+            model.fit(x[observed_train], dy[observed_train])
+            outcome_prediction[test] = model.predict(x[test])
+
+    order = np.argsort(response_score, kind="mergesort")
+    minimum_count = max(1, int(math.ceil(quantile * len(response))))
+    observed_cumulative = np.cumsum(response[order].astype(bool))
+    hits = np.flatnonzero(observed_cumulative >= min_responders)
+    low_count = (
+        max(minimum_count, int(hits[0]) + 1) if len(hits) else len(response)
+    )
+    low_response = np.zeros(len(response), dtype=bool)
+    low_response[order[:low_count]] = True
+    observed = response.astype(bool)
+    if int(np.sum(low_response & observed)) < min_responders:
+        return np.zeros(len(response), dtype=bool)
+
+    weighted_residual = np.full(len(response), np.nan)
+    weighted_residual[observed] = (
+        dy[observed] - outcome_prediction[observed]
+    ) / np.maximum(response_score[observed], 0.02)
+    direction = float(np.mean(weighted_residual[low_response & observed]))
+    if not np.isfinite(direction) or direction == 0.0:
+        return np.zeros(len(response), dtype=bool)
+    signed = np.sign(direction) * weighted_residual
+
+    rank_signal = np.empty(len(response))
+    for fold in range(folds):
+        test = labels == fold
+        train = (~test) & observed
+        if int(np.sum(train)) < 20:
+            rank_signal[test] = float(np.nanmean(signed[train]))
+            continue
+        model = XGBRegressor(
+            random_state=seed + 401 * fold, n_jobs=1, verbosity=0
+        )
+        model.fit(x[train], signed[train])
+        rank_signal[test] = model.predict(x[test])
+
+    inside = np.flatnonzero(low_response)
+    ranked = inside[
+        np.argsort(-rank_signal[inside], kind="mergesort")
+    ]
+    best = np.zeros(len(response), dtype=bool)
+    best_score = 0.0
+    for fraction in (0.25, 0.50, 0.75, 1.00):
+        count = max(1, int(math.ceil(fraction * len(ranked))))
+        candidate = np.zeros(len(response), dtype=bool)
+        candidate[ranked[:count]] = True
+        values = signed[candidate & observed]
+        if len(values) < min_responders:
+            continue
+        variance = float(np.var(values, ddof=1) / len(values))
+        score = float(np.mean(values)) ** 2 - detector_c * variance
+        if score > best_score:
+            best_score = score
+            best = candidate
+    return best
 
 
 def make_data(n: int, dgp: int, seed: int) -> dict[str, np.ndarray]:
@@ -304,6 +406,104 @@ def honest_influence_projection(
     return applied_control, selected_gammas, ref_risk, repaired_risk
 
 
+def honest_regional_residual(
+    x: np.ndarray,
+    d: np.ndarray,
+    dy: np.ndarray,
+    p: np.ndarray,
+    m: np.ndarray,
+    score: np.ndarray,
+    region: np.ndarray,
+    h: float,
+    folds: int,
+    seed: int,
+    gammas: list[float],
+    gamma_se: float,
+) -> tuple[np.ndarray, list[float], float, float]:
+    """Cross-fit a regional outcome residual and gate by full score risk."""
+    if folds < 3:
+        raise ValueError("honest residual selection requires at least three folds")
+    labels = np.random.default_rng(seed).integers(0, folds, len(d))
+    response = 1.0 - d
+    applied_residual = np.zeros(len(d))
+    selected_gammas: list[float] = []
+    for fold in range(folds):
+        test = labels == fold
+        validation = labels == ((fold + 1) % folds)
+        train = ~(test | validation)
+        observed_train = train & response.astype(bool)
+        if int(np.sum(observed_train)) < 20 or not np.any(region):
+            selected_gammas.append(0.0)
+            continue
+        response_probability = np.clip(1.0 - p, 1e-6, 1.0)
+        weights = (
+            (1.0 - response_probability[observed_train])
+            / response_probability[observed_train] ** 2
+        )
+        model = XGBRegressor(
+            random_state=seed + 503 * fold, n_jobs=1, verbosity=0
+        )
+        model.fit(
+            x[observed_train],
+            dy[observed_train] - m[observed_train],
+            sample_weight=weights,
+        )
+        validation_residual = model.predict(x[validation]) * region[validation]
+        test_residual = model.predict(x[test]) * region[test]
+
+        _, base_validation_phi = _ma_theta_direct_score(
+            d[validation], dy[validation], p[validation], m[validation], h
+        )
+        base_validation_theta, _ = _ma_theta_direct_score(
+            d[validation], dy[validation], p[validation], m[validation], h
+        )
+        base_direct_score = base_validation_theta + base_validation_phi
+        common_center = float(np.mean(score[validation]))
+        baseline_loss = (score[validation] - common_center) ** 2
+        eligible = [0.0]
+        mean_losses = {0.0: float(np.mean(baseline_loss))}
+        for gamma in gammas:
+            if gamma == 0.0:
+                continue
+            candidate_theta, candidate_phi = _ma_theta_direct_score(
+                d[validation],
+                dy[validation],
+                p[validation],
+                m[validation] + gamma * validation_residual,
+                h,
+            )
+            candidate_direct_score = candidate_theta + candidate_phi
+            candidate_score = (
+                score[validation]
+                + candidate_direct_score
+                - base_direct_score
+            )
+            candidate_loss = (candidate_score - common_center) ** 2
+            improvement = baseline_loss - candidate_loss
+            mean_improvement = float(np.mean(improvement))
+            se_improvement = float(
+                np.std(improvement, ddof=1) / math.sqrt(len(improvement))
+            )
+            mean_losses[gamma] = float(np.mean(candidate_loss))
+            if mean_improvement > gamma_se * se_improvement:
+                eligible.append(gamma)
+        selected = min(eligible, key=lambda gamma: (mean_losses[gamma], gamma))
+        selected_gammas.append(float(selected))
+        applied_residual[test] = selected * test_residual
+
+    base_theta, base_phi = _ma_theta_direct_score(d, dy, p, m, h)
+    candidate_theta, candidate_phi = _ma_theta_direct_score(
+        d, dy, p, m + applied_residual, h
+    )
+    base_direct_score = base_theta + base_phi
+    candidate_direct_score = candidate_theta + candidate_phi
+    candidate_score = score + candidate_direct_score - base_direct_score
+    common_center = float(np.mean(score))
+    ref_risk = float(np.mean((score - common_center) ** 2))
+    repaired_risk = float(np.mean((candidate_score - common_center) ** 2))
+    return applied_residual, selected_gammas, ref_risk, repaired_risk
+
+
 def main() -> None:
     args = parse_args()
     if 0.0 not in args.gammas:
@@ -320,19 +520,53 @@ def main() -> None:
             # repair must see the observed raw covariates; feeding it only Z
             # would force it to inherit the reference's designed outcome-model
             # misspecification in DGP 3.
-            applied_control, selected_gammas, ref_risk, repaired_risk = honest_influence_projection(
-                data["x"],
-                data["d"],
-                np.asarray(reference["p"], dtype=float),
-                score,
-                args.folds,
-                seed + 20_003,
-                list(args.gammas),
-                args.gamma_se,
-                args.projection_learner,
-            )
             ref = float(reference["theta"])
-            repaired = ref + float(np.mean(applied_control))
+            if args.adapter == "projection":
+                applied_control, selected_gammas, ref_risk, repaired_risk = honest_influence_projection(
+                    data["x"],
+                    data["d"],
+                    np.asarray(reference["p"], dtype=float),
+                    score,
+                    args.folds,
+                    seed + 20_003,
+                    list(args.gammas),
+                    args.gamma_se,
+                    args.projection_learner,
+                )
+                repaired = ref + float(np.mean(applied_control))
+                region = np.zeros(len(data["d"]), dtype=bool)
+            else:
+                region = estimated_supported_region(
+                    data["x"],
+                    data["dy"],
+                    1.0 - data["d"],
+                    args.folds,
+                    seed + 10_003,
+                )
+                applied_residual, selected_gammas, ref_risk, repaired_risk = honest_regional_residual(
+                    data["x"],
+                    data["d"],
+                    data["dy"],
+                    np.asarray(reference["p"], dtype=float),
+                    np.asarray(reference["m"], dtype=float),
+                    score,
+                    region,
+                    args.h,
+                    args.folds,
+                    seed + 20_003,
+                    list(args.gammas),
+                    args.gamma_se,
+                )
+                base_direct = _ma_theta_direct_score(
+                    data["d"], data["dy"], np.asarray(reference["p"]),
+                    np.asarray(reference["m"]), args.h
+                )[0]
+                candidate_direct = _ma_theta_direct_score(
+                    data["d"], data["dy"], np.asarray(reference["p"]),
+                    np.asarray(reference["m"]) + applied_residual, args.h
+                )[0]
+                repaired = ref + candidate_direct - base_direct
+                applied_control = applied_residual
             gamma = float(np.mean(selected_gammas))
             rows.append(
                 {
@@ -341,6 +575,7 @@ def main() -> None:
                     "seed": seed,
                     "n": args.n,
                     "h": args.h,
+                    "adapter": args.adapter,
                     "projection_learner": args.projection_learner,
                     "ref_error": ref,
                     "repair_error": repaired,
@@ -355,6 +590,8 @@ def main() -> None:
                     "outcome_gradient_norm": reference["outcome_gradient_norm"],
                     "score_max_abs": reference["score_max_abs"],
                     "mean_control": float(np.mean(applied_control)),
+                    "region_mass": float(np.mean(region)),
+                    "region_responders": int(np.sum(region & (data["d"] == 0.0))),
                 }
             )
             print(

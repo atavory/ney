@@ -1459,6 +1459,7 @@ def _crossfit_selected(
         elif repair_mode not in {
             "targeting",
             "if_residual",
+            "regional_if_residual",
             "if_projection",
             "if_library",
         }:
@@ -1857,6 +1858,98 @@ def _crossfit_selected(
                 ).tolist()
                 candidate_kind[(tau, region_damp)] = (
                     "reference" if region_damp == 0.0 else "if_projection"
+                )
+    if repair_mode == "regional_if_residual":
+        residual_taus = (
+            (min(tau_grid),)
+            if reference_method in {"tmle", "ma_dr_bc", "cui_selective_ml"}
+            else tau_grid
+        )
+        for tau in residual_taus:
+            p_oof = np.clip(np.asarray(p_values[tau], dtype=float), 1e-6, 1.0)
+            base_outcome = np.asarray(ref_outcome_values[tau], dtype=float)
+            base_endpoint = np.asarray(ref_values[tau], dtype=float)
+            correction = _crossfit_weighted_residual_correction(
+                x,
+                y,
+                response,
+                p_oof,
+                base_outcome,
+                learner,
+                seed + 16001 + int(1000 * tau),
+                folds,
+            )
+            # The certified if_residual implementation omitted this mask and
+            # therefore applied a global correction.  This mode is the actual
+            # regional constructor described by the algorithm: learn an honest
+            # residual direction, but change the outcome expert only on the
+            # supported low-response proposal.
+            correction = correction * region.astype(float)
+
+            if reference_method == "ma_dr_bc":
+                trim_h = float(tau)
+                p_endpoint = np.clip(np.asarray(p_raw_values), 1e-12, 1.0)
+                base_selection_score = np.asarray(
+                    ma_projection_score, dtype=float
+                )
+            else:
+                base_selection_score = _aipw_score(
+                    y, response, p_oof, base_outcome
+                )
+            common_center = float(np.mean(base_selection_score))
+            baseline_loss = (
+                base_selection_score - common_center
+            ) ** 2
+            losses[tau] = [float(np.mean(baseline_loss))]
+
+            for region_damp in region_damp_grid:
+                candidate_outcome = (
+                    base_outcome + region_damp * correction
+                )
+                if reference_method == "ma_dr_bc":
+                    candidate_endpoint, _ = _ma_dr_bc_reference(
+                        y,
+                        response,
+                        p_endpoint,
+                        candidate_outcome,
+                        trim_h=trim_h,
+                        correction_order=1,
+                        sieve_degree=3,
+                    )
+                    candidate_selection_score = _crossfit_ma_dr_bc_score(
+                        y,
+                        response,
+                        p_endpoint,
+                        candidate_outcome,
+                        seed + 11003,
+                        folds,
+                        trim_h=trim_h,
+                        correction_order=1,
+                        sieve_degree=3,
+                    )
+                else:
+                    candidate_aipw = _aipw_score(
+                        y, response, p_oof, candidate_outcome
+                    )
+                    candidate_endpoint = (
+                        base_endpoint
+                        + candidate_aipw
+                        - base_selection_score
+                    )
+                    candidate_selection_score = candidate_aipw
+                candidate_loss = (
+                    candidate_selection_score - common_center
+                ) ** 2
+                rt_values[(tau, region_damp)] = candidate_endpoint
+                rt_outcome_values[(tau, region_damp)] = candidate_outcome
+                damp_losses[(tau, region_damp)] = candidate_loss.tolist()
+                damp_improvements[(tau, region_damp)] = (
+                    baseline_loss - candidate_loss
+                ).tolist()
+                candidate_kind[(tau, region_damp)] = (
+                    "reference"
+                    if region_damp == 0.0
+                    else "regional_if_residual"
                 )
     if repair_mode in {"if_residual", "if_library"}:
         residual_taus = (
@@ -2875,6 +2968,7 @@ def main() -> None:
             "targeting",
             "reweight",
             "if_residual",
+            "regional_if_residual",
             "if_projection",
             "if_library",
         ],
@@ -2882,8 +2976,8 @@ def main() -> None:
         help=(
             "Candidate construction: add a regional targeting fluctuation, "
             "refit with regional weights, learn a cross-fitted residual "
-            "correction, or learn the generic mean-zero MAR influence-score "
-            "projection."
+            "correction globally or only inside the supported region, or "
+            "learn the generic mean-zero MAR influence-score projection."
         ),
     )
     ap.add_argument(

@@ -100,6 +100,11 @@ def build_jobs(args) -> list[Job]:
                 out = args.run_dir / f"{stem}.csv"
                 rep_out = args.run_dir / f"{stem}.reps.csv"
                 log = args.run_dir / f"{stem}.log"
+                fixed_floor = (
+                    ("--tau-grid", "0.05")
+                    if method in {"tmle", "aipw"}
+                    else ()
+                )
                 command = (
                     str(args.python),
                     str(args.wrapper),
@@ -127,6 +132,7 @@ def build_jobs(args) -> list[Job]:
                     "30",
                     "--reference-method",
                     method,
+                    *fixed_floor,
                     "--propensity-mode",
                     "estimated",
                     "--learner",
@@ -139,6 +145,8 @@ def build_jobs(args) -> list[Job]:
                     *(str(value) for value in args.region_damp_grid),
                     "--validation-risk",
                     args.validation_risk,
+                    "--validation-loss-se",
+                    str(args.validation_loss_se),
                     "--c",
                     str(args.shrink_c),
                     "--folds",
@@ -246,7 +254,10 @@ def parse_args():
     parser.add_argument("--python", type=Path, default=Path(os.environ.get("PYTHON", "python3")))
     parser.add_argument("--owner", choices=["dml", "dml2"], required=True)
     parser.add_argument(
-        "--methods", nargs="+", choices=["ctmle", "cui_selective_ml"], required=True
+        "--methods",
+        nargs="+",
+        choices=["aipw", "tmle", "ctmle", "cui_selective_ml"],
+        required=True,
     )
     parser.add_argument(
         "--groups",
@@ -270,7 +281,13 @@ def parse_args():
     parser.add_argument("--shrink-c", type=float, default=2.0)
     parser.add_argument(
         "--repair-mode",
-        choices=["targeting", "if_residual", "if_projection", "if_library"],
+        choices=[
+            "targeting",
+            "if_residual",
+            "regional_if_residual",
+            "if_projection",
+            "if_library",
+        ],
         default="targeting",
     )
     parser.add_argument(
@@ -299,6 +316,7 @@ def parse_args():
         choices=["balanced_mse", "aipw_variance"],
         default="balanced_mse",
     )
+    parser.add_argument("--validation-loss-se", type=float, default=1.0)
     parser.add_argument("--source-commit", default="1f30548b050e6fbd190db3270bbb8334516b483c")
     parser.add_argument(
         "--manifest-only",
@@ -344,6 +362,7 @@ def main() -> None:
         "region_detector_c": args.region_detector_c,
         "region_damp_grid": args.region_damp_grid,
         "validation_risk": args.validation_risk,
+        "validation_loss_se": args.validation_loss_se,
         "frozen_source": str(args.frozen_source),
         "frozen_source_sha256": sha256(args.frozen_source),
         "wrapper": str(args.wrapper),
