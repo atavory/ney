@@ -145,7 +145,9 @@ def main() -> None:
     args = parser.parse_args()
     args.run_dir = args.run_dir.resolve()
     args.source = args.source.resolve()
-    args.python = args.python.resolve()
+    # Keep the virtual-environment entry point intact. Resolving this symlink
+    # reaches the system interpreter and drops the environment's XGBoost.
+    args.python = args.python.expanduser().absolute()
     args.run_dir.mkdir(parents=True, exist_ok=True)
 
     jobs = build_jobs(args)
