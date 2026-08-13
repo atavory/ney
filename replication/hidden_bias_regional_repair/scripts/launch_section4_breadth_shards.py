@@ -71,15 +71,25 @@ def design_cells(groups: set[str]):
             for strength in (3.0, 5.0, 8.0):
                 yield "alignment", design, 3000, strength
     if "real" in groups:
-        for design in ("real_digits_misaligned", "real_breast_cancer_misaligned"):
+        for design in (
+            "real_digits_misaligned",
+            "real_breast_cancer_misaligned",
+            "real_digits_aligned",
+            "real_breast_cancer_aligned",
+        ):
             for strength in (0.0, 1.0, 2.0):
                 yield "real", design, 6000, strength
+    if "anchor" in groups:
+        for strength in (0.0, 3.0, 5.0, 8.0):
+            yield "anchor", "regional_shift", 3000, strength
 
 
 def build_jobs(args) -> list[Job]:
     jobs: list[Job] = []
     index = 0
-    for group, design, n, strength in design_cells(set(args.groups)):
+    for cell_index, (group, design, n, strength) in enumerate(
+        design_cells(set(args.groups))
+    ):
         if args.design_filter and design not in set(args.design_filter):
             continue
         if args.strength_filter and strength not in set(args.strength_filter):
@@ -87,10 +97,10 @@ def build_jobs(args) -> list[Job]:
         for method in args.methods:
             for chunk in range(args.chunks):
                 index += 1
-                # Keep the complete downstream seed (including design offsets)
-                # inside sklearn/NumPy's uint32 RandomState range.  Adjacent
-                # chunks retain a wide, deterministic, disjoint interval.
-                seed = args.seed_base + index * 100_000
+                # Every estimator and residual scope sees the same generated
+                # sample.  The seed depends only on the design cell and chunk,
+                # never on method order or repair rule.
+                seed = args.seed_base + (cell_index * args.chunks + chunk + 1) * 100_000
                 if seed >= 2**32:
                     raise ValueError(f"seed exceeds uint32 range: {seed}")
                 stem = (
@@ -101,9 +111,7 @@ def build_jobs(args) -> list[Job]:
                 rep_out = args.run_dir / f"{stem}.reps.csv"
                 log = args.run_dir / f"{stem}.log"
                 fixed_floor = (
-                    ("--tau-grid", "0.05")
-                    if method in {"tmle", "aipw"}
-                    else ()
+                    ("--tau-grid", "0.05") if method in {"tmle", "aipw"} else ()
                 )
                 command = (
                     str(args.python),
@@ -123,11 +131,11 @@ def build_jobs(args) -> list[Job]:
                     "--design",
                     design,
                     "--mar-design",
-                    "box",
+                    "nonlinear_mar" if design == "regional_shift" else "box",
                     "--analysis-region",
                     "estimated_residual_lowp_supported",
                     "--region-quantile",
-                    "0.10",
+                    "0.20" if design == "regional_shift" else "0.10",
                     "--region-min-observed",
                     "30",
                     "--reference-method",
@@ -251,7 +259,9 @@ def parse_args():
         type=Path,
         default=Path(__file__).with_name("section4_breadth_experiments.py"),
     )
-    parser.add_argument("--python", type=Path, default=Path(os.environ.get("PYTHON", "python3")))
+    parser.add_argument(
+        "--python", type=Path, default=Path(os.environ.get("PYTHON", "python3"))
+    )
     parser.add_argument("--owner", choices=["dml", "dml2"], required=True)
     parser.add_argument(
         "--methods",
@@ -262,7 +272,7 @@ def parse_args():
     parser.add_argument(
         "--groups",
         nargs="+",
-        choices=["kang_schafer", "alignment", "real"],
+        choices=["kang_schafer", "alignment", "real", "anchor"],
         required=True,
     )
     parser.add_argument(
@@ -317,7 +327,9 @@ def parse_args():
         default="balanced_mse",
     )
     parser.add_argument("--validation-loss-se", type=float, default=1.0)
-    parser.add_argument("--source-commit", default="1f30548b050e6fbd190db3270bbb8334516b483c")
+    parser.add_argument(
+        "--source-commit", default="1f30548b050e6fbd190db3270bbb8334516b483c"
+    )
     parser.add_argument(
         "--manifest-only",
         action="store_true",
@@ -342,7 +354,9 @@ def main() -> None:
     manifest = args.run_dir / "manifest.tsv"
     write_manifest(manifest, jobs)
     provenance = {
-        "created_utc": datetime_module.datetime.now(datetime_module.timezone.utc).isoformat(),
+        "created_utc": datetime_module.datetime.now(
+            datetime_module.timezone.utc
+        ).isoformat(),
         "owner": args.owner,
         "groups": args.groups,
         "methods": args.methods,
@@ -380,7 +394,9 @@ def main() -> None:
         return
     lock = threading.Lock()
     status = {
-        "started_utc": datetime_module.datetime.now(datetime_module.timezone.utc).isoformat(),
+        "started_utc": datetime_module.datetime.now(
+            datetime_module.timezone.utc
+        ).isoformat(),
         "total_jobs": len(jobs),
         "completed_jobs": 0,
         "failed_jobs": 0,

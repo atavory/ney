@@ -45,8 +45,10 @@ ALIGNMENT_RAW_SCORE_CUTS = {
     0.30: 0.3807565804610278,
 }
 REAL_DESIGNS = {
-    "real_digits_misaligned": "digits",
-    "real_breast_cancer_misaligned": "breast_cancer",
+    "real_digits_misaligned": ("digits", "wider_partial"),
+    "real_breast_cancer_misaligned": ("breast_cancer", "wider_partial"),
+    "real_digits_aligned": ("digits", "aligned"),
+    "real_breast_cancer_aligned": ("breast_cancer", "aligned"),
 }
 
 
@@ -124,7 +126,14 @@ def _real_direction(name: str, width: int) -> np.ndarray:
     return direction / np.linalg.norm(direction)
 
 
-def _real_misaligned(n: int, epsilon: float, strength: float, name: str, seed: int):
+def _real_semisynthetic(
+    n: int,
+    epsilon: float,
+    strength: float,
+    name: str,
+    geometry: str,
+    seed: int,
+):
     rng = np.random.default_rng(seed)
     pool = _real_pool(name)
     rows = rng.integers(0, len(pool), n)
@@ -137,7 +146,12 @@ def _real_misaligned(n: int, epsilon: float, strength: float, name: str, seed: i
     internal_index = min(2, x.shape[1] - 1)
     internal = x[:, internal_index]
     internal = (internal - np.mean(internal)) / (np.std(internal) + 1e-12)
-    deviation = np.maximum(0.0, -0.52 - score) * (0.5 + internal)
+    if geometry == "wider_partial":
+        deviation = np.maximum(0.0, -0.52 - score) * (0.5 + internal)
+    elif geometry == "aligned":
+        deviation = low.astype(float)
+    else:
+        raise ValueError(f"unknown real-covariate geometry: {geometry}")
     mu = 0.3 + 0.4 * score + 0.3 * np.sin(1.5 * x[:, 1]) + strength * deviation
     y = mu + rng.standard_normal(n)
     response = rng.binomial(1, true_pi)
@@ -165,7 +179,10 @@ def _install_adapter(module) -> None:
         if design in ALIGNMENT_DESIGNS:
             return _alignment(n, epsilon, strength, design, seed)
         if design in REAL_DESIGNS:
-            return _real_misaligned(n, epsilon, strength, REAL_DESIGNS[design], seed)
+            name, geometry = REAL_DESIGNS[design]
+            return _real_semisynthetic(
+                n, epsilon, strength, name, geometry, seed
+            )
         return original_make_data(n, epsilon, strength, design, seed, mar_design)
 
     def nuisance_kind(which: int) -> str | None:

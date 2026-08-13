@@ -55,110 +55,107 @@ def row_count(path: Path) -> int:
 def build_jobs(args) -> list[Job]:
     jobs: list[Job] = []
     index = 0
-    for design in DESIGNS:
-        for n in NS:
-            for method in args.methods:
-                for chunk in range(args.chunks):
-                    index += 1
-                    seed = args.seed_base + index * 100_000
-                    if seed >= 2**32:
-                        raise ValueError(f"seed exceeds uint32 range: {seed}")
-                    stem = (
-                        f"{args.owner}_d2_{design}_{method}_n{n}_"
-                        f"chunk{chunk:02d}"
+    for cell_index, (design, n) in enumerate(
+        (design, n) for design in DESIGNS for n in NS
+    ):
+        if args.design_filter and design not in set(args.design_filter):
+            continue
+        if args.n_filter and n not in set(args.n_filter):
+            continue
+        for method in args.methods:
+            for chunk in range(args.chunks):
+                index += 1
+                # Pair every estimator and residual scope on the exact
+                # same DGP sample; method/rule never enters the seed.
+                seed = args.seed_base + (cell_index * args.chunks + chunk + 1) * 100_000
+                if seed >= 2**32:
+                    raise ValueError(f"seed exceeds uint32 range: {seed}")
+                stem = f"{args.owner}_d2_{design}_{method}_n{n}_" f"chunk{chunk:02d}"
+                out = args.run_dir / f"{stem}.csv"
+                rep_out = args.run_dir / f"{stem}.reps.csv"
+                log = args.run_dir / f"{stem}.log"
+                fixed_floor = (
+                    ("--tau-grid", "0.05") if method in {"tmle", "aipw"} else ()
+                )
+                command = (
+                    str(args.python),
+                    str(args.wrapper),
+                    "--frozen-source",
+                    str(args.frozen_source),
+                    "--reps",
+                    str(args.reps_per_chunk),
+                    "--bootstraps",
+                    str(args.bootstraps),
+                    "--n",
+                    str(n),
+                    "--epsilon",
+                    "0.05",
+                    "--strength",
+                    "1.0",
+                    "--design",
+                    design,
+                    "--mar-design",
+                    "box",
+                    "--analysis-region",
+                    "estimated_residual_lowp_supported",
+                    "--region-quantile",
+                    "0.10",
+                    "--region-min-observed",
+                    "30",
+                    "--reference-method",
+                    method,
+                    *fixed_floor,
+                    "--propensity-mode",
+                    "estimated",
+                    "--learner",
+                    args.learner,
+                    "--propensity-learner",
+                    args.learner,
+                    "--repair-mode",
+                    args.repair_mode,
+                    "--region-damp-grid",
+                    *(str(value) for value in args.region_damp_grid),
+                    "--validation-risk",
+                    "aipw_variance",
+                    "--validation-loss-se",
+                    str(args.validation_loss_se),
+                    "--c",
+                    "2.0",
+                    "--folds",
+                    "3",
+                    "--selector",
+                    "obsval",
+                    "--lepski-c",
+                    "4",
+                    "--region-detector-c",
+                    str(args.region_detector_c),
+                    "--region-selector-ablation",
+                    "crossfit_rank_empty_standdown",
+                    "--seed",
+                    str(seed),
+                    "--progress-every",
+                    "1",
+                    "--out",
+                    str(out),
+                    "--rep-out",
+                    str(rep_out),
+                )
+                jobs.append(
+                    Job(
+                        index=index,
+                        group="cui_published",
+                        design=design,
+                        method=method,
+                        n=n,
+                        strength=1.0,
+                        chunk=chunk,
+                        seed=seed,
+                        out=out,
+                        rep_out=rep_out,
+                        log=log,
+                        command=command,
                     )
-                    out = args.run_dir / f"{stem}.csv"
-                    rep_out = args.run_dir / f"{stem}.reps.csv"
-                    log = args.run_dir / f"{stem}.log"
-                    fixed_floor = (
-                        ("--tau-grid", "0.05")
-                        if method in {"tmle", "aipw"}
-                        else ()
-                    )
-                    repair_mode = (
-                        args.repair_mode
-                        if method in {"tmle", "aipw"}
-                        else "if_residual"
-                    )
-                    command = (
-                        str(args.python),
-                        str(args.wrapper),
-                        "--frozen-source",
-                        str(args.frozen_source),
-                        "--reps",
-                        str(args.reps_per_chunk),
-                        "--bootstraps",
-                        str(args.bootstraps),
-                        "--n",
-                        str(n),
-                        "--epsilon",
-                        "0.05",
-                        "--strength",
-                        "1.0",
-                        "--design",
-                        design,
-                        "--mar-design",
-                        "box",
-                        "--analysis-region",
-                        "estimated_residual_lowp_supported",
-                        "--region-quantile",
-                        "0.10",
-                        "--region-min-observed",
-                        "30",
-                        "--reference-method",
-                        method,
-                        *fixed_floor,
-                        "--propensity-mode",
-                        "estimated",
-                        "--learner",
-                        args.learner,
-                        "--propensity-learner",
-                        args.learner,
-                        "--repair-mode",
-                        repair_mode,
-                        "--region-damp-grid",
-                        *(str(value) for value in args.region_damp_grid),
-                        "--validation-risk",
-                        "aipw_variance",
-                        "--validation-loss-se",
-                        str(args.validation_loss_se),
-                        "--c",
-                        "2.0",
-                        "--folds",
-                        "3",
-                        "--selector",
-                        "obsval",
-                        "--lepski-c",
-                        "4",
-                        "--region-detector-c",
-                        str(args.region_detector_c),
-                        "--region-selector-ablation",
-                        "crossfit_rank_empty_standdown",
-                        "--seed",
-                        str(seed),
-                        "--progress-every",
-                        "1",
-                        "--out",
-                        str(out),
-                        "--rep-out",
-                        str(rep_out),
-                    )
-                    jobs.append(
-                        Job(
-                            index=index,
-                            group="cui_published",
-                            design=design,
-                            method=method,
-                            n=n,
-                            strength=1.0,
-                            chunk=chunk,
-                            seed=seed,
-                            out=out,
-                            rep_out=rep_out,
-                            log=log,
-                            command=command,
-                        )
-                    )
+                )
     return jobs
 
 
@@ -242,6 +239,8 @@ def parse_args():
         default=["ctmle", "cui_selective_ml"],
     )
     parser.add_argument("--learner", choices=["xgboost"], default="xgboost")
+    parser.add_argument("--design-filter", nargs="+", choices=DESIGNS)
+    parser.add_argument("--n-filter", nargs="+", type=int, choices=NS)
     parser.add_argument("--chunks", type=int, default=24)
     parser.add_argument("--reps-per-chunk", type=int, default=4)
     parser.add_argument("--bootstraps", type=int, default=50)
@@ -250,7 +249,7 @@ def parse_args():
     parser.add_argument("--region-detector-c", type=float, default=1.0)
     parser.add_argument(
         "--repair-mode",
-        choices=("if_projection", "regional_if_residual"),
+        choices=("if_residual", "regional_if_residual"),
         default="if_projection",
     )
     parser.add_argument("--validation-loss-se", type=float, default=1.0)
@@ -293,6 +292,8 @@ def main() -> None:
             "cui_published_scenario2": "f_j(x)=x_j^2",
         },
         "methods": args.methods,
+        "design_filter": args.design_filter,
+        "n_filter": args.n_filter,
         "n_values": NS,
         "chunks": args.chunks,
         "reps_per_chunk": args.reps_per_chunk,

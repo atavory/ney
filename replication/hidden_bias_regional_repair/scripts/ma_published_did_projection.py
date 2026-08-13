@@ -23,12 +23,14 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--reps", type=int, default=12)
     parser.add_argument("--n", type=int, default=10_000)
-    parser.add_argument("--dgp", type=int, choices=[1, 2, 3, 4], nargs="+", default=[2, 3])
+    parser.add_argument(
+        "--dgp", type=int, choices=[1, 2, 3, 4], nargs="+", default=[2, 3]
+    )
     parser.add_argument("--h", type=float, default=0.05)
     parser.add_argument("--folds", type=int, default=3)
     parser.add_argument(
         "--adapter",
-        choices=("projection", "regional_residual"),
+        choices=("projection", "global_residual", "regional_residual"),
         default="projection",
     )
     parser.add_argument(
@@ -68,12 +70,8 @@ def estimated_supported_region(
 ) -> np.ndarray:
     """Frozen residual-rank detector inside the estimated low-response tail."""
     labels = np.empty(len(response), dtype=int)
-    splitter = StratifiedKFold(
-        n_splits=folds, shuffle=True, random_state=seed
-    )
-    for fold, (_, test_index) in enumerate(
-        splitter.split(x, response.astype(int))
-    ):
+    splitter = StratifiedKFold(n_splits=folds, shuffle=True, random_state=seed)
+    for fold, (_, test_index) in enumerate(splitter.split(x, response.astype(int))):
         labels[test_index] = fold
     response_score = np.empty(len(response))
     outcome_prediction = np.empty(len(response))
@@ -90,9 +88,7 @@ def estimated_supported_region(
         if int(np.sum(observed_train)) < 20:
             outcome_prediction[test] = global_mean
         else:
-            model = XGBRegressor(
-                random_state=seed + 211 * fold, n_jobs=1, verbosity=0
-            )
+            model = XGBRegressor(random_state=seed + 211 * fold, n_jobs=1, verbosity=0)
             model.fit(x[observed_train], dy[observed_train])
             outcome_prediction[test] = model.predict(x[test])
 
@@ -100,9 +96,7 @@ def estimated_supported_region(
     minimum_count = max(1, int(math.ceil(quantile * len(response))))
     observed_cumulative = np.cumsum(response[order].astype(bool))
     hits = np.flatnonzero(observed_cumulative >= min_responders)
-    low_count = (
-        max(minimum_count, int(hits[0]) + 1) if len(hits) else len(response)
-    )
+    low_count = max(minimum_count, int(hits[0]) + 1) if len(hits) else len(response)
     low_response = np.zeros(len(response), dtype=bool)
     low_response[order[:low_count]] = True
     observed = response.astype(bool)
@@ -125,16 +119,12 @@ def estimated_supported_region(
         if int(np.sum(train)) < 20:
             rank_signal[test] = float(np.nanmean(signed[train]))
             continue
-        model = XGBRegressor(
-            random_state=seed + 401 * fold, n_jobs=1, verbosity=0
-        )
+        model = XGBRegressor(random_state=seed + 401 * fold, n_jobs=1, verbosity=0)
         model.fit(x[train], signed[train])
         rank_signal[test] = model.predict(x[test])
 
     inside = np.flatnonzero(low_response)
-    ranked = inside[
-        np.argsort(-rank_signal[inside], kind="mergesort")
-    ]
+    ranked = inside[np.argsort(-rank_signal[inside], kind="mergesort")]
     best = np.zeros(len(response), dtype=bool)
     best_score = 0.0
     for fraction in (0.25, 0.50, 0.75, 1.00):
@@ -259,7 +249,9 @@ def _ma_theta_direct_score(
     return float(theta), phi
 
 
-def ma_reference_score(data: dict[str, np.ndarray], h: float) -> dict[str, np.ndarray | float]:
+def ma_reference_score(
+    data: dict[str, np.ndarray], h: float
+) -> dict[str, np.ndarray | float]:
     z, d, dy = data["z"], data["d"], data["dy"]
     design = np.column_stack([np.ones(len(z)), z])
     p_model = LogisticRegression(C=1e10, max_iter=2000, solver="lbfgs")
@@ -301,17 +293,15 @@ def ma_reference_score(data: dict[str, np.ndarray], h: float) -> dict[str, np.nd
         plus, minus = beta_m.copy(), beta_m.copy()
         plus[j] += step
         minus[j] -= step
-        grad_m[j] = (
-            theta_at(p, design @ plus) - theta_at(p, design @ minus)
-        ) / (2.0 * step)
+        grad_m[j] = (theta_at(p, design @ plus) - theta_at(p, design @ minus)) / (
+            2.0 * step
+        )
 
     p_hessian = (design.T * (p * (1.0 - p))) @ design / len(d)
     p_if = (design * (d - p)[:, None]) @ np.linalg.pinv(p_hessian).T
     residual = dy - m
     m_hessian = (design.T * (1.0 - d)) @ design / len(d)
-    m_if = (
-        design * ((1.0 - d) * residual)[:, None]
-    ) @ np.linalg.pinv(m_hessian).T
+    m_if = (design * ((1.0 - d) * residual)[:, None]) @ np.linalg.pinv(m_hessian).T
     first_stage_phi = p_if @ grad_p + m_if @ grad_m
     phi = direct_phi + first_stage_phi
     return {
@@ -387,13 +377,13 @@ def honest_influence_projection(
             if gamma == 0.0:
                 continue
             candidate_loss = (
-                score[validation]
-                + gamma * validation_control
-                - validation_center
+                score[validation] + gamma * validation_control - validation_center
             ) ** 2
             improvement = baseline_loss - candidate_loss
             mean_improvement = float(np.mean(improvement))
-            se_improvement = float(np.std(improvement, ddof=1) / math.sqrt(len(improvement)))
+            se_improvement = float(
+                np.std(improvement, ddof=1) / math.sqrt(len(improvement))
+            )
             mean_losses[gamma] = float(np.mean(candidate_loss))
             if mean_improvement > gamma_se * se_improvement:
                 eligible.append(gamma)
@@ -406,21 +396,21 @@ def honest_influence_projection(
     return applied_control, selected_gammas, ref_risk, repaired_risk
 
 
-def honest_regional_residual(
+def honest_outcome_residual(
     x: np.ndarray,
     d: np.ndarray,
     dy: np.ndarray,
     p: np.ndarray,
     m: np.ndarray,
     score: np.ndarray,
-    region: np.ndarray,
+    support: np.ndarray,
     h: float,
     folds: int,
     seed: int,
     gammas: list[float],
     gamma_se: float,
 ) -> tuple[np.ndarray, list[float], float, float]:
-    """Cross-fit a regional outcome residual and gate by full score risk."""
+    """Cross-fit a supported outcome residual and gate by full score risk."""
     if folds < 3:
         raise ValueError("honest residual selection requires at least three folds")
     labels = np.random.default_rng(seed).integers(0, folds, len(d))
@@ -432,24 +422,21 @@ def honest_regional_residual(
         validation = labels == ((fold + 1) % folds)
         train = ~(test | validation)
         observed_train = train & response.astype(bool)
-        if int(np.sum(observed_train)) < 20 or not np.any(region):
+        if int(np.sum(observed_train)) < 20 or not np.any(support):
             selected_gammas.append(0.0)
             continue
         response_probability = np.clip(1.0 - p, 1e-6, 1.0)
-        weights = (
-            (1.0 - response_probability[observed_train])
-            / response_probability[observed_train] ** 2
-        )
-        model = XGBRegressor(
-            random_state=seed + 503 * fold, n_jobs=1, verbosity=0
-        )
+        weights = (1.0 - response_probability[observed_train]) / response_probability[
+            observed_train
+        ] ** 2
+        model = XGBRegressor(random_state=seed + 503 * fold, n_jobs=1, verbosity=0)
         model.fit(
             x[observed_train],
             dy[observed_train] - m[observed_train],
             sample_weight=weights,
         )
-        validation_residual = model.predict(x[validation]) * region[validation]
-        test_residual = model.predict(x[test]) * region[test]
+        validation_residual = model.predict(x[validation]) * support[validation]
+        test_residual = model.predict(x[test]) * support[test]
 
         _, base_validation_phi = _ma_theta_direct_score(
             d[validation], dy[validation], p[validation], m[validation], h
@@ -474,9 +461,7 @@ def honest_regional_residual(
             )
             candidate_direct_score = candidate_theta + candidate_phi
             candidate_score = (
-                score[validation]
-                + candidate_direct_score
-                - base_direct_score
+                score[validation] + candidate_direct_score - base_direct_score
             )
             candidate_loss = (candidate_score - common_center) ** 2
             improvement = baseline_loss - candidate_loss
@@ -522,16 +507,18 @@ def main() -> None:
             # misspecification in DGP 3.
             ref = float(reference["theta"])
             if args.adapter == "projection":
-                applied_control, selected_gammas, ref_risk, repaired_risk = honest_influence_projection(
-                    data["x"],
-                    data["d"],
-                    np.asarray(reference["p"], dtype=float),
-                    score,
-                    args.folds,
-                    seed + 20_003,
-                    list(args.gammas),
-                    args.gamma_se,
-                    args.projection_learner,
+                applied_control, selected_gammas, ref_risk, repaired_risk = (
+                    honest_influence_projection(
+                        data["x"],
+                        data["d"],
+                        np.asarray(reference["p"], dtype=float),
+                        score,
+                        args.folds,
+                        seed + 20_003,
+                        list(args.gammas),
+                        args.gamma_se,
+                        args.projection_learner,
+                    )
                 )
                 repaired = ref + float(np.mean(applied_control))
                 region = np.zeros(len(data["d"]), dtype=bool)
@@ -543,27 +530,40 @@ def main() -> None:
                     args.folds,
                     seed + 10_003,
                 )
-                applied_residual, selected_gammas, ref_risk, repaired_risk = honest_regional_residual(
-                    data["x"],
-                    data["d"],
-                    data["dy"],
-                    np.asarray(reference["p"], dtype=float),
-                    np.asarray(reference["m"], dtype=float),
-                    score,
-                    region,
-                    args.h,
-                    args.folds,
-                    seed + 20_003,
-                    list(args.gammas),
-                    args.gamma_se,
+                support = (
+                    region
+                    if args.adapter == "regional_residual"
+                    else np.ones(len(region), dtype=bool)
+                )
+                applied_residual, selected_gammas, ref_risk, repaired_risk = (
+                    honest_outcome_residual(
+                        data["x"],
+                        data["d"],
+                        data["dy"],
+                        np.asarray(reference["p"], dtype=float),
+                        np.asarray(reference["m"], dtype=float),
+                        score,
+                        support,
+                        args.h,
+                        args.folds,
+                        seed + 20_003,
+                        list(args.gammas),
+                        args.gamma_se,
+                    )
                 )
                 base_direct = _ma_theta_direct_score(
-                    data["d"], data["dy"], np.asarray(reference["p"]),
-                    np.asarray(reference["m"]), args.h
+                    data["d"],
+                    data["dy"],
+                    np.asarray(reference["p"]),
+                    np.asarray(reference["m"]),
+                    args.h,
                 )[0]
                 candidate_direct = _ma_theta_direct_score(
-                    data["d"], data["dy"], np.asarray(reference["p"]),
-                    np.asarray(reference["m"]) + applied_residual, args.h
+                    data["d"],
+                    data["dy"],
+                    np.asarray(reference["p"]),
+                    np.asarray(reference["m"]) + applied_residual,
+                    args.h,
                 )[0]
                 repaired = ref + candidate_direct - base_direct
                 applied_control = applied_residual
@@ -592,6 +592,14 @@ def main() -> None:
                     "mean_control": float(np.mean(applied_control)),
                     "region_mass": float(np.mean(region)),
                     "region_responders": int(np.sum(region & (data["d"] == 0.0))),
+                    "repair_support_mass": (
+                        float(np.mean(support)) if args.adapter != "projection" else 0.0
+                    ),
+                    "repair_support_responders": (
+                        int(np.sum(support & (data["d"] == 0.0)))
+                        if args.adapter != "projection"
+                        else 0
+                    ),
                 }
             )
             print(
