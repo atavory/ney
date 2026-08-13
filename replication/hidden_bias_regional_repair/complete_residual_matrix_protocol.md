@@ -52,8 +52,11 @@ and 2.83-SE held-out full-score-risk gate as the missing-outcome comparison.
 
 ## Seeds
 
-- Breadth designs: base `3,900,000,000`; offsets depend only on design cell
-  and chunk.
+- Kang--Schafer, placement, and public-real designs: base `3,900,000,000`;
+  offsets depend only on design cell and chunk.
+- Regional-shift anchor: base `2,180,000,000`; offsets depend only on anchor
+  cell and chunk. This separate band is required because the frozen scientific
+  runner adds a `2,020,000,000` nonlinear-MAR namespace offset internally.
 - Published Cui scenarios: base `4,000,000,000`; offsets depend only on design
   cell and chunk.
 - Ma DGPs: base `4,100,000,000`; offsets depend only on DGP, chunk, and
@@ -80,3 +83,18 @@ single rule must pass a fresh-seed confirmation before it replaces the paper's
 current results.
 
 Execution-only smoke tests used separate seeds and cannot enter any summary.
+
+## Execution amendment: regional-shift seed band
+
+At 2026-08-13 09:44 UTC, before any regional-shift anchor row completed, the
+first anchor jobs failed at sklearn's random-state constructor. The original
+launcher had checked that the manifest seed was below `2**32` but had not
+included the scientific runner's design and nonlinear-MAR namespace offsets.
+The failed attempts produced no scientific rows and are excluded.
+
+The scientific source, estimands, methods, rules, candidate paths, and all
+other settings remain frozen. Only the four never-completed anchor cells move
+to the fresh base `2,180,000,000`, shared by all four estimators and both
+rules. The launcher now fail-closes on a conservative upper bound for every
+derived sklearn/XGBoost seed. Existing completed rows retain their original
+frozen bands and are not rerun or altered.

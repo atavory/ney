@@ -48,6 +48,63 @@ def row_count(path: Path) -> int:
         return max(0, sum(1 for _ in handle) - 1)
 
 
+def maximum_internal_seed(
+    seed: int,
+    design: str,
+    mar_design: str,
+    n: int,
+    strength: float,
+    reps_per_chunk: int,
+    bootstraps: int,
+) -> int:
+    """Conservative upper bound for sklearn/XGBoost random-state seeds.
+
+    The scientific runner adds design, MAR, replication, nuisance-fit, and
+    whole-procedure-bootstrap offsets to the manifest seed.  Checking only
+    the manifest seed allowed the nonlinear-MAR anchor to overflow uint32.
+    Keep this execution guard synchronized with validated_reference_transfer.
+    """
+    known_design_offsets = {
+        "flat": 0,
+        "smooth": 1,
+        "pockets": 2,
+        "oscillatory": 3,
+        "diabetes_real": 11,
+        "diabetes_semisynth": 12,
+        "diabetes_misaligned": 13,
+        "ihdp_semisynth": 21,
+        "ihdp_misaligned": 22,
+        "acic2016_semisynth": 31,
+        "acic2016_misaligned": 32,
+    }
+    if design in known_design_offsets:
+        design_offset = known_design_offsets[design] * 10_000_000
+    else:
+        design_offset = sum(
+            (index + 1) * ord(character)
+            for index, character in enumerate(design)
+        ) * 1000
+    mar_offset = {
+        "box": 0,
+        "smooth_tail": 101,
+        "nonlinear_mar": 202,
+        "two_stratum_flip": 404,
+    }.get(mar_design, 303) * 10_000_000
+    one_rep_seed = (
+        seed
+        + n * 1009
+        + 50 * 100003
+        + int(round(strength * 100)) * 10007
+        + max(0, reps_per_chunk - 1) * 37
+        + design_offset
+        + mar_offset
+    )
+    # The largest nested path is the whole-procedure bootstrap, followed by
+    # response-region and nuisance-fit offsets.  One million is a strict
+    # conservative cushion over all current nested offsets.
+    return one_rep_seed + 1_000_000
+
+
 def design_cells(groups: set[str]):
     if "kang_schafer" in groups:
         for design in (
@@ -101,8 +158,22 @@ def build_jobs(args) -> list[Job]:
                 # sample.  The seed depends only on the design cell and chunk,
                 # never on method order or repair rule.
                 seed = args.seed_base + (cell_index * args.chunks + chunk + 1) * 100_000
-                if seed >= 2**32:
-                    raise ValueError(f"seed exceeds uint32 range: {seed}")
+                mar_design = "nonlinear_mar" if design == "regional_shift" else "box"
+                internal_seed = maximum_internal_seed(
+                    seed,
+                    design,
+                    mar_design,
+                    n,
+                    strength,
+                    args.reps_per_chunk,
+                    args.bootstraps,
+                )
+                if internal_seed >= 2**32:
+                    raise ValueError(
+                        "derived seed exceeds uint32 range: "
+                        f"manifest={seed} maximum_internal={internal_seed} "
+                        f"design={design} strength={strength}"
+                    )
                 stem = (
                     f"{args.owner}_{group}_{design}_{method}_n{n}_"
                     f"s{strength:g}_chunk{chunk:02d}"
@@ -131,7 +202,7 @@ def build_jobs(args) -> list[Job]:
                     "--design",
                     design,
                     "--mar-design",
-                    "nonlinear_mar" if design == "regional_shift" else "box",
+                    mar_design,
                     "--analysis-region",
                     "estimated_residual_lowp_supported",
                     "--region-quantile",
