@@ -145,8 +145,12 @@ def build_jobs(args) -> list[Job]:
     jobs: list[Job] = []
     index = 0
     for cell_index, (group, design, n, strength) in enumerate(
-        design_cells(set(args.groups))
+        design_cells({"kang_schafer", "alignment", "real", "anchor"})
     ):
+        # Seed identity is invariant to how the matrix is partitioned across
+        # hosts: enumerate the full frozen cell universe, then filter work.
+        if group not in set(args.groups):
+            continue
         if args.design_filter and design not in set(args.design_filter):
             continue
         if args.strength_filter and strength not in set(args.strength_filter):
@@ -182,7 +186,9 @@ def build_jobs(args) -> list[Job]:
                 rep_out = args.run_dir / f"{stem}.reps.csv"
                 log = args.run_dir / f"{stem}.log"
                 fixed_floor = (
-                    ("--tau-grid", "0.05") if method in {"tmle", "aipw"} else ()
+                    ("--tau-grid", "0.05")
+                    if method in {"tmle", "aipw", "ma_dr_bc"}
+                    else ()
                 )
                 command = (
                     str(args.python),
@@ -337,7 +343,7 @@ def parse_args():
     parser.add_argument(
         "--methods",
         nargs="+",
-        choices=["aipw", "tmle", "ctmle", "cui_selective_ml"],
+        choices=["aipw", "tmle", "ctmle", "cui_selective_ml", "ma_dr_bc"],
         required=True,
     )
     parser.add_argument(
@@ -367,6 +373,7 @@ def parse_args():
             "if_residual",
             "regional_if_residual",
             "if_projection",
+            "regional_if_projection",
             "if_library",
         ],
         default="targeting",

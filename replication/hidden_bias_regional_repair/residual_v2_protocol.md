@@ -8,6 +8,12 @@ the manuscript described it as regional. No residual-v2 simulation was run
 under this draft. The operative protocol is
 `regional_residual_v2_protocol.md`.
 
+**2026-08-14 note.** Both v2 documents are historical mechanism records, not
+the operative universal-function protocol. Their TMLE-versus-Ma native-suite
+split is not a Cartesian expert-by-dataset evaluation, and their 2.83-SE gate
+is now a hypothesis under exact paired ablation rather than an accepted safety
+calibration. See `UNIFIED_REPAIR_RESEARCH_LOG_20260814.md`.
+
 ## Candidate construction
 
 The repair remains an outcome-residual repair. It does not project the

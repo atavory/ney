@@ -4,6 +4,14 @@ Frozen before inspecting any regional-residual-v2 simulation output on
 2026-08-12. This protocol supersedes `residual_v2_protocol.md` before that
 draft was executed.
 
+**Historical protocol as of 2026-08-14.** It is retained to reproduce the
+regional-residual diagnostic, but it is not the paper's prospective universal
+rule. It evaluates different experts on different native datasets and cannot
+support a Cartesian cross-expert claim. The 2.83-SE normal-theory gate also
+requires exact paired comparison and tail-calibration diagnostics before it
+can be called conservative. Current work is documented in
+`UNIFIED_REPAIR_RESEARCH_LOG_20260814.md`.
+
 ## Region and candidate construction
 
 The repair changes the outcome model only inside a supported, estimated

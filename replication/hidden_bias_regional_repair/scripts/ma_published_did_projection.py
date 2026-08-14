@@ -18,6 +18,15 @@ from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from xgboost import XGBClassifier, XGBRegressor
 
+from unified_expert_repair import (
+    ExpertEvaluation,
+    FunctionalExpert,
+    RepairParameters,
+    RepairProposal,
+    repair_expert,
+    select_candidate,
+)
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -30,9 +39,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--folds", type=int, default=3)
     parser.add_argument(
         "--adapter",
-        choices=("projection", "global_residual", "regional_residual"),
-        default="projection",
+        choices=(
+            "projection",
+            "global_projection",
+            "regional_projection",
+            "global_residual",
+            "regional_residual",
+        ),
+        help="Deprecated combined spelling; prefer --scope and --construction.",
     )
+    parser.add_argument("--scope", choices=("global", "regional"))
+    parser.add_argument("--construction", choices=("residual", "projection"))
     parser.add_argument(
         "--projection-learner",
         choices=("linear", "xgboost"),
@@ -47,6 +64,7 @@ def parse_args() -> argparse.Namespace:
             "7 nonzero gamma candidates (Phi^-1(1-.05/21)=2.82)."
         ),
     )
+    parser.add_argument("--shrink-c", type=float, default=2.0)
     parser.add_argument(
         "--gammas",
         type=float,
@@ -321,12 +339,13 @@ def honest_influence_projection(
     d: np.ndarray,
     p: np.ndarray,
     score: np.ndarray,
+    support: np.ndarray,
     folds: int,
     seed: int,
     gammas: list[float],
     gamma_se: float,
     projection_learner: str,
-) -> tuple[np.ndarray, list[float], float, float]:
+) -> tuple[np.ndarray, np.ndarray, list[float], float, float]:
     if folds < 3:
         raise ValueError("honest projection requires at least three folds")
     rng = np.random.default_rng(seed)
@@ -367,33 +386,29 @@ def honest_influence_projection(
         lower, upper = np.quantile(training_prediction, [0.01, 0.99])
         validation_prediction = np.clip(model.predict(z[validation]), lower, upper)
         test_prediction = np.clip(model.predict(z[test]), lower, upper)
-        validation_control = a[validation] * validation_prediction
-        test_control = a[test] * test_prediction
+        validation_control = (
+            a[validation] * validation_prediction * support[validation]
+        )
+        test_control = a[test] * test_prediction * support[test]
         validation_center = float(np.mean(score[validation]))
-        baseline_loss = (score[validation] - validation_center) ** 2
-        eligible = [0.0]
-        mean_losses = {0.0: float(np.mean(baseline_loss))}
-        for gamma in gammas:
-            if gamma == 0.0:
-                continue
-            candidate_loss = (
-                score[validation] + gamma * validation_control - validation_center
-            ) ** 2
-            improvement = baseline_loss - candidate_loss
-            mean_improvement = float(np.mean(improvement))
-            se_improvement = float(
-                np.std(improvement, ddof=1) / math.sqrt(len(improvement))
-            )
-            mean_losses[gamma] = float(np.mean(candidate_loss))
-            if mean_improvement > gamma_se * se_improvement:
-                eligible.append(gamma)
-        selected = min(eligible, key=lambda gamma: (mean_losses[gamma], gamma))
+        candidate_scores = [
+            score[validation] + gamma * validation_control for gamma in gammas
+        ]
+        selected_index = select_candidate(
+            score[validation],
+            candidate_scores,
+            gammas,
+            gamma_se,
+            center=validation_center,
+        )
+        selected = gammas[selected_index]
         selected_gammas.append(float(selected))
         applied_control[test] = selected * test_control
     common_center = float(np.mean(score))
     ref_risk = float(np.mean((score - common_center) ** 2))
-    repaired_risk = float(np.mean((score + applied_control - common_center) ** 2))
-    return applied_control, selected_gammas, ref_risk, repaired_risk
+    candidate_score = score + applied_control
+    repaired_risk = float(np.mean((candidate_score - common_center) ** 2))
+    return applied_control, candidate_score, selected_gammas, ref_risk, repaired_risk
 
 
 def honest_outcome_residual(
@@ -409,7 +424,7 @@ def honest_outcome_residual(
     seed: int,
     gammas: list[float],
     gamma_se: float,
-) -> tuple[np.ndarray, list[float], float, float]:
+) -> tuple[np.ndarray, np.ndarray, list[float], float, float]:
     """Cross-fit a supported outcome residual and gate by full score risk."""
     if folds < 3:
         raise ValueError("honest residual selection requires at least three folds")
@@ -446,12 +461,8 @@ def honest_outcome_residual(
         )
         base_direct_score = base_validation_theta + base_validation_phi
         common_center = float(np.mean(score[validation]))
-        baseline_loss = (score[validation] - common_center) ** 2
-        eligible = [0.0]
-        mean_losses = {0.0: float(np.mean(baseline_loss))}
+        candidate_scores = []
         for gamma in gammas:
-            if gamma == 0.0:
-                continue
             candidate_theta, candidate_phi = _ma_theta_direct_score(
                 d[validation],
                 dy[validation],
@@ -463,16 +474,15 @@ def honest_outcome_residual(
             candidate_score = (
                 score[validation] + candidate_direct_score - base_direct_score
             )
-            candidate_loss = (candidate_score - common_center) ** 2
-            improvement = baseline_loss - candidate_loss
-            mean_improvement = float(np.mean(improvement))
-            se_improvement = float(
-                np.std(improvement, ddof=1) / math.sqrt(len(improvement))
-            )
-            mean_losses[gamma] = float(np.mean(candidate_loss))
-            if mean_improvement > gamma_se * se_improvement:
-                eligible.append(gamma)
-        selected = min(eligible, key=lambda gamma: (mean_losses[gamma], gamma))
+            candidate_scores.append(candidate_score)
+        selected_index = select_candidate(
+            score[validation],
+            candidate_scores,
+            gammas,
+            gamma_se,
+            center=common_center,
+        )
+        selected = gammas[selected_index]
         selected_gammas.append(float(selected))
         applied_residual[test] = selected * test_residual
 
@@ -486,57 +496,94 @@ def honest_outcome_residual(
     common_center = float(np.mean(score))
     ref_risk = float(np.mean((score - common_center) ** 2))
     repaired_risk = float(np.mean((candidate_score - common_center) ** 2))
-    return applied_residual, selected_gammas, ref_risk, repaired_risk
+    return applied_residual, candidate_score, selected_gammas, ref_risk, repaired_risk
 
 
 def main() -> None:
     args = parse_args()
     if 0.0 not in args.gammas:
         raise SystemExit("--gammas must contain zero")
+    if args.adapter:
+        if args.scope or args.construction:
+            raise SystemExit("use either --adapter or --scope/--construction, not both")
+        legacy = {
+            "projection": ("global", "projection"),
+            "global_projection": ("global", "projection"),
+            "regional_projection": ("regional", "projection"),
+            "global_residual": ("global", "residual"),
+            "regional_residual": ("regional", "residual"),
+        }
+        scope, construction = legacy[args.adapter]
+    else:
+        if not args.scope or not args.construction:
+            raise SystemExit("--scope and --construction are both required")
+        scope, construction = args.scope, args.construction
+    parameters = RepairParameters(
+        scope=scope,
+        construction=construction,
+        se_threshold=args.gamma_se,
+        shrink_c=args.shrink_c,
+        candidate_grid=tuple(args.gammas),
+    )
+    adapter = f"{scope}_{construction}"
     rows: list[dict[str, object]] = []
     for dgp in args.dgp:
         for rep in range(args.reps):
             seed = args.seed + 100_000 * dgp + rep
             data = make_data(args.n, dgp, seed)
-            reference = ma_reference_score(data, args.h)
-            score = np.asarray(reference["score"], dtype=float)
             # Ma's published simulation explicitly gives the researcher raw X
             # and makes the reference nuisance fits use transformed Z.  The
             # repair must see the observed raw covariates; feeding it only Z
             # would force it to inherit the reference's designed outcome-model
             # misspecification in DGP 3.
-            ref = float(reference["theta"])
-            if args.adapter == "projection":
-                applied_control, selected_gammas, ref_risk, repaired_risk = (
-                    honest_influence_projection(
-                        data["x"],
-                        data["d"],
-                        np.asarray(reference["p"], dtype=float),
-                        score,
-                        args.folds,
-                        seed + 20_003,
-                        list(args.gammas),
-                        args.gamma_se,
-                        args.projection_learner,
-                    )
-                )
-                repaired = ref + float(np.mean(applied_control))
-                region = np.zeros(len(data["d"]), dtype=bool)
-            else:
-                region = estimated_supported_region(
+            region = (
+                estimated_supported_region(
                     data["x"],
                     data["dy"],
                     1.0 - data["d"],
                     args.folds,
                     seed + 10_003,
                 )
-                support = (
-                    region
-                    if args.adapter == "regional_residual"
-                    else np.ones(len(region), dtype=bool)
-                )
-                applied_residual, selected_gammas, ref_risk, repaired_risk = (
-                    honest_outcome_residual(
+                if scope == "regional"
+                else np.zeros(len(data["d"]), dtype=bool)
+            )
+            support = (
+                region if scope == "regional" else np.ones(len(region), dtype=bool)
+            )
+            diagnostics: dict[str, object] = {}
+
+            def evaluate(config: RepairParameters) -> ExpertEvaluation:
+                reference = ma_reference_score(data, args.h)
+                score = np.asarray(reference["score"], dtype=float)
+                ref = float(reference["theta"])
+                if config.construction == "projection":
+                    (
+                        applied,
+                        candidate_score,
+                        selected,
+                        ref_risk,
+                        proposal_risk,
+                    ) = honest_influence_projection(
+                        data["x"],
+                        data["d"],
+                        np.asarray(reference["p"], dtype=float),
+                        score,
+                        support,
+                        args.folds,
+                        seed + 20_003,
+                        list(config.candidate_grid),
+                        config.se_threshold,
+                        args.projection_learner,
+                    )
+                    proposal_estimate = ref + float(np.mean(applied))
+                else:
+                    (
+                        applied,
+                        candidate_score,
+                        selected,
+                        ref_risk,
+                        proposal_risk,
+                    ) = honest_outcome_residual(
                         data["x"],
                         data["d"],
                         data["dy"],
@@ -547,26 +594,53 @@ def main() -> None:
                         args.h,
                         args.folds,
                         seed + 20_003,
-                        list(args.gammas),
-                        args.gamma_se,
+                        list(config.candidate_grid),
+                        config.se_threshold,
                     )
+                    base_direct = _ma_theta_direct_score(
+                        data["d"],
+                        data["dy"],
+                        np.asarray(reference["p"]),
+                        np.asarray(reference["m"]),
+                        args.h,
+                    )[0]
+                    candidate_direct = _ma_theta_direct_score(
+                        data["d"],
+                        data["dy"],
+                        np.asarray(reference["p"]),
+                        np.asarray(reference["m"]) + applied,
+                        args.h,
+                    )[0]
+                    proposal_estimate = ref + candidate_direct - base_direct
+                diagnostics.update(
+                    reference=reference,
+                    ref=ref,
+                    applied=applied,
+                    selected=selected,
+                    ref_risk=ref_risk,
+                    proposal_risk=proposal_risk,
                 )
-                base_direct = _ma_theta_direct_score(
-                    data["d"],
-                    data["dy"],
-                    np.asarray(reference["p"]),
-                    np.asarray(reference["m"]),
-                    args.h,
-                )[0]
-                candidate_direct = _ma_theta_direct_score(
-                    data["d"],
-                    data["dy"],
-                    np.asarray(reference["p"]),
-                    np.asarray(reference["m"]) + applied_residual,
-                    args.h,
-                )[0]
-                repaired = ref + candidate_direct - base_direct
-                applied_control = applied_residual
+                return ExpertEvaluation(
+                    reference_estimate=ref,
+                    reference_score=score,
+                    proposal=RepairProposal(
+                        estimate=proposal_estimate,
+                        score=candidate_score,
+                        selected_values=tuple(selected),
+                    ),
+                )
+
+            result = repair_expert(
+                FunctionalExpert(evaluate),
+                parameters,
+            )
+            reference = diagnostics["reference"]
+            ref = float(diagnostics["ref"])
+            repaired = result.estimate
+            selected_gammas = result.selected_values
+            applied_control = np.asarray(diagnostics["applied"], dtype=float)
+            ref_risk = result.reference_risk
+            repaired_risk = result.repaired_risk
             gamma = float(np.mean(selected_gammas))
             rows.append(
                 {
@@ -575,11 +649,19 @@ def main() -> None:
                     "seed": seed,
                     "n": args.n,
                     "h": args.h,
-                    "adapter": args.adapter,
+                    "adapter": adapter,
+                    "repair_scope": scope,
+                    "repair_construction": construction,
+                    "se_threshold": args.gamma_se,
+                    "shrink_c": args.shrink_c,
                     "projection_learner": args.projection_learner,
                     "ref_error": ref,
                     "repair_error": repaired,
+                    "proposal_error": result.proposal_estimate,
                     "delta": repaired - ref,
+                    "proposal_delta": result.proposal_estimate - ref,
+                    "contrast_variance": result.contrast_variance,
+                    "shrink_weight": result.weight,
                     "selected_gamma": gamma,
                     "fold_gammas": ";".join(f"{value:g}" for value in selected_gammas),
                     "ref_score_variance": ref_risk,
@@ -592,13 +674,11 @@ def main() -> None:
                     "mean_control": float(np.mean(applied_control)),
                     "region_mass": float(np.mean(region)),
                     "region_responders": int(np.sum(region & (data["d"] == 0.0))),
-                    "repair_support_mass": (
-                        float(np.mean(support)) if args.adapter != "projection" else 0.0
-                    ),
+                    "repair_support_mass": float(np.mean(support)),
                     "repair_support_responders": (
                         int(np.sum(support & (data["d"] == 0.0)))
-                        if args.adapter != "projection"
-                        else 0
+                        if construction == "residual"
+                        else int(np.sum(support))
                     ),
                 }
             )

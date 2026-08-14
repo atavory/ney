@@ -2,6 +2,14 @@
 
 Frozen before scientific output on 2026-08-13.
 
+**Historical exploratory protocol; superseded for new scientific decisions on
+2026-08-14.** This protocol mixed a 2.83-SE gate with a later source lineage
+and separated Ma DiD from the missing-outcome matrix. Its outputs are retained
+as diagnostics but cannot identify the effect of changing the SE threshold
+and are not the requested full expert-by-dataset Cartesian product. See
+`UNIFIED_REPAIR_RESEARCH_LOG_20260814.md` and
+`unified_cartesian_protocol_20260814.md`.
+
 ## Question
 
 Choose one outcome-residual adapter for every compatible upstream estimator.
@@ -83,6 +91,18 @@ single rule must pass a fresh-seed confirmation before it replaces the paper's
 current results.
 
 Execution-only smoke tests used separate seeds and cannot enter any summary.
+
+## Lessons recorded after execution
+
+- A stricter nominal SE threshold did not establish safe selection for plain
+  TMLE; heavy-tailed activated errors remained a leading explanation.
+- Comparisons against certified 1-SE outputs were confounded by source,
+  seed, and grid changes. Only exact paired threshold ablations are valid.
+- Path activation and final positive-part activation must be reported
+  separately.
+- Separate native-estimator benchmark slices are not a Cartesian product.
+- All new work uses one expert-agnostic repair entry point and one common MAR
+  estimand before crossing every expert with every dataset cell.
 
 ## Execution amendment: regional-shift seed band
 

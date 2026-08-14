@@ -52,6 +52,15 @@ except ImportError:
     XGBClassifier = None
     XGBRegressor = None
 
+from unified_expert_repair import (
+    ExpertEvaluation,
+    FunctionalExpert,
+    RepairParameters,
+    RepairProposal,
+    repair_expert,
+    select_candidate_from_improvements,
+)
+
 
 SUPPORT_DATA = Path(
     os.environ.get(
@@ -1320,18 +1329,18 @@ def _select_observed_validation_damp(
 ):
     if validation_loss_se < 0.0 or 0.0 not in region_damp_grid:
         return min(region_damp_grid, key=lambda g: (mean_damp_losses[g], g))
-    eligible = [0.0]
-    for region_damp in region_damp_grid:
-        if region_damp == 0.0:
-            continue
-        improvement = np.asarray(damp_improvements[(selected, region_damp)])
-        if len(improvement) < 2:
-            continue
-        mean_improvement, variance = _mean_variance_of_mean(improvement)
-        se_improvement = math.sqrt(variance)
-        if mean_improvement > validation_loss_se * se_improvement:
-            eligible.append(region_damp)
-    return min(eligible, key=lambda g: (mean_damp_losses[g], g))
+    improvements = {
+        float(region_damp): np.asarray(
+            damp_improvements[(selected, region_damp)], dtype=float
+        )
+        for region_damp in region_damp_grid
+    }
+    return select_candidate_from_improvements(
+        tuple(float(value) for value in region_damp_grid),
+        {float(key): float(value) for key, value in mean_damp_losses.items()},
+        improvements,
+        validation_loss_se,
+    )
 
 
 def _crossfit_selected(
@@ -1427,6 +1436,7 @@ def _crossfit_selected(
             "if_residual",
             "regional_if_residual",
             "if_projection",
+            "regional_if_projection",
             "if_library",
         }:
             raise ValueError(f"unknown repair_mode: {repair_mode}")
@@ -1736,7 +1746,7 @@ def _crossfit_selected(
             damp_improvements[(selected_key, region_damp)] = (
                 baseline_loss - candidate_loss
             ).tolist()
-    if repair_mode == "if_projection":
+    if repair_mode in {"if_projection", "regional_if_projection"}:
         projection_taus = (
             (min(tau_grid),)
             if reference_method in {"tmle", "ma_dr_bc", "cui_selective_ml"}
@@ -1761,6 +1771,8 @@ def _crossfit_selected(
                 folds,
             )
             control = (1.0 - response.astype(float) / p_oof) * projection
+            if repair_mode == "regional_if_projection":
+                control = control * region.astype(float)
             # All candidates preserve the same population target.  Use the
             # reference score mean as their common finite-sample center; giving
             # each candidate its own center would hide a dangerous nonzero
@@ -2040,6 +2052,17 @@ def _crossfit_selected(
     return {
         "ref": returned_ref,
         "rt": returned_rt,
+        # Freeze the complete path so alternative gates can be recomputed
+        # without refitting or retaining executable estimator objects.
+        "fold_ids": labels.copy(),
+        "initial_outcome": initial_outcome_values.copy(),
+        "candidate_values": np.asarray(region_damp_grid, dtype=float),
+        "candidate_scores": np.stack(
+            [rt_values[(selected, g)] for g in region_damp_grid], axis=0
+        ),
+        "candidate_outcomes": np.stack(
+            [rt_outcome_values[(selected, g)] for g in region_damp_grid], axis=0
+        ),
         "selected_p": p_values[selected],
         "ref_outcome": returned_ref_outcome,
         "rt_outcome": returned_rt_outcome,
@@ -2275,58 +2298,79 @@ def _one_rep(
         mu,
     )
     theta = data[5]
-    fit = _crossfit_selected(
-        data,
-        reference_method,
-        mode,
-        learner,
-        propensity_learner,
-        repair_mode,
-        tau_grid,
-        folds,
-        seed + 17,
-        region_damp_grid,
-        validation_region_weight,
-        validation_loss_se,
-        selector,
-        lepski_c,
+    repair_shape = {
+        "if_residual": ("global", "residual"),
+        "regional_if_residual": ("regional", "residual"),
+        "if_projection": ("global", "projection"),
+        "regional_if_projection": ("regional", "projection"),
+    }
+    if repair_mode not in repair_shape:
+        raise ValueError(
+            "unified experiment requires if_residual, regional_if_residual, "
+            "if_projection, or regional_if_projection"
+        )
+    scope, construction = repair_shape[repair_mode]
+    parameters = RepairParameters(
+        scope=scope,
+        construction=construction,
+        se_threshold=validation_loss_se,
+        shrink_c=c,
+        candidate_grid=tuple(float(value) for value in region_damp_grid),
     )
-    cov = _bootstrap_cov(
-        raw_data,
-        analysis_region,
-        reference_method,
-        mode,
-        learner,
-        propensity_learner,
-        repair_mode,
-        tau_grid,
-        folds,
-        seed + 1701,
-        bootstraps,
-        region_damp_grid,
-        validation_region_weight,
-        validation_loss_se,
-        selector,
-        lepski_c,
-        region_quantile,
-        region_min_observed,
-        region_kappa_floor,
-        selector_ablation,
-        region_detector_c,
+
+    diagnostics = {}
+
+    def evaluate(config: RepairParameters) -> ExpertEvaluation:
+        config_mode = {
+            ("global", "residual"): "if_residual",
+            ("regional", "residual"): "regional_if_residual",
+            ("global", "projection"): "if_projection",
+            ("regional", "projection"): "regional_if_projection",
+        }.get((config.scope, config.construction))
+        if config_mode is None:
+            raise ValueError(
+                f"unsupported scope/construction: {config.scope}/{config.construction}"
+            )
+        fit = _crossfit_selected(
+            data,
+            reference_method,
+            mode,
+            learner,
+            propensity_learner,
+            config_mode,
+            tau_grid,
+            folds,
+            seed + 17,
+            tuple(config.candidate_grid),
+            validation_region_weight,
+            config.se_threshold,
+            selector,
+            lepski_c,
+        )
+        diagnostics["fit"] = fit
+        ref_est = float(fit["ref"].mean())
+        rt_est = float(fit["rt"].mean())
+        return ExpertEvaluation(
+            reference_estimate=ref_est,
+            reference_score=np.asarray(fit["ref"], dtype=float),
+            proposal=RepairProposal(
+                estimate=rt_est,
+                score=np.asarray(fit["rt"], dtype=float),
+                selected_values=(float(fit["selected_region_damp"]),),
+            ),
+        )
+
+    repair = repair_expert(
+        FunctionalExpert(evaluate),
+        parameters,
     )
-    ref_est = float(fit["ref"].mean())
-    rt_est = float(fit["rt"].mean())
+    fit = diagnostics["fit"]
+    ref_est = repair.reference_estimate
+    rt_est = repair.proposal_estimate
     delta = rt_est - ref_est
-    if cov is None:
-        vd = gamma = float("nan")
-    else:
-        vd = float(cov[1, 1] + cov[0, 0] - 2.0 * cov[0, 1])
-        gamma = float(cov[0, 1] - cov[0, 0])
-    weight = (
-        max(0.0, 1.0 - c * max(vd, 0.0) / (delta * delta))
-        if delta and np.isfinite(vd)
-        else 0.0
-    )
+    vd = repair.contrast_variance
+    gamma = float("nan")
+    weight = repair.weight
     ref_error = ref_est - theta
     selected_p = np.maximum(np.asarray(fit["selected_p"], dtype=float), 1e-12)
     kappa = 1.0 - true_pi / selected_p
@@ -2350,7 +2394,7 @@ def _one_rep(
     return {
         "ref_error": ref_error,
         "rt_error": rt_est - theta,
-        "shrink_error": ref_error + weight * delta,
+        "shrink_error": repair.estimate - theta,
         "delta": delta,
         "vd": vd,
         "gamma": gamma,
@@ -2856,6 +2900,7 @@ def main() -> None:
             "if_residual",
             "regional_if_residual",
             "if_projection",
+            "regional_if_projection",
             "if_library",
         ],
         default="targeting",

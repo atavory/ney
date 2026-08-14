@@ -71,7 +71,9 @@ def build_jobs(args: argparse.Namespace) -> list[Job]:
                     "--projection-learner",
                     "xgboost",
                     "--gamma-se",
-                    "2.83",
+                    str(args.gamma_se),
+                    "--shrink-c",
+                    str(args.shrink_c),
                     "--gammas",
                     "0",
                     ".01",
@@ -141,6 +143,8 @@ def main() -> None:
     parser.add_argument("--n", type=int, default=10_000)
     parser.add_argument("--seed-base", type=int, default=4_100_000_000)
     parser.add_argument("--max-workers", type=int, default=8)
+    parser.add_argument("--gamma-se", type=float, default=1.0)
+    parser.add_argument("--shrink-c", type=float, default=2.0)
     parser.add_argument("--manifest-only", action="store_true")
     args = parser.parse_args()
     args.run_dir = args.run_dir.resolve()
@@ -167,6 +171,8 @@ def main() -> None:
         "n": args.n,
         "seed_base": args.seed_base,
         "max_workers": args.max_workers,
+        "gamma_se": args.gamma_se,
+        "shrink_c": args.shrink_c,
         "manifest_only": args.manifest_only,
     }
     (args.run_dir / "provenance.json").write_text(

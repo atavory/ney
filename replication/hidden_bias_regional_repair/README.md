@@ -1,5 +1,31 @@
 # Hidden Bias and Regionally Targeted Repair for Low-Response AIPW
 
+## 2026-08-14 research status
+
+The previously released paper artifacts below remain byte-frozen and
+reproducible, but current research has identified that they mix repair
+construction and gate calibration across upstream experts. They do not by
+themselves validate one universal expert-repair function.
+
+New work is governed by:
+
+- `PROJECT_HANDOFF_20260814.md`: primary cross-driver project map, current
+  execution state, public/exploratory boundary, artifact locations, and
+  migration/resumption order;
+- `UNIFIED_REPAIR_RESEARCH_LOG_20260814.md`: findings, corrections,
+  hypotheses, reporting requirements, and experiment sequence;
+- `unified_cartesian_protocol_20260814.md`: the operative common-estimand
+  5-expert x 34-cell baseline protocol;
+- `scripts/unified_expert_repair.py`: the single public repair entry point.
+
+Until the full 170-cell Cartesian matrix is complete, no new pilot or partial
+aggregate is a paper-wide result. In particular, disconnected Ma-DiD and
+Kang--Schafer pilots are execution/mechanism diagnostics only.
+
+The compact operational inventory is
+`support_csv/dml_expert_bank_handoff_20260814_v1/artifact_inventory.csv`.
+Large fitted-value banks are stored on Manifold and are not committed here.
+
 This directory is the public replication package for the EJS manuscript of
 the same name. It contains the paper-facing values, the paired replication
 rows from which the Section 4 sensitivity atlas is assembled, and the frozen
@@ -77,6 +103,11 @@ Kang--Schafer, Cui--Tchetgen Tchetgen, aligned-anchor, placement,
 real-covariate, and Ma DiD comparisons. The final paper compares each repaired
 estimator with its own upstream reference and reports C-TMLE, faithful
 selective ML, AIPW, Ma DiD, and plain-TMLE negative-control results separately.
+
+That paragraph describes the archived release. The new universal-function
+evaluation instead places AIPW, TMLE, C-TMLE, Cui selective ML, and Ma DR-BC
+on every common MAR benchmark cell. The native Ma DiD experiment remains a
+separate-estimand external study and is not pooled into that Cartesian matrix.
 
 ## Optional companion simulation
 

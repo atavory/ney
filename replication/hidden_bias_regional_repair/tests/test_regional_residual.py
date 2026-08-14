@@ -79,21 +79,26 @@ class RegionalResidualTest(unittest.TestCase):
     def test_ma_empty_region_is_exact_standdown(self):
         data = ma_did.make_data(500, 2, 717_991)
         reference = ma_did.ma_reference_score(data, 0.05)
-        residual, gammas, ref_risk, repaired_risk = ma_did.honest_outcome_residual(
-            data["x"],
-            data["d"],
-            data["dy"],
-            np.asarray(reference["p"]),
-            np.asarray(reference["m"]),
-            np.asarray(reference["score"]),
-            np.zeros(500, dtype=bool),
-            0.05,
-            3,
-            818_301,
-            [0.0, 0.25, 0.5, 1.0],
-            2.83,
+        residual, candidate_score, gammas, ref_risk, repaired_risk = (
+            ma_did.honest_outcome_residual(
+                data["x"],
+                data["d"],
+                data["dy"],
+                np.asarray(reference["p"]),
+                np.asarray(reference["m"]),
+                np.asarray(reference["score"]),
+                np.zeros(500, dtype=bool),
+                0.05,
+                3,
+                818_301,
+                [0.0, 0.25, 0.5, 1.0],
+                2.83,
+            )
         )
         np.testing.assert_array_equal(residual, np.zeros(500))
+        np.testing.assert_allclose(
+            candidate_score, np.asarray(reference["score"]), atol=1e-12, rtol=0.0
+        )
         self.assertEqual(gammas, [0.0, 0.0, 0.0])
         self.assertEqual(ref_risk, repaired_risk)
 
