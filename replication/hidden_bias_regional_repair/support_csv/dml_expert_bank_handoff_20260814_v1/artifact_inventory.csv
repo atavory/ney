@@ -1,6 +1,6 @@
 artifact,role,owner,status_as_of_2026_08_14_1443z,completed,total,failed,paper_eligible,durable_location,sha256_or_manifest_sha256,next_action
 certified_section4_release,submitted paper evidence,shared,complete,,,0,yes,data Overleaf support_csv/dml_section4_release_20260812_v1/,verified by release verifier,do not replace with exploratory values
-public_replication_source,algorithms and generators,shared,pushed,,,0,source only,https://github.com/atavory/ney,5c2a3450062308a771379176bf00635cfed8bbe9,retain public source
+public_replication_source,algorithms and generators,shared,pushed,,,0,source only,https://github.com/atavory/ney,e1cf02e1e9d1ddde4456023140a63e331d2cdba9,retain terminal handoff source
 unified_cartesian_v3_dml,common-estimand baseline rows,dml,complete,2160,2160,0,no,aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/dml_ks_alignment_v3/,1a6db65195d507ac2c4e1a21c62010b876f015ca0333bb6467c8dcf6d22ab6aa,retain as exploratory
 full_bank_dml,full fitted-value bank,dml,complete evacuated and exact-union audited,9234,9234,0,no,aai_research_tlv/tree/atavory/dml_reference_transfer/devvm50798_evacuation_20260814/,5b1e62644be799cddfa6f49e57dddd318ecc2c6a1a4f316bdb2a4eb3be847377,restore from final inventory
 full_bank_dml2,full fitted-value bank,dml2,complete evacuated and exact-union audited,7086,7086,0,no,aai_research_tlv/tree/atavory/dml_reference_transfer/full_expert_bank_handoff_20260814/,7a859c1b6c6c6e15c2dde7b39bd6080457414349dda6ed3daa9d70ffadf3553f,restore remote shard plus evacuation slices
