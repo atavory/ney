@@ -1,6 +1,6 @@
 # Project handoff: paper, experiments, banks, and migration
 
-Last updated: 2026-08-14 14:00 UTC
+Last updated: 2026-08-14 14:43 UTC
 
 This is the primary resumption document for `dml2` or any successor driver.
 It explains the scientific project, separates public evidence from exploratory
@@ -117,11 +117,11 @@ experts, for 3,840 entries. Manifest SHA-256:
 Split SHA-256:
 `7417dd46de852f63674db89b1df1b1297ac11b185011f33c9a07127d35461687`.
 
-## Execution state at 2026-08-14 14:00 UTC
+## Terminal execution and migration state at 2026-08-14 14:43 UTC
 
-- Full bank, dml owner: 9,046/9,234 complete, 64 active, zero failures.
-- Full bank, dml2 owner: 7,086/7,086 present and audited. The remote 1,790-entry
-  completion archive is published with SHA-256
+- Full bank, dml owner: 9,234/9,234 complete, zero active, zero failures.
+- Full bank, dml2 owner: 7,086/7,086 present and audited. Its separately
+  published 1,790-entry completion archive has SHA-256
   `7a859c1b6c6c6e15c2dde7b39bd6080457414349dda6ed3daa9d70ffadf3553f`.
 - A mistaken duplicate dml2 attempt was stopped at 950/1,790 after the remote
   archive was verified. It is not authoritative.
@@ -129,15 +129,21 @@ Split SHA-256:
   `dml_cui_published_dml_1918_entries_20260814.tar.zst`, independently
   round-trip verified with SHA-256
   `ce14308a2156f2dfb9f6a2e13e04ca5605524c3ea4218cd1a37821a46fc663d9`.
-- Cui bank, dml2 owner: 1,292/1,922 complete, 64 active, zero failures at
-  13:58 UTC. Status is published beside the handoff.
-- The current host is being retired. Its bank entries are on `/dev/shm`; swap
-  pressure has triggered repeated OOM kills. Manifold durability and verified
-  inventories take priority over retaining convenient local copies.
-
-This is a timestamped execution snapshot, not the final completion
-certificate. The final inventory must replace counts with exact terminal
-coverage and archive hashes.
+- Cui bank, dml2 owner: 1,922/1,922 complete. Its archive was independently
+  round-trip verified with SHA-256
+  `46ccbdc255e28c17e2ff7f5c57c54d0b26c49b262a2939bf5ca9a9d0ff0eca9d`.
+- The 14,530 full-bank identities not in the remote 1,790-entry shard were
+  published as eight independently round-trip-verified evacuation slices.
+  Their identity union is 16,320, their intersection is empty, and there are
+  zero missing or extra manifest identities. The local bank payload was
+  deleted only after this proof passed.
+- The non-bank host state is published as
+  `dml_devvm50798_state_20260814.tar.zst` with SHA-256
+  `9abbe02781d0af7e173a7b922ed06ecc6b7a356f559cd7932655c781da63fadb`.
+- The authoritative restore entry point is
+  `devvm50798_evacuation_20260814/README_RESTORE_20260814.md` on Manifold;
+  `coverage_proof_20260814.json` and `restore_inventory_20260814.csv` beside
+  it are the completion certificate.
 
 ## Scientific hard rules
 
@@ -160,16 +166,14 @@ coverage and archive hashes.
 
 ## What dml2 owns after this devvm is retired
 
-1. Finish the 1,922-entry Cui shard and publish a terminal status, archive, and
-   SHA-256 to the Cui handoff prefix.
-2. Ingest the final dml full-bank slices and verify that their union with the
-   7,086 dml2 entries covers the 16,320-entry manifest exactly once.
-3. Publish a final artifact inventory CSV and restore instructions; never rely
-   on a local path from the retired host.
-4. Preserve the public/certified boundary in GitHub and both Overleaf projects.
-5. Only after exact full-bank and Cui-bank coverage, run an observable-only
+1. Restore from the final Manifold inventory on the replacement host, then
+   recompute hashes and exact identity coverage before analysis.
+2. Apply and push the verified Data- and Paper-Overleaf Git bundles because
+   direct Overleaf traffic was blocked on the retired host.
+3. Preserve the public/certified boundary in GitHub and both Overleaf projects.
+4. Only after exact full-bank and Cui-bank coverage, run an observable-only
    atlas summarizer and publish its code, configuration, and hashes.
-6. Treat any proposed rule as exploratory, freeze it, and request a new-seed
+5. Treat any proposed rule as exploratory, freeze it, and request a new-seed
    confirmation rather than editing the existing paper release.
 
 ## Resumption order
