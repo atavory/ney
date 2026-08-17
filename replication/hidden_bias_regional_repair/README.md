@@ -18,6 +18,11 @@ New work is governed by:
   5-expert x 34-cell baseline protocol;
 - `scripts/unified_expert_repair.py`: the single public repair entry point.
 
+For the 2026-08-17 canonical low-response/high-response ablation, use
+`PUBLIC_ARTIFACTS.md` as the public code index. It records the CUI published
+entry points, the canonical region-gated repair source, and the data/Manifold
+handoff policy.
+
 Until the full 170-cell Cartesian matrix is complete, no new pilot or partial
 aggregate is a paper-wide result. In particular, disconnected Ma-DiD and
 Kang--Schafer pilots are execution/mechanism diagnostics only.
