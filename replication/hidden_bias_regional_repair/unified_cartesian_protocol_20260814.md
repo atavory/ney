@@ -136,8 +136,6 @@ primary hypotheses and interpretation constraints are frozen in
 
 - Bundle: `unified_cartesian_bundle_20260814_v3.tar.zst`; verify against the
   adjacent `.sha256` object.
-- Manifold prefix:
-  `aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/source/`.
 
 V2 was invalidated before completion because its missing-outcome expert closure
 discarded the `RepairParameters` object and therefore unified only shrinkage.

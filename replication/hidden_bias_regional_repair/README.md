@@ -9,9 +9,6 @@ themselves validate one universal expert-repair function.
 
 New work is governed by:
 
-- `PROJECT_HANDOFF_20260814.md`: primary cross-driver project map, current
-  execution state, public/exploratory boundary, artifact locations, and
-  migration/resumption order;
 - `UNIFIED_REPAIR_RESEARCH_LOG_20260814.md`: findings, corrections,
   hypotheses, reporting requirements, and experiment sequence;
 - `unified_cartesian_protocol_20260814.md`: the operative common-estimand
@@ -20,16 +17,13 @@ New work is governed by:
 
 For the 2026-08-17 canonical low-response/high-response ablation, use
 `PUBLIC_ARTIFACTS.md` as the public code index. It records the CUI published
-entry points, the canonical region-gated repair source, and the data/Manifold
-handoff policy.
+entry points and the canonical region-gated repair source.
 
 Until the full 170-cell Cartesian matrix is complete, no new pilot or partial
 aggregate is a paper-wide result. In particular, disconnected Ma-DiD and
 Kang--Schafer pilots are execution/mechanism diagnostics only.
 
-The compact operational inventory is
-`support_csv/dml_expert_bank_handoff_20260814_v1/artifact_inventory.csv`.
-Large fitted-value banks are stored on Manifold and are not committed here.
+Large fitted-value banks are not committed here.
 
 This directory is the public replication package for the EJS manuscript of
 the same name. It contains the paper-facing values, the paired replication

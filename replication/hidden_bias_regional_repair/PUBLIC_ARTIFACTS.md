@@ -2,8 +2,7 @@
 
 This file records the public-facing code locations for the hidden-bias
 regional-repair project. Generated CSVs, large fitted banks, and run logs are
-not committed here; the data Overleaf is the source of truth for those artifact
-locations.
+not part of this public code release.
 
 ## CUI Published Source
 
@@ -19,8 +18,7 @@ Current public SHAs:
 - CUI experiment adapter:
   `c4fa4e83dd6112ecdd2c4dfce1fc6cd3d3e0c4a97d4f48b093c78f4f6ba31d70`
 
-If CUI cannot be found in the future, start from these two paths before
-checking local scratch directories.
+These are the public entry points for the CUI published experiments.
 
 ## Canonical Region-Gated Repair Source
 
@@ -41,13 +39,7 @@ That is the required source for controlled low-response versus high-response
 comparisons. Older runs where the deployed correction ignored the region are
 not valid high-response ablation results.
 
-## Data and Large Artifacts
+## Generated Data
 
-The data Overleaf is the source of truth for generated CSVs, aggregation
-scripts, Manifold targets, and current run status:
-
-- `DML_REPAIR_ARTIFACT_INDEX.md`
-- `DML_REPAIR_STATUS.md`
-
-Large intermediate fitted-entry banks and full clean-row CSVs should live in
-Manifold, not in GitHub.
+Generated CSVs, fitted-entry banks, and run logs are not committed to this
+public code repository.

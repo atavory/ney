@@ -6,9 +6,8 @@ This repository contains replication material for the current EJS manuscript,
 The current manuscript package is in
 `replication/hidden_bias_regional_repair/`.
 
-For the August 14 universal-repair experiments, fitted-value banks, public
-versus exploratory boundary, and devvm migration state, start with
-`replication/hidden_bias_regional_repair/PROJECT_HANDOFF_20260814.md`.
+For the August 14 universal-repair experiments and public replication
+protocol, start with `replication/hidden_bias_regional_repair/README.md`.
 
 The older top-level `algs/`, `experiments/`, and `demo_*.py` files are legacy
 material from an earlier score-aligned-selection draft. They remain available

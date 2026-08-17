@@ -284,7 +284,6 @@ the baseline freezes global residual.
 - Bundle: `unified_cartesian_bundle_20260814_v3.tar.zst`.
 - The authoritative archive SHA-256 is stored in the adjacent `.sha256`
   object to avoid a self-referential hash inside the archive.
-- Manifold: `aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/source/`.
 - Shared seed base: `1800000000`.
 
 The bundle freezes the universal repair entry point, scientific runner,
@@ -308,23 +307,11 @@ host.
   8,640 rows, 90/90 cells with 96 rows each, zero failures.
 - Archive SHA-256:
   `1a6db65195d507ac2c4e1a21c62010b876f015ca0333bb6467c8dcf6d22ab6aa`.
-- Archive prefix:
-  `aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/dml_ks_alignment_v3/`.
 - dml2 real/anchor partition: assigned; it is not counted as live or complete
   until PID, portable manifest hash, and counts are acknowledged.
 
-## Devvm migration and primary-driver handoff
+## Public protocol note
 
-The active host is being retired after repeated OOM kills caused by swap-backed
-`/dev/shm` bank growth. The primary cross-driver resumption source is now
-`PROJECT_HANDOFF_20260814.md`; its adjacent operational CSV inventory records
-the durable Manifold locations and archive hashes. This migration changes no
-scientific protocol and promotes no exploratory result.
-
-At 2026-08-14 14:00 UTC, the dml full-bank partition was 9,046/9,234 with 64
-active and zero failures; the audited dml2 tree contained 7,086/7,086 entries.
-The dml Cui partition was complete at 1,918/1,918 and independently round-trip
-verified on Manifold; the dml2 Cui partition was live at 1,292/1,922 with zero
-failures. These are timestamped execution counts, not a final coverage
-certificate. Final completion requires manifest-identity coverage and archive
-hashes after both controllers reach terminal state.
+Operational migration details and private storage locations are not part of the
+public replication package. This log records scientific design decisions and
+does not certify exploratory fitted-bank coverage.
