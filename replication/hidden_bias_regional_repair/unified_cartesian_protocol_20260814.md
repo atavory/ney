@@ -1,5 +1,20 @@
 # Unified Cartesian repair protocol (2026-08-14)
 
+## 2026-08-30 paper-facing amendment
+
+The Aug. 14 v3 unified Cartesian run is now the current EJS Section 4
+empirical source.  The compact public reconstruction is
+`support_csv/dml_unified_cartesian_global_residual_20260814/`, and the
+manuscript tables are generated from that directory by
+`scripts/assemble_section4_unified_global_residual.py`.
+
+The historical cautions below remain provenance: they record what was known at
+execution time and prevent the empirical run from being overread as a theorem
+validation experiment.  They no longer mean the v3 matrix is an unfinished
+pilot or a non-paper source.  Current manuscript claims should be read as
+empirical performance of the implemented single global-residual repair, with
+the theorem stated under its own assumptions.
+
 The binding registry of datasets, experts, and callable interfaces is
 `EXPERT_CV_API_AND_DATASETS_20260814.md`. This protocol is subordinate to that
 source of truth and must fail closed on any disagreement.

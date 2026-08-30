@@ -1,0 +1,439 @@
+{
+  "methods": {
+    "aipw": {
+      "cells": 34,
+      "equal_cell_gain": 0.027914454049427613,
+      "equal_cell_gain_ci_high": 0.03528144994662575,
+      "equal_cell_gain_ci_low": 0.01956893993942332,
+      "families": {
+        "alignment": {
+          "cells": 10,
+          "equal_cell_gain": 0.0011417462799207967,
+          "equal_cell_gain_ci_high": 0.0029552124843883676,
+          "equal_cell_gain_ci_low": -6.075660138135098e-06,
+          "family": "alignment",
+          "final_activation": 0.004166666666666667,
+          "method": "aipw",
+          "path_activation": 0.021875,
+          "reps": 960,
+          "unconditional_harm": 0.0010416666666666667
+        },
+        "anchor": {
+          "cells": 4,
+          "equal_cell_gain": 0.005204166102080687,
+          "equal_cell_gain_ci_high": 0.014108572572812167,
+          "equal_cell_gain_ci_low": 0.0,
+          "family": "anchor",
+          "final_activation": 0.0078125,
+          "method": "aipw",
+          "path_activation": 0.026041666666666668,
+          "reps": 384,
+          "unconditional_harm": 0.0
+        },
+        "kang_schafer": {
+          "cells": 8,
+          "equal_cell_gain": 0.1124017621413234,
+          "equal_cell_gain_ci_high": 0.14354103186486178,
+          "equal_cell_gain_ci_low": 0.07747372396536065,
+          "family": "kang_schafer",
+          "final_activation": 0.15755208333333334,
+          "method": "aipw",
+          "path_activation": 0.6653645833333334,
+          "reps": 768,
+          "unconditional_harm": 0.018229166666666668
+        },
+        "real": {
+          "cells": 12,
+          "equal_cell_gain": 0.0014702677785350764,
+          "equal_cell_gain_ci_high": 0.0035535742025388116,
+          "equal_cell_gain_ci_low": 4.6491725095871894e-05,
+          "family": "real",
+          "final_activation": 0.005208333333333333,
+          "method": "aipw",
+          "path_activation": 0.01996527777777778,
+          "reps": 1152,
+          "unconditional_harm": 0.0008680555555555555
+        }
+      },
+      "family": "all",
+      "final_activation": 0.04105392156862745,
+      "method": "aipw",
+      "path_activation": 0.17310049019607843,
+      "reps": 3264,
+      "unconditional_harm": 0.004901960784313725
+    },
+    "ctmle": {
+      "cells": 34,
+      "equal_cell_gain": 0.00028379246792223204,
+      "equal_cell_gain_ci_high": 0.0011851654880649263,
+      "equal_cell_gain_ci_low": -0.00040289978655698525,
+      "families": {
+        "alignment": {
+          "cells": 10,
+          "equal_cell_gain": 0.0,
+          "equal_cell_gain_ci_high": 0.0,
+          "equal_cell_gain_ci_low": 0.0,
+          "family": "alignment",
+          "final_activation": 0.0,
+          "method": "ctmle",
+          "path_activation": 0.0,
+          "reps": 960,
+          "unconditional_harm": 0.0
+        },
+        "anchor": {
+          "cells": 4,
+          "equal_cell_gain": 0.0,
+          "equal_cell_gain_ci_high": 0.0,
+          "equal_cell_gain_ci_low": 0.0,
+          "family": "anchor",
+          "final_activation": 0.0,
+          "method": "ctmle",
+          "path_activation": 0.0,
+          "reps": 384,
+          "unconditional_harm": 0.0
+        },
+        "kang_schafer": {
+          "cells": 8,
+          "equal_cell_gain": 0.0014360789859051981,
+          "equal_cell_gain_ci_high": 0.005270836255969479,
+          "equal_cell_gain_ci_low": -0.0014349710704739537,
+          "family": "kang_schafer",
+          "final_activation": 0.00390625,
+          "method": "ctmle",
+          "path_activation": 0.015625,
+          "reps": 768,
+          "unconditional_harm": 0.0013020833333333333
+        },
+        "real": {
+          "cells": 12,
+          "equal_cell_gain": -0.00015330733149047462,
+          "equal_cell_gain_ci_high": 0.0,
+          "equal_cell_gain_ci_low": -0.0005099545102719093,
+          "family": "real",
+          "final_activation": 0.0008680555555555555,
+          "method": "ctmle",
+          "path_activation": 0.0008680555555555555,
+          "reps": 1152,
+          "unconditional_harm": 0.0008680555555555555
+        }
+      },
+      "family": "all",
+      "final_activation": 0.0012254901960784314,
+      "method": "ctmle",
+      "path_activation": 0.003982843137254902,
+      "reps": 3264,
+      "unconditional_harm": 0.0006127450980392157
+    },
+    "cui_selective_ml": {
+      "cells": 34,
+      "equal_cell_gain": 0.017233521117469744,
+      "equal_cell_gain_ci_high": 0.022520399926446194,
+      "equal_cell_gain_ci_low": 0.011839800463957986,
+      "families": {
+        "alignment": {
+          "cells": 10,
+          "equal_cell_gain": 0.006046312688320699,
+          "equal_cell_gain_ci_high": 0.011793882707765586,
+          "equal_cell_gain_ci_low": 0.0012242720649209163,
+          "family": "alignment",
+          "final_activation": 0.029166666666666667,
+          "method": "cui_selective_ml",
+          "path_activation": 0.16458333333333333,
+          "reps": 960,
+          "unconditional_harm": 0.005208333333333333
+        },
+        "anchor": {
+          "cells": 4,
+          "equal_cell_gain": 0.007138353829270638,
+          "equal_cell_gain_ci_high": 0.011480856685238357,
+          "equal_cell_gain_ci_low": 0.003547165367546838,
+          "family": "anchor",
+          "final_activation": 0.049479166666666664,
+          "method": "cui_selective_ml",
+          "path_activation": 0.2682291666666667,
+          "reps": 384,
+          "unconditional_harm": 0.0
+        },
+        "kang_schafer": {
+          "cells": 8,
+          "equal_cell_gain": 0.04539078633863455,
+          "equal_cell_gain_ci_high": 0.06507901908388251,
+          "equal_cell_gain_ci_low": 0.025362203009043235,
+          "family": "kang_schafer",
+          "final_activation": 0.12890625,
+          "method": "cui_selective_ml",
+          "path_activation": 0.515625,
+          "reps": 768,
+          "unconditional_harm": 0.03125
+        },
+        "real": {
+          "cells": 12,
+          "equal_cell_gain": 0.011149740423717108,
+          "equal_cell_gain_ci_high": 0.01724192048952312,
+          "equal_cell_gain_ci_low": 0.005711805623962549,
+          "family": "real",
+          "final_activation": 0.03732638888888889,
+          "method": "cui_selective_ml",
+          "path_activation": 0.19791666666666666,
+          "reps": 1152,
+          "unconditional_harm": 0.005208333333333333
+        }
+      },
+      "family": "all",
+      "final_activation": 0.057904411764705885,
+      "method": "cui_selective_ml",
+      "path_activation": 0.2711397058823529,
+      "reps": 3264,
+      "unconditional_harm": 0.010723039215686275
+    },
+    "ma_dr_bc": {
+      "cells": 34,
+      "equal_cell_gain": 0.029989987898879144,
+      "equal_cell_gain_ci_high": 0.03655646756816127,
+      "equal_cell_gain_ci_low": 0.02337262499935865,
+      "families": {
+        "alignment": {
+          "cells": 10,
+          "equal_cell_gain": 0.0004197204612986227,
+          "equal_cell_gain_ci_high": 0.001450082770519832,
+          "equal_cell_gain_ci_low": 0.0,
+          "family": "alignment",
+          "final_activation": 0.0010416666666666667,
+          "method": "ma_dr_bc",
+          "path_activation": 0.003125,
+          "reps": 960,
+          "unconditional_harm": 0.0
+        },
+        "anchor": {
+          "cells": 4,
+          "equal_cell_gain": 0.0,
+          "equal_cell_gain_ci_high": 0.0,
+          "equal_cell_gain_ci_low": 0.0,
+          "family": "anchor",
+          "final_activation": 0.0,
+          "method": "ma_dr_bc",
+          "path_activation": 0.005208333333333333,
+          "reps": 384,
+          "unconditional_harm": 0.0
+        },
+        "kang_schafer": {
+          "cells": 8,
+          "equal_cell_gain": 0.12693279799361307,
+          "equal_cell_gain_ci_high": 0.1546595751001115,
+          "equal_cell_gain_ci_low": 0.09882401804284335,
+          "family": "kang_schafer",
+          "final_activation": 0.28515625,
+          "method": "ma_dr_bc",
+          "path_activation": 0.515625,
+          "reps": 768,
+          "unconditional_harm": 0.061197916666666664
+        },
+        "real": {
+          "cells": 12,
+          "equal_cell_gain": 0.0,
+          "equal_cell_gain_ci_high": 0.0,
+          "equal_cell_gain_ci_low": 0.0,
+          "family": "real",
+          "final_activation": 0.0,
+          "method": "ma_dr_bc",
+          "path_activation": 0.0026041666666666665,
+          "reps": 1152,
+          "unconditional_harm": 0.0
+        }
+      },
+      "family": "all",
+      "final_activation": 0.06740196078431372,
+      "method": "ma_dr_bc",
+      "path_activation": 0.12377450980392156,
+      "reps": 3264,
+      "unconditional_harm": 0.014399509803921568
+    },
+    "tmle": {
+      "cells": 34,
+      "equal_cell_gain": -0.004103539203087899,
+      "equal_cell_gain_ci_high": 0.002346239331873179,
+      "equal_cell_gain_ci_low": -0.01203298645716692,
+      "families": {
+        "alignment": {
+          "cells": 10,
+          "equal_cell_gain": -0.00028208866880018445,
+          "equal_cell_gain_ci_high": 0.00015655142558300086,
+          "equal_cell_gain_ci_low": -0.0011207581642454546,
+          "family": "alignment",
+          "final_activation": 0.003125,
+          "method": "tmle",
+          "path_activation": 0.021875,
+          "reps": 960,
+          "unconditional_harm": 0.0020833333333333333
+        },
+        "anchor": {
+          "cells": 4,
+          "equal_cell_gain": 0.0012897093353005928,
+          "equal_cell_gain_ci_high": 0.004095088251571398,
+          "equal_cell_gain_ci_low": 0.0,
+          "family": "anchor",
+          "final_activation": 0.0026041666666666665,
+          "method": "tmle",
+          "path_activation": 0.0078125,
+          "reps": 384,
+          "unconditional_harm": 0.0
+        },
+        "kang_schafer": {
+          "cells": 8,
+          "equal_cell_gain": -0.01886385298035849,
+          "equal_cell_gain_ci_high": 0.008623016225790677,
+          "equal_cell_gain_ci_low": -0.05264724931053436,
+          "family": "kang_schafer",
+          "final_activation": 0.09244791666666667,
+          "method": "tmle",
+          "path_activation": 0.6119791666666666,
+          "reps": 768,
+          "unconditional_harm": 0.049479166666666664
+        },
+        "real": {
+          "cells": 12,
+          "equal_cell_gain": 0.0007543783570565695,
+          "equal_cell_gain_ci_high": 0.0016457396162334779,
+          "equal_cell_gain_ci_low": 0.00013917293669871318,
+          "family": "real",
+          "final_activation": 0.005208333333333333,
+          "method": "tmle",
+          "path_activation": 0.016493055555555556,
+          "reps": 1152,
+          "unconditional_harm": 0.0
+        }
+      },
+      "family": "all",
+      "final_activation": 0.024816176470588234,
+      "method": "tmle",
+      "path_activation": 0.15716911764705882,
+      "reps": 3264,
+      "unconditional_harm": 0.012254901960784314
+    }
+  },
+  "verification": {
+    "cells": 170,
+    "config": {
+      "bootstraps": 0,
+      "chunks": 24,
+      "frozen_source_sha256": "98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce",
+      "region_damp_grid": [
+        0.0,
+        0.25,
+        0.5,
+        1.0
+      ],
+      "repair_mode": "if_residual",
+      "reps_per_chunk": 4,
+      "seed_base": 1800000000,
+      "shrink_c": 2.0,
+      "validation_loss_se": 1.0,
+      "wrapper_sha256": "b1b08b9fc32b03e969f2f24ba7816a850de12336bbf6a335f092238715ccb332",
+      "xgboost_version": "3.4.0"
+    },
+    "draws": 20000,
+    "full_manifest": "/tmp/dml_unified_cartesian_20260814_extract_run/source/full/manifest.tsv",
+    "full_manifest_sha256": "65720b1fce2a24d55872ab9e008cf7ef62945b30b791272f1fdfe65280e2287f",
+    "raw_reps_manifest_sha256": "08d0e7f95d71773fe54eb137107e73c9f0346955247432a8ebb0e0dd1d195e92",
+    "replication_rows": 16320,
+    "reps_files": 4080,
+    "run_dirs": [
+      "/tmp/dml_unified_cartesian_20260814_extract_run/dml/cartesian_dml_ks_alignment_v3",
+      "/tmp/dml_unified_cartesian_20260814_extract_run/dml2/dml2_real_anchor_v3"
+    ],
+    "run_provenance": [
+      {
+        "bootstraps": 0,
+        "chunks": 24,
+        "created_utc": "2026-08-14T04:21:48.271892+00:00",
+        "design_filter": null,
+        "frozen_source": "/data/users/atavory/dml_single_repair_20260814/replication/hidden_bias_regional_repair/scripts/validated_reference_transfer.py",
+        "frozen_source_sha256": "98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce",
+        "groups": [
+          "kang_schafer",
+          "alignment"
+        ],
+        "launcher_sha256": "b8419832e0901fdf60286647aad0c9a3eeef405dd4ed2529ed32e811909abb5d",
+        "learner": "xgboost",
+        "manifest_only": false,
+        "manifest_sha256": "a2ce8add3666411ebb396f2eba09ba1a8d7b169318683ff9e1380168a309a87d",
+        "max_workers": 72,
+        "methods": [
+          "aipw",
+          "tmle",
+          "ctmle",
+          "cui_selective_ml",
+          "ma_dr_bc"
+        ],
+        "owner": "dml",
+        "python": "/usr/local/fbcode/platform010/bin/python3.12",
+        "region_damp_grid": [
+          0.0,
+          0.25,
+          0.5,
+          1.0
+        ],
+        "region_detector_c": 4.0,
+        "region_selector_ablation": "legacy",
+        "repair_mode": "if_residual",
+        "reps_per_chunk": 4,
+        "seed_base": 1800000000,
+        "shrink_c": 2.0,
+        "source_commit": "unified-cartesian-v3",
+        "strength_filter": null,
+        "validation_loss_se": 1.0,
+        "validation_risk": "balanced_mse",
+        "wrapper": "/data/users/atavory/dml_single_repair_20260814/replication/hidden_bias_regional_repair/scripts/section4_breadth_experiments.py",
+        "wrapper_sha256": "b1b08b9fc32b03e969f2f24ba7816a850de12336bbf6a335f092238715ccb332",
+        "xgboost_version": "3.4.0"
+      },
+      {
+        "bootstraps": 0,
+        "chunks": 24,
+        "created_utc": "2026-08-14T04:33:41.616883+00:00",
+        "design_filter": null,
+        "frozen_source": "/data/users/atavory/unified_cartesian_20260814/dml2_v3_20260814T042610Z/extract/replication/hidden_bias_regional_repair/scripts/validated_reference_transfer.py",
+        "frozen_source_sha256": "98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce",
+        "groups": [
+          "real",
+          "anchor"
+        ],
+        "launcher_sha256": "b8419832e0901fdf60286647aad0c9a3eeef405dd4ed2529ed32e811909abb5d",
+        "learner": "xgboost",
+        "manifest_only": false,
+        "manifest_sha256": "4fc6e4ef708ca6be1c044df9c86baba1965396645a28ab422748808e07544a1e",
+        "max_workers": 72,
+        "methods": [
+          "aipw",
+          "tmle",
+          "ctmle",
+          "cui_selective_ml",
+          "ma_dr_bc"
+        ],
+        "owner": "dml2",
+        "python": "/usr/local/fbcode/platform010/bin/python3.12",
+        "region_damp_grid": [
+          0.0,
+          0.25,
+          0.5,
+          1.0
+        ],
+        "region_detector_c": 4.0,
+        "region_selector_ablation": "legacy",
+        "repair_mode": "if_residual",
+        "reps_per_chunk": 4,
+        "seed_base": 1800000000,
+        "shrink_c": 2.0,
+        "source_commit": "unified-cartesian-v3",
+        "strength_filter": null,
+        "validation_loss_se": 1.0,
+        "validation_risk": "balanced_mse",
+        "wrapper": "/data/users/atavory/unified_cartesian_20260814/dml2_v3_20260814T042610Z/extract/replication/hidden_bias_regional_repair/scripts/section4_breadth_experiments.py",
+        "wrapper_sha256": "b1b08b9fc32b03e969f2f24ba7816a850de12336bbf6a335f092238715ccb332",
+        "xgboost_version": "3.4.0"
+      }
+    ],
+    "seed": 20260814,
+    "status": "PASS"
+  }
+}

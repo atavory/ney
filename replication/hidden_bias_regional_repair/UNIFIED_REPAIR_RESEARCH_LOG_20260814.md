@@ -1,5 +1,19 @@
 # Unified expert-repair research log
 
+## 2026-08-30 paper-facing status
+
+This file is a historical research and audit log.  It records the concerns and
+decision rules that governed the Aug. 14 v3 unified Cartesian run.  The current
+EJS Section 4 empirical source is the compact reconstruction in
+`support_csv/dml_unified_cartesian_global_residual_20260814/`, as indexed by
+`README.md` and `PUBLIC_ARTIFACTS.md`.
+
+Historical cautions below still constrain interpretation: the empirical run is
+not a theorem-validation experiment, and alternatives or later diagnostics
+should not be silently pooled into the current Section 4 tables.  They do not
+mean the v3 matrix is still incomplete or that the old mixed release is the
+current manuscript source.
+
 The sole binding registry for datasets, experts, and repair interfaces is
 `EXPERT_CV_API_AND_DATASETS_20260814.md`. This log records hypotheses and
 history; it does not define experimental scope.

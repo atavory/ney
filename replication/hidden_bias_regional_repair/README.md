@@ -1,128 +1,123 @@
-# Hidden Bias and Regionally Targeted Repair for Low-Response AIPW
+# Hidden Bias and Residual Repair for Low-Response AIPW
 
-## 2026-08-14 research status
+This directory is the public replication package for the EJS manuscript.  As
+of the 2026-08-30 manuscript cleanup, the paper-facing Section 4 source is the
+single global-residual repair run on the unified Cartesian matrix.
 
-The previously released paper artifacts below remain byte-frozen and
-reproducible, but current research has identified that they mix repair
-construction and gate calibration across upstream experts. They do not by
-themselves validate one universal expert-repair function.
+## Current Paper Source
 
-New work is governed by:
+The authoritative compact bundle is:
 
-- `UNIFIED_REPAIR_RESEARCH_LOG_20260814.md`: findings, corrections,
-  hypotheses, reporting requirements, and experiment sequence;
-- `unified_cartesian_protocol_20260814.md`: the operative common-estimand
-  5-expert x 34-cell baseline protocol;
-- `scripts/unified_expert_repair.py`: the single public repair entry point.
+- `support_csv/dml_unified_cartesian_global_residual_20260814/`
 
-For the 2026-08-17 canonical low-response/high-response ablation, use
-`PUBLIC_ARTIFACTS.md` as the public code index. It records the CUI published
-entry points and the canonical region-gated repair source.
+That bundle contains:
 
-Until the full 170-cell Cartesian matrix is complete, no new pilot or partial
-aggregate is a paper-wide result. In particular, disconnected Ma-DiD and
-Kang--Schafer pilots are execution/mechanism diagnostics only.
+- `cell_summary.csv`: 170 expert-by-cell summaries.
+- `family_summary.csv`: the sole source for the Section 4 tables and numbers.
+- `summary.json`: nested method/family readout.
+- `verification.json`: reconstruction provenance and fail-closed checks.
+- `section4_values.tex`: generated manuscript macros.
+- `section4_unified_overview_table.tex`: generated all-family table.
+- `section4_unified_family_table.tex`: generated family table.
+- `SHA256SUMS`: checksums for the compact public bundle.
 
-Large fitted-value banks are not committed here.
+The corresponding public scripts are:
 
-This directory is the public replication package for the EJS manuscript of
-the same name. It contains the paper-facing values, the paired replication
-rows from which the Section 4 sensitivity atlas is assembled, and the frozen
-scripts used to generate and verify those artifacts.
+- `scripts/recreate_unified_cartesian_global_residual.py`
+- `scripts/assemble_section4_unified_global_residual.py`
+- `scripts/verify_section4_manuscript.py`
 
-## Authoritative paper artifacts
+Every row in the current Section 4 source uses the same repair mode and gate:
+`repair_mode=if_residual`, `validation_loss_se=1.0`, `shrink_c=2.0`, and
+`region_damp_grid=0.0|0.25|0.5|1.0`.  The run checks 4,080 shard files,
+16,320 paired replication rows, and 170 expert-by-cell combinations.
 
-- `support_csv/dml_section4_release_20260812_v1/` is the submission-facing
-  release. `paper_values.csv` maps every reported value to its source file and
-  selector; the generated TeX tables and macros are included verbatim.
-- `support_csv/dml_section4_c_atlas_20260812_v2/` contains the complete
-  `c = 0,1,2,3,4,5,6,8` cell and panel curves used by Figures 4--7.
-- The seven source directories under `support_csv/` contain the paired raw
-  rows or Ma shards, certified summaries, and available verification records
-  used by the release and atlas assemblers.
-- `scripts/assemble_section4_release.py` builds the manuscript value ledger
-  and generated tables from the certified summaries.
-- `scripts/assemble_section4_c_atlas.py` rebuilds all 21 estimator/design
-  curves from the paired rows.
-- `scripts/plot_section4_c_atlas.py` renders the compact efficacy, safety,
-  emphasized, and diagnostic figures without fitting an estimator or choosing
-  `c` from observed MSE.
-- `scripts/verify_section4_manuscript.py` checks source hashes, generated
-  tables, figure bytes, panel coverage, and manuscript includes when run with
-  the paper repository.
+Primary all-family readout at the frozen `c=2`:
 
-The primary missing-outcome shrinkage constant is `c = 2`; the candidate
-damping grid is `0, 0.25, 0.5, 1`. Every reported repaired/reference pair uses
-the same observations, folds, and seed. Family summaries weight native cells
-equally, and intervals use 20,000 paired percentile-bootstrap draws stratified
-by cell.
+```text
+AIPW all: +2.791% [1.957%, 3.528%]
+plain TMLE all: -0.410% [-1.203%, 0.235%]
+C-TMLE all: +0.028% [-0.040%, 0.119%]
+selective ML all: +1.723% [1.184%, 2.252%]
+Ma DR-BC all: +2.999% [2.337%, 3.656%]
+```
 
-## Rebuild the paper values
+## Rebuild the Manuscript Tables
 
-From this directory, create an empty destination and run:
+From this directory:
 
 ```bash
-python scripts/assemble_section4_release.py \
+python scripts/assemble_section4_unified_global_residual.py \
+  --summary support_csv/dml_unified_cartesian_global_residual_20260814/family_summary.csv \
+  --out-dir /tmp/section4_unified_rebuilt
+```
+
+The rebuilt files should match the three generated TeX files in
+`support_csv/dml_unified_cartesian_global_residual_20260814/` byte for byte.
+
+To verify the public bundle against an Overleaf paper clone:
+
+```bash
+python scripts/verify_section4_manuscript.py \
   --data-root . \
-  --out-dir /tmp/section4_release_rebuilt
+  --paper-root /path/to/overleaf-paper
 ```
 
-The rebuilt files should match
-`support_csv/dml_section4_release_20260812_v1/` byte for byte.
+The verifier checks the bundle checksums, reconstruction invariants, summary
+shape, headline values, generated TeX bytes, and Section 4 manuscript inputs.
 
-The Ma weak-overlap DiD summary can also be regenerated directly from its 768
-paired rows:
+## Recreate the Compact Bundle from Manifold
+
+The raw shard tarballs are not committed to GitHub.  They are recoverable from
+these Manifold objects:
+
+```text
+manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/dml_ks_alignment_v3/cartesian_dml_ks_alignment_v3.tar.zst
+manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/dml2_real_anchor_v3/cartesian_dml2_real_anchor_v3.tar.zst
+manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/source/unified_cartesian_bundle_20260814_v3.tar.zst
+```
+
+Verify the tarballs before extraction:
+
+```text
+dml KS/alignment tarball: 1a6db65195d507ac2c4e1a21c62010b876f015ca0333bb6467c8dcf6d22ab6aa
+dml2 real/anchor tarball: 102bb358543ec1adadd78cab863cbe328e069f6512d12b9d5c015e2ebce49fa6
+source bundle: 5ab6b5927e6a7634d4e6ed3d5658a5f4362ee0b13b02e51a1260601e70ac7c1a
+full scientific manifest: 65720b1fce2a24d55872ab9e008cf7ef62945b30b791272f1fdfe65280e2287f
+raw reps manifest: 08d0e7f95d71773fe54eb137107e73c9f0346955247432a8ebb0e0dd1d195e92
+frozen source: 98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce
+wrapper: b1b08b9fc32b03e969f2f24ba7816a850de12336bbf6a335f092238715ccb332
+```
+
+After extracting the three tarballs, recreate the compact public bundle with:
 
 ```bash
-python scripts/dml_ma_did_aggregate.py \
-  --run-dir support_csv/dml_section4_confirmatory_20260810_v1/ma_xgboost_shards \
-  --out-json /tmp/ma_xgboost_summary.json
+python scripts/recreate_unified_cartesian_global_residual.py \
+  --run-dir /tmp/dml_unified_cartesian_20260814_extract_run/dml/cartesian_dml_ks_alignment_v3 \
+  --run-dir /tmp/dml_unified_cartesian_20260814_extract_run/dml2/dml2_real_anchor_v3 \
+  --full-manifest /tmp/dml_unified_cartesian_20260814_extract_run/source/full/manifest.tsv \
+  --out-dir support_csv/dml_unified_cartesian_global_residual_20260814 \
+  --draws 20000 \
+  --seed 20260814
 ```
 
-## Rebuild the sensitivity atlas
+Then regenerate the manuscript tables with
+`scripts/assemble_section4_unified_global_residual.py` as shown above and
+refresh `SHA256SUMS`.
 
-```bash
-python scripts/assemble_section4_c_atlas.py \
-  --data-root . \
-  --out-dir /tmp/section4_atlas_rebuilt
+## Archived Section 4 Bundles
 
-python scripts/plot_section4_c_atlas.py \
-  --data-dir /tmp/section4_atlas_rebuilt \
-  --out-dir /tmp/section4_figures_rebuilt
-```
+The older `dml_section4_release_20260812_v1` and c-atlas bundles remain in
+`support_csv/` as archived provenance.  They are not the current EJS Section 4
+source and should not be pooled into the unified global-residual tables.
 
-The assembler enforces the fixed source policy, 21-panel coverage, 108 native
-cells, 864 cell-curve rows, 168 panel-curve rows, and the full prespecified
-`c` grid. The plotting script consumes only those generated CSVs.
+The standalone Ma DiD experiment is also not part of the unified Cartesian
+matrix because it has a different estimand.  It remains a separate historical
+diagnostic.
 
-## Experiment drivers
+## Protocol and Environment
 
-The package also includes the frozen experiment drivers and launchers for the
-Kang--Schafer, Cui--Tchetgen Tchetgen, aligned-anchor, placement,
-real-covariate, and Ma DiD comparisons. The final paper compares each repaired
-estimator with its own upstream reference and reports C-TMLE, faithful
-selective ML, AIPW, Ma DiD, and plain-TMLE negative-control results separately.
-
-That paragraph describes the archived release. The new universal-function
-evaluation instead places AIPW, TMLE, C-TMLE, Cui selective ML, and Ma DR-BC
-on every common MAR benchmark cell. The native Ma DiD experiment remains a
-separate-estimand external study and is not pooled into that Cartesian matrix.
-
-## Optional companion simulation
-
-`scripts/regional_repair_companion.py` is a small standalone mechanism check.
-It is useful for a quick smoke test but is not the source of the manuscript's
-Section 4 results:
-
-```bash
-python scripts/regional_repair_companion.py --quick
-```
-
-Its historical outputs are retained under `data/` and are labeled as legacy
-companion artifacts to avoid confusing them with the authoritative release.
-
-## Environment
-
-Install the Python dependencies in `requirements.txt`. The assemblers require
-NumPy; figure rendering additionally requires Matplotlib. The experiment
-drivers use the full pinned stack, including scikit-learn and XGBoost.
+`unified_cartesian_protocol_20260814.md` records the frozen common-estimand
+matrix and single-repair rule.  The experiment drivers use the full pinned
+stack, including scikit-learn and XGBoost.  The compact assemblers and
+verifier use only the Python standard library.
