@@ -69,15 +69,15 @@ Current public SHAs:
 - CUI experiment adapter:
   `c4fa4e83dd6112ecdd2c4dfce1fc6cd3d3e0c4a97d4f48b093c78f4f6ba31d70`
 
-### Canonical Region-Gated Repair Source
+### Canonical Region-Gated Repair Driver
 
-The source for the 2026-08-17 low-response/high-response ablation is:
+The maintained high-response-capable region-gated driver is:
 
 - `scripts/validated_reference_transfer_canonical_region_if_library.py`
 
 SHA:
 
-`af471e392a2eed8f68ab5a88d03bc3bf221b8a53005337530f7d3a96cb6a236b`
+`8db53d4b39d4874884cd810337030d6825f70c19fd891d21b16de2302228d119`
 
 This source gates the deployed `if_library` residual correction by the
 selected analysis region:
@@ -88,6 +88,37 @@ candidate_outcome = base_outcome + gamma * correction * analysis_region
 
 Older runs where the deployed correction ignored the region are not valid
 high-response ablation results.
+
+### Low/High-Response Repair-Region Ablation
+
+The accepted 2026-08-30 rerun is:
+
+- Compact public bundle:
+  `support_csv/dml_low_high_response_ablation_20260830/`
+- Full raw Manifold bundle:
+  `manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/low_high_response_ablation_20260830/ctmle_region_targeting_b50/`
+- Summary script:
+  `scripts/summarize_low_high_response_ablation.py`
+  - SHA256:
+    `9098358aa198669e0070a1b033ad57cef4948a43f7df639a86da47cf3357cd55`
+
+The rerun reconstructs the pre-unified region-targeted C-TMLE driver at public
+commit `3e131a9` and changes only the repair region: the true low-response
+box versus a disjoint high-response placebo box.  It uses strengths
+`0,3,5,8`, 96 paired replications per strength and region, `B=50`,
+three-fold cross-fitting, XGBoost nuisances, damping grid
+`0,0.25,0.5,1`, one-SE selection, and `c=2` shrinkage.
+
+Headline over signal strengths 3, 5, and 8:
+
+```text
+low-response repair:       +14.569% [11.688%, 17.693%]
+high-response placebo:      +0.001% [-0.013%, 0.014%]
+paired low-minus-high gain: +14.568% [11.697%, 17.774%]
+```
+
+This is a mechanism check for region placement.  It is not the paper-facing
+unified global-residual Section 4 source.
 
 ### Old Mixed Section 4 Release
 

@@ -1,0 +1,14 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Repair-region placement control.  We hold the C-TMLE reference, data law, damping grid, one-standard-error gate, and \(c=2\) shrinkage fixed while moving the analysis region from the low-response box to a disjoint high-response placebo. Values are percent MSE gain with paired percentile intervals.}
+\label{tab:low-high-response-ablation}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+cells & low-response repair & high-response placebo & low minus high \\
+\midrule
+signal strengths 3, 5, 8 & 14.569 [11.688, 17.693] & 0.001 [-0.013, 0.014] & 14.568 [11.697, 17.774] \\
+null strength 0 & 0.000 [0.000, 0.000] & 0.070 [0.000, 0.177] & -0.070 [-0.179, 0.000] \\
+\bottomrule
+\end{tabular}
+\end{table}

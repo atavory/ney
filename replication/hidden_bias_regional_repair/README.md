@@ -42,6 +42,31 @@ selective ML all: +1.723% [1.184%, 2.252%]
 Ma DR-BC all: +2.999% [2.337%, 3.656%]
 ```
 
+## Low/High-Response Region-Placement Check
+
+A companion bundle records the region-placement ablation:
+
+- `support_csv/dml_low_high_response_ablation_20260830/`
+
+This run holds the C-TMLE reference, data law, region-targeted repair,
+damping grid, one-SE gate, and `c=2` shrinkage fixed, then changes only the
+repair region.  The low-response arm uses the true low-response box from the
+MAR law; the high-response placebo uses a disjoint box with mean response rate
+about 0.81 and zero overlap with the true low-response region.
+
+Across non-null signal strengths 3, 5, and 8, the low-response repair gains
+14.569% MSE [11.688%, 17.693%], while the high-response placebo gains 0.001%
+[-0.013%, 0.014%].  The paired low-minus-high gain is 14.568%
+[11.697%, 17.774%].
+
+This is a mechanism check for region placement.  It uses the pre-unified
+region-targeted C-TMLE driver at public commit `3e131a9` and is not pooled
+into the unified global-residual Section 4 tables.
+
+The bundle includes `section4_low_high_response_ablation_table.tex`, generated
+by `scripts/summarize_low_high_response_ablation.py` from the committed
+replication rows.
+
 ## Rebuild the Manuscript Tables
 
 From this directory:

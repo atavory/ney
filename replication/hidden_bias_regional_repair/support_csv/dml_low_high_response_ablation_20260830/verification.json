@@ -1,0 +1,38 @@
+{
+  "bootstraps": 50,
+  "chunk_files_completed": 192,
+  "chunk_files_expected": 192,
+  "created": "2026-08-30T23:29:32-0700",
+  "damping_grid": [
+    0,
+    0.25,
+    0.5,
+    1
+  ],
+  "description": "Low-response versus high-response repair-region ablation for the pre-unified region-targeted C-TMLE repair driver.",
+  "epsilon": 0.05,
+  "n": 3000,
+  "package_versions_repr": "{'numpy': '2.4.6', 'sklearn': '1.9.0', 'xgboost': '3.2.0', 'pandas': '3.0.5'}",
+  "python": "/tmp/dml_ablation_env/bin/python",
+  "reference_method": "ctmle",
+  "regions": {
+    "high_response_placebo": "analysis_region=wrong",
+    "low_response": "analysis_region=true"
+  },
+  "repair_mode": "targeting",
+  "reps_per_strength_region": 96,
+  "rows": 768,
+  "script": "replication/hidden_bias_regional_repair/scripts/validated_reference_transfer.py",
+  "seed_base_rule": "2026081700 + strength * 100000 + chunk * 1000",
+  "shrink_c": 2,
+  "source_git_head": "3e131a95dfadbd0ec583a0a7887a3133d29df595",
+  "source_status_short": "",
+  "source_worktree": "/tmp/ney_region_targeting_3e131a9",
+  "strengths": [
+    0,
+    3,
+    5,
+    8
+  ],
+  "validation_loss_se": 1
+}
