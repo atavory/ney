@@ -4,12 +4,13 @@ set -eu
 python_bin="${PYTHON_BIN:-/tmp/dml_tmle_floor_grid_venv/bin/python}"
 run_dir="${RUN_DIR:-/tmp/dml_public_covariate_expand_20260831/dml2_real_diabetes_wine_v1}"
 source_commit="${SOURCE_COMMIT:-3bec073}"
+source_file="${FROZEN_SOURCE:-scripts/validated_reference_transfer.py}"
 
 cd "$(dirname "$0")/.."
 
 "$python_bin" scripts/launch_section4_breadth_shards.py \
   --run-dir "$run_dir" \
-  --frozen-source scripts/validated_reference_transfer.py \
+  --frozen-source "$source_file" \
   --wrapper scripts/section4_breadth_experiments.py \
   --python "$python_bin" \
   --owner dml2 \
