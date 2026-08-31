@@ -225,8 +225,6 @@ def verify_generated_outputs(data_root: Path, release: Path, paper_root: Path) -
 def verify_manuscript(paper_root: Path, release: Path) -> int:
     manuscript = (paper_root / "sections/experiments_rule_quality.tex").read_text()
     appendix = (paper_root / "appendices/empirical_checks.tex").read_text()
-    if RELEASE not in manuscript:
-        raise SystemExit(f"manuscript does not name {RELEASE}")
     required_inputs = (
         "section4_values",
         "section4_unified_overview_table",
@@ -251,6 +249,18 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
             raise SystemExit(f"manuscript still references superseded Section 4 source: {token}")
     if "\\begin{table}" in manuscript:
         raise SystemExit("Section 4 contains a hand-maintained table environment")
+    paper_text = manuscript + "\n" + appendix
+    forbidden_paper_tokens = (
+        "support_csv",
+        "Manifold",
+        "manifold",
+        "SHA-256",
+        "sha256",
+        "\\path{",
+    )
+    for token in forbidden_paper_tokens:
+        if token in paper_text:
+            raise SystemExit(f"paper text contains data-provenance token: {token}")
 
     values = (release / "section4_values.tex").read_text()
     overview = (release / "section4_unified_overview_table.tex").read_text()
