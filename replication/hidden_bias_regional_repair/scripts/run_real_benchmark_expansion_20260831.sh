@@ -8,7 +8,13 @@ source_file="${FROZEN_SOURCE:-scripts/validated_reference_transfer.py}"
 support_data="${DML_SUPPORT_DATA:-/tmp/dml_real_benchmark_support_data}"
 
 cd "$(dirname "$0")/.."
-export USHMOO_SUPPORT_DATA="$support_data"
+export DML_SUPPORT_DATA="$support_data"
+
+design_filter="${DESIGN_FILTER:-}"
+if [ -n "$design_filter" ]; then
+  # shellcheck disable=SC2086
+  set -- --design-filter $design_filter "$@"
+fi
 
 "$python_bin" scripts/launch_section4_breadth_shards.py \
   --run-dir "$run_dir" \
@@ -17,6 +23,7 @@ export USHMOO_SUPPORT_DATA="$support_data"
   --python "$python_bin" \
   --owner dml \
   --groups real_benchmark \
+  "$@" \
   --methods aipw ctmle cui_selective_ml ma_dr_bc tmle \
   --chunks 24 \
   --reps-per-chunk 4 \

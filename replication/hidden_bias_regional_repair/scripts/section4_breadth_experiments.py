@@ -54,6 +54,15 @@ REAL_DESIGNS = {
     "real_diabetes_aligned": ("diabetes", "aligned"),
     "real_wine_aligned": ("wine", "aligned"),
 }
+SUPPORT_DATA = Path(
+    os.environ.get(
+        "DML_SUPPORT_DATA",
+        os.environ.get(
+            "USHMOO_SUPPORT_DATA",
+            "/home/atavory/.overleaf_git_clone/69edff47028a983c95b7fcc2/support/data",
+        ),
+    )
+)
 
 
 def _load_frozen(path: Path):
@@ -75,6 +84,18 @@ def _rank01(values: np.ndarray) -> np.ndarray:
 
 def _sigmoid(values: np.ndarray) -> np.ndarray:
     return 1.0 / (1.0 + np.exp(-np.clip(values, -35.0, 35.0)))
+
+
+def _standardize_columns(x: np.ndarray) -> np.ndarray:
+    x = np.asarray(x, dtype=float)
+    center = np.mean(x, axis=0)
+    scale = np.std(x, axis=0)
+    scale = np.where(scale > 1e-12, scale, 1.0)
+    return (x - center) / scale
+
+
+def _col(x: np.ndarray, index: int) -> np.ndarray:
+    return x[:, min(index, x.shape[1] - 1)]
 
 
 def _kang_schafer(n: int, seed: int):
@@ -174,6 +195,65 @@ def _real_semisynthetic(
     return x, y, response, defect, true_pi, float(np.mean(mu)), mu
 
 
+@lru_cache(maxsize=None)
+def _acic2017_population() -> tuple[
+    np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray
+]:
+    path = SUPPORT_DATA / "acic" / "acic2017_x.csv"
+    if not path.exists():
+        raise FileNotFoundError(f"ACIC 2017 covariates not found at {path}")
+    data = np.genfromtxt(path, delimiter=",", names=True, dtype=float)
+    matrix = np.column_stack([data[name] for name in data.dtype.names])
+    matrix = _standardize_columns(np.nan_to_num(matrix))
+    base = (
+        0.35 * _col(matrix, 0)
+        - 0.25 * _col(matrix, 4)
+        + 0.20 * _col(matrix, 11) * _col(matrix, 12)
+        + 0.25 * np.sin(_col(matrix, 20))
+    )
+    base = _standardize_columns(base.reshape(-1, 1))[:, 0]
+    score_region = (
+        0.8 * _col(matrix, 1)
+        - 0.7 * _col(matrix, 5)
+        + 0.6 * _col(matrix, 16)
+        - 0.4 * _col(matrix, 28)
+    )
+    score_signal = (
+        0.7 * _col(matrix, 2) + 0.6 * _col(matrix, 8) - 0.5 * _col(matrix, 24)
+    )
+    response_region = score_region <= np.quantile(score_region, 0.15)
+    signal_region = score_signal <= np.quantile(score_signal, 0.18)
+    outside_rank = _rank01(0.5 * _col(matrix, 3) + 0.4 * _col(matrix, 17))
+    return matrix, base, response_region, signal_region, outside_rank
+
+
+def _acic2017_semisynthetic(
+    n: int, epsilon: float, strength: float, design: str, seed: int
+):
+    rng = np.random.default_rng(seed)
+    x_pop, base, response_region, signal_region, outside_rank = _acic2017_population()
+    rows = rng.integers(0, len(base), n)
+    x = x_pop[rows]
+    region = response_region[rows]
+    outside = np.clip(0.68 + 0.22 * outside_rank[rows], 0.05, 0.95)
+    true_pi = np.where(region, epsilon, outside)
+    response = rng.binomial(1, true_pi)
+    if design == "acic2017_semisynth":
+        signal_pop = response_region.astype(float) * (
+            0.70 + 0.50 * _rank01(_col(x_pop, 2))
+        )
+    elif design == "acic2017_misaligned":
+        signal_pop = signal_region.astype(float) * (
+            0.70 + 0.50 * _rank01(_col(x_pop, 6))
+        )
+    else:
+        raise ValueError(f"unknown ACIC 2017 design: {design}")
+    mu_pop = base + 0.35 * strength * signal_pop
+    y = mu_pop[rows] + rng.standard_normal(n)
+    theta = float(mu_pop.mean())
+    return x, y, response, region, true_pi, theta, mu_pop[rows]
+
+
 def _column_selector(kind: str) -> FunctionTransformer:
     slc = slice(0, 4) if kind == "correct" else slice(4, 8)
     return FunctionTransformer(lambda values: values[:, slc], validate=False)
@@ -198,6 +278,8 @@ def _install_adapter(module) -> None:
             return _real_semisynthetic(
                 n, epsilon, strength, name, geometry, seed
             )
+        if design in {"acic2017_semisynth", "acic2017_misaligned"}:
+            return _acic2017_semisynthetic(n, epsilon, strength, design, seed)
         return original_make_data(n, epsilon, strength, design, seed, mar_design)
 
     def nuisance_kind(which: int) -> str | None:

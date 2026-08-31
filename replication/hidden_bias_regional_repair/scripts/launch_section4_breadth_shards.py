@@ -76,6 +76,8 @@ def maximum_internal_seed(
         "ihdp_misaligned": 22,
         "acic2016_semisynth": 31,
         "acic2016_misaligned": 32,
+        "acic2017_semisynth": 33,
+        "acic2017_misaligned": 34,
     }
     if design in known_design_offsets:
         design_offset = known_design_offsets[design] * 10_000_000
@@ -151,6 +153,8 @@ def design_cells(groups: set[str]):
             "ihdp_misaligned",
             "acic2016_semisynth",
             "acic2016_misaligned",
+            "acic2017_semisynth",
+            "acic2017_misaligned",
         ):
             for strength in (0.0, 3.0):
                 yield "real_benchmark", design, 3000, strength
