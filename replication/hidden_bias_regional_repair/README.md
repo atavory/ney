@@ -67,6 +67,31 @@ The bundle includes `section4_low_high_response_ablation_table.tex`, generated
 by `scripts/summarize_low_high_response_ablation.py` from the committed
 replication rows.
 
+## No-Shrinkage Check
+
+A second companion bundle records the final-shrinkage ablation:
+
+- `support_csv/dml_no_shrinkage_ablation_20260830/`
+
+This summary reuses the same 16,320 raw replication rows as the current
+paper-facing unified global-residual run and changes only the final contrast:
+the selected unshrunk candidate path versus the \(c=2\) plug-in shrinkage rule.
+
+All-family equal-cell percent MSE gains:
+
+```text
+AIPW:             no shrinkage +5.965% [4.586%, 7.041%], c=2 +2.791% [1.957%, 3.528%]
+C-TMLE:           no shrinkage +0.021% [-0.066%, 0.126%], c=2 +0.028% [-0.040%, 0.119%]
+selective ML:     no shrinkage +4.399% [3.414%, 5.305%], c=2 +1.723% [1.184%, 2.252%]
+Ma DR-BC:         no shrinkage +3.797% [2.977%, 4.542%], c=2 +2.999% [2.337%, 3.656%]
+fixed-floor TMLE: no shrinkage -6.837% [-9.784%, -4.532%], c=2 -0.410% [-1.203%, 0.235%]
+```
+
+The no-shrinkage path is more aggressive.  It increases point gains for the
+responsive experts but exposes the fixed-floor TMLE over-activation failure.
+The \(c=2\) rule is therefore a stability guard, not a gain-maximizing
+postprocessing step.
+
 ## Rebuild the Manuscript Tables
 
 From this directory:
@@ -77,7 +102,7 @@ python scripts/assemble_section4_unified_global_residual.py \
   --out-dir /tmp/section4_unified_rebuilt
 ```
 
-The rebuilt files should match the three generated TeX files in
+The rebuilt files should match the primary generated TeX files in
 `support_csv/dml_unified_cartesian_global_residual_20260814/` byte for byte.
 
 To verify the public bundle against an Overleaf paper clone:

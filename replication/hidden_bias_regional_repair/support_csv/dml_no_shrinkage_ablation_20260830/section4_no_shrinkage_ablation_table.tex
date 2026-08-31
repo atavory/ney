@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Final shrinkage ablation.  We compare the selected, unshrunk candidate path with the final \(c=2\) plug-in contrast-shrinkage rule used in the primary run. Values are equal-cell percent MSE gain with paired percentile intervals.}
+\label{tab:no-shrinkage-ablation}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+expert & no shrinkage & \(c=2\) shrinkage \\
+\midrule
+AIPW & 5.965 [4.586, 7.041] & 2.791 [1.957, 3.528] \\
+C-TMLE & 0.021 [-0.066, 0.126] & 0.028 [-0.040, 0.119] \\
+selective ML & 4.399 [3.414, 5.305] & 1.723 [1.184, 2.252] \\
+Ma DR-BC & 3.797 [2.977, 4.542] & 2.999 [2.337, 3.656] \\
+fixed-floor TMLE & -6.837 [-9.784, -4.532] & -0.410 [-1.203, 0.235] \\
+\bottomrule
+\end{tabular}
+\end{table}

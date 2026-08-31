@@ -33,6 +33,14 @@ EXPECTED_GENERATED = (
     "section4_unified_family_table.tex",
     "section4_fixed_floor_tmle_diagnostic_table.tex",
 )
+AUXILIARY_GENERATED = {
+    "dml_low_high_response_ablation_20260830": (
+        "section4_low_high_response_ablation_table.tex",
+    ),
+    "dml_no_shrinkage_ablation_20260830": (
+        "section4_no_shrinkage_ablation_table.tex",
+    ),
+}
 EXPECTED_METHODS = {
     "aipw",
     "tmle",
@@ -222,6 +230,29 @@ def verify_generated_outputs(data_root: Path, release: Path, paper_root: Path) -
                 raise SystemExit(f"paper generated file differs from release: {paper_path}")
 
 
+def verify_auxiliary_generated_outputs(data_root: Path, paper_root: Path) -> int:
+    file_count = 0
+    for release_name, generated_files in AUXILIARY_GENERATED.items():
+        release = data_root / "support_csv" / release_name
+        if not release.exists():
+            raise SystemExit(f"missing auxiliary Section 4 bundle: {release}")
+        verify_checksums(release)
+        verification = json.loads((release / "verification.json").read_text())
+        if verification.get("status") != "PASS":
+            raise SystemExit(f"auxiliary verification is not PASS: {release}")
+        for name in generated_files:
+            release_path = release / name
+            paper_path = paper_root / "sections/generated" / name
+            if not release_path.exists():
+                raise SystemExit(f"missing auxiliary generated file: {release_path}")
+            if release_path.read_bytes() != paper_path.read_bytes():
+                raise SystemExit(
+                    f"paper auxiliary generated file differs from release: {paper_path}"
+                )
+            file_count += 1
+    return file_count
+
+
 def verify_manuscript(paper_root: Path, release: Path) -> int:
     manuscript = (paper_root / "sections/experiments_rule_quality.tex").read_text()
     appendix = (paper_root / "appendices/empirical_checks.tex").read_text()
@@ -229,6 +260,8 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
         "section4_values",
         "section4_unified_overview_table",
         "section4_unified_family_table",
+        "section4_low_high_response_ablation_table",
+        "section4_no_shrinkage_ablation_table",
     )
     for name in required_inputs:
         if f"\\input{{sections/generated/{name}}}" not in manuscript:
@@ -301,12 +334,13 @@ def main() -> None:
     family_rows = verify_family_summary(release / "family_summary.csv")
     cell_rows = verify_cell_summary(release / "cell_summary.csv")
     verify_generated_outputs(args.data_root, release, args.paper_root)
+    auxiliary_files = verify_auxiliary_generated_outputs(args.data_root, args.paper_root)
     macros_used = verify_manuscript(args.paper_root, release)
 
     print(
         f"VERIFIED unified_release_files={release_files} "
         f"family_rows={len(family_rows)} cell_rows={cell_rows} "
-        f"macros_used={macros_used}"
+        f"auxiliary_generated_files={auxiliary_files} macros_used={macros_used}"
     )
 
 

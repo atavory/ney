@@ -24,10 +24,11 @@ The paper-facing scripts are:
     `bc3b5edfdcb043bc0ee1afb875d707a142455f497645aed39401ad1baf4e3904`
 - `scripts/verify_section4_manuscript.py`
   - SHA256:
-    `8903d328781a651edf8857da43a626319c0fa1ad84532535c111f06ac23180b4`
+    `21e71c3df6b21971b2533edeca52437ce9af0401267522061ab2e389b15335ff`
 
 The verifier confirms that the public bundle and an Overleaf paper checkout
-agree on the generated Section 4 files.
+agree on the generated Section 4 files, including the companion ablation
+tables.
 
 ## Manifold Source Objects
 
@@ -119,6 +120,33 @@ paired low-minus-high gain: +14.568% [11.697%, 17.774%]
 
 This is a mechanism check for region placement.  It is not the paper-facing
 unified global-residual Section 4 source.
+
+### No-Shrinkage Ablation
+
+The accepted 2026-08-31 derived ablation is:
+
+- Compact public bundle:
+  `support_csv/dml_no_shrinkage_ablation_20260830/`
+- Compact Manifold bundle:
+  `manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/no_shrinkage_ablation_20260830/unified_cartesian_c2_vs_unshrunk/`
+- Summary script:
+  `scripts/summarize_no_shrinkage_ablation.py`
+  - SHA256:
+    `3c07f867bca0b8f62c93ff62e5d2058ba829f37c6703be9cf00a8a79b9a5645e`
+
+This ablation reuses the Aug. 14 unified Cartesian raw rows and compares the
+selected unshrunk candidate path with the final \(c=2\) plug-in
+contrast-shrinkage rule.  No new estimator fitting is performed.
+
+Headline all-family equal-cell gains:
+
+```text
+AIPW:             no shrinkage +5.965% [4.586%, 7.041%], c=2 +2.791% [1.957%, 3.528%]
+C-TMLE:           no shrinkage +0.021% [-0.066%, 0.126%], c=2 +0.028% [-0.040%, 0.119%]
+selective ML:     no shrinkage +4.399% [3.414%, 5.305%], c=2 +1.723% [1.184%, 2.252%]
+Ma DR-BC:         no shrinkage +3.797% [2.977%, 4.542%], c=2 +2.999% [2.337%, 3.656%]
+fixed-floor TMLE: no shrinkage -6.837% [-9.784%, -4.532%], c=2 -0.410% [-1.203%, 0.235%]
+```
 
 ### Old Mixed Section 4 Release
 
