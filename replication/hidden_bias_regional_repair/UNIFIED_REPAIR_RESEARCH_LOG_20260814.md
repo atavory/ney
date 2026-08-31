@@ -8,6 +8,13 @@ EJS Section 4 empirical source is the compact reconstruction in
 `support_csv/dml_unified_cartesian_global_residual_20260814/`, as indexed by
 `README.md` and `PUBLIC_ARTIFACTS.md`.
 
+2026-08-31 update: Section 4 now also includes two generated companion
+ablations.  The low/high-response region-placement check lives in
+`support_csv/dml_low_high_response_ablation_20260830/`; the no-shrinkage versus
+`c=2` check lives in `support_csv/dml_no_shrinkage_ablation_20260830/`.  The
+cross-repository verifier checks both generated ablation tables against those
+bundles.
+
 Historical cautions below still constrain interpretation: the empirical run is
 not a theorem-validation experiment, and alternatives or later diagnostics
 should not be silently pooled into the current Section 4 tables.  They do not

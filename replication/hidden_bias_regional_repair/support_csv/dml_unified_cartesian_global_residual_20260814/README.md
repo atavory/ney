@@ -59,3 +59,12 @@ plain TMLE Kang-Schafer: -1.886% [-5.265%, 0.862%]
 The manuscript tables, including the fixed-floor diagnostic appendix table,
 are generated from `family_summary.csv` by
 `scripts/assemble_section4_unified_global_residual.py`.
+
+Companion generated ablation tables are stored outside this primary bundle:
+
+- `support_csv/dml_low_high_response_ablation_20260830/` checks true
+  low-response repair-region placement against a disjoint high-response
+  placebo.
+- `support_csv/dml_no_shrinkage_ablation_20260830/` compares the selected
+  unshrunk candidate with the final `c=2` shrinkage rule on the same unified
+  raw rows.
