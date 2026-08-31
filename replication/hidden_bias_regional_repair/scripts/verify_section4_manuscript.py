@@ -261,6 +261,9 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
     for token in forbidden_paper_tokens:
         if token in paper_text:
             raise SystemExit(f"paper text contains data-provenance token: {token}")
+    for tex_path in paper_root.rglob("*.tex"):
+        if "deliberately" in tex_path.read_text(errors="replace").lower():
+            raise SystemExit(f"paper text contains banned wording: {tex_path}")
 
     values = (release / "section4_values.tex").read_text()
     overview = (release / "section4_unified_overview_table.tex").read_text()
