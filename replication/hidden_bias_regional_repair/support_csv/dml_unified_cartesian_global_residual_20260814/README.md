@@ -68,8 +68,9 @@ plain TMLE all: -0.410% [-1.203%, 0.235%]
 plain TMLE Kang-Schafer: -1.886% [-5.265%, 0.862%]
 ```
 
-The manuscript tables, including the synthetic-support diagnostic table and
-the fixed-floor diagnostic appendix table, are generated from `family_summary.csv` by
+The manuscript tables, including the setting-level primary table, synthetic
+support diagnostic table, and fixed-floor diagnostic appendix table, are
+generated from `family_summary.csv` and `cell_summary.csv` by
 `scripts/assemble_section4_unified_global_residual.py`.
 
 Companion generated ablation tables are stored outside this primary bundle:

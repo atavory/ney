@@ -47,6 +47,7 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=Path("support_csv/dml_unified_cartesian_global_residual_20260814/family_summary.csv"),
     )
+    parser.add_argument("--cell-summary", type=Path)
     parser.add_argument("--out-dir", type=Path, required=True)
     return parser.parse_args()
 
@@ -70,6 +71,18 @@ def read_rows(path: Path) -> dict[tuple[str, str], dict[str, str]]:
         extra = sorted(observed - expected)
         raise SystemExit(f"summary keys differ: missing={missing}, extra={extra}")
     return keyed
+
+
+def read_cell_rows(path: Path) -> list[dict[str, str]]:
+    with path.open(newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    expected_methods = {method for method, _, _ in METHODS}
+    observed_methods = {row["method"] for row in rows}
+    if observed_methods != expected_methods:
+        raise SystemExit(
+            f"setting summary methods differ: {sorted(observed_methods)}"
+        )
+    return rows
 
 
 def write_values(path: Path, rows: dict[tuple[str, str], dict[str, str]]) -> None:
@@ -121,26 +134,67 @@ def write_overview(path: Path, rows: dict[tuple[str, str], dict[str, str]]) -> N
     path.write_text("".join(lines))
 
 
-def write_family_table(path: Path, rows: dict[tuple[str, str], dict[str, str]]) -> None:
+def setting_label(row: dict[str, str]) -> str:
+    design = row["design"]
+    strength = float(row["strength"])
+    if row["group"] == "kang_schafer":
+        spec = design.replace("kang_schafer_", "").upper()
+        return f"KS {spec}, $n={int(row['n'])}$"
+    strength_label = str(int(strength)) if strength.is_integer() else str(strength)
+    source = design.replace("real_", "").replace("_", " ")
+    return f"{source}, $s={strength_label}$"
+
+
+def write_family_table(path: Path, rows: list[dict[str, str]]) -> None:
+    primary_rows = [
+        row
+        for row in rows
+        if row["group"] in {"kang_schafer", "real"}
+        and row["method"] in {method for method, _, _ in PRIMARY_METHODS}
+    ]
+    by_setting: dict[tuple[str, str, int, float], dict[str, dict[str, str]]] = {}
+    for row in primary_rows:
+        key = (row["group"], row["design"], int(row["n"]), float(row["strength"]))
+        by_setting.setdefault(key, {})[row["method"]] = row
+    missing = []
+    for key, methods in by_setting.items():
+        for method, _, _ in PRIMARY_METHODS:
+            if method not in methods:
+                missing.append((key, method))
+    if missing:
+        raise SystemExit(f"setting table missing methods: {missing[:5]}")
+    ks_keys = sorted(
+        [key for key in by_setting if key[0] == "kang_schafer"],
+        key=lambda key: (key[1], key[2]),
+    )
+    real_keys = sorted(
+        [key for key in by_setting if key[0] == "real"],
+        key=lambda key: (key[1], key[3], key[2]),
+    )
     lines = [
         COMMENT,
         "\\begin{table}[t]\n",
         "\\centering\n",
         "\\scriptsize\n",
-        "\\caption{Dataset-level readout for the primary global-residual run. Entries are equal-setting MSE gains at $c=2$ with paired 95\\% intervals.}\n",
+        "\\caption{Setting-level primary readout for the global-residual repair. Entries are percent MSE gains at $c=2$; Table~\\ref{tab:unified-global-residual-overview} gives aggregate uncertainty. The fixed-floor TMLE diagnostic is omitted from this primary table.}\n",
         "\\label{tab:unified-global-residual-families}\n",
-        "\\begin{tabular}{@{}llrp{.34\\linewidth}@{}}\n",
+        "\\begin{tabular}{@{}lrrrr@{}}\n",
         "\\toprule\n",
-        "family & upstream estimator & settings & MSE gain (95\\% CI) \\\\\n",
+        "setting & AIPW & C-TMLE & selective ML & Ma DR-BC \\\\\n",
         "\\midrule\n",
     ]
-    for family, family_label in PRIMARY_DATASETS:
-        for method, method_label, _ in PRIMARY_METHODS:
-            row = rows[(method, family)]
-            lines.append(
-                f"{family_label} & {method_label} & {int(row['cells'])} & {gain_cell(row)} \\\\\n"
-            )
-        if family != PRIMARY_DATASETS[-1][0]:
+    for group_label, keys in (("Kang--Schafer", ks_keys), ("Public covariates", real_keys)):
+        lines.append(
+            f"\\multicolumn{{5}}{{@{{}}l}}{{\\textit{{{group_label}}}}} \\\\\n"
+        )
+        for key in keys:
+            setting = setting_label(next(iter(by_setting[key].values())))
+            values = [
+                f"${pct(by_setting[key][method]['repaired_gain'])}$"
+                for method, _, _ in PRIMARY_METHODS
+            ]
+            lines.append(f"{setting} & " + " & ".join(values) + " \\\\\n")
+        if group_label != "Public covariates":
             lines.append("\\addlinespace\n")
     lines.extend(["\\bottomrule\n", "\\end{tabular}\n", "\\end{table}\n"])
     path.write_text("".join(lines))
@@ -202,9 +256,10 @@ def main() -> None:
     args = parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
     rows = read_rows(args.summary)
+    cell_rows = read_cell_rows(args.cell_summary or args.summary.with_name("cell_summary.csv"))
     write_values(args.out_dir / "section4_values.tex", rows)
     write_overview(args.out_dir / "section4_unified_overview_table.tex", rows)
-    write_family_table(args.out_dir / "section4_unified_family_table.tex", rows)
+    write_family_table(args.out_dir / "section4_unified_family_table.tex", cell_rows)
     write_synthetic_diagnostic_table(
         args.out_dir / "section4_synthetic_diagnostic_table.tex", rows
     )
