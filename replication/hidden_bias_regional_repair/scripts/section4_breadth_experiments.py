@@ -17,7 +17,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
-from sklearn.datasets import load_breast_cancer, load_digits
+from sklearn.datasets import load_breast_cancer, load_diabetes, load_digits, load_wine
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import FunctionTransformer, StandardScaler
 
@@ -47,8 +47,12 @@ ALIGNMENT_RAW_SCORE_CUTS = {
 REAL_DESIGNS = {
     "real_digits_misaligned": ("digits", "wider_partial"),
     "real_breast_cancer_misaligned": ("breast_cancer", "wider_partial"),
+    "real_diabetes_misaligned": ("diabetes", "wider_partial"),
+    "real_wine_misaligned": ("wine", "wider_partial"),
     "real_digits_aligned": ("digits", "aligned"),
     "real_breast_cancer_aligned": ("breast_cancer", "aligned"),
+    "real_diabetes_aligned": ("diabetes", "aligned"),
+    "real_wine_aligned": ("wine", "aligned"),
 }
 
 
@@ -115,13 +119,24 @@ def _alignment(n: int, epsilon: float, strength: float, design: str, seed: int):
 
 @lru_cache(maxsize=None)
 def _real_pool(name: str) -> np.ndarray:
-    loaded = {"digits": load_digits, "breast_cancer": load_breast_cancer}[name]()
+    loaded = {
+        "digits": load_digits,
+        "breast_cancer": load_breast_cancer,
+        "diabetes": load_diabetes,
+        "wine": load_wine,
+    }[name]()
     return StandardScaler().fit_transform(loaded.data.astype(float))
 
 
 @lru_cache(maxsize=None)
 def _real_direction(name: str, width: int) -> np.ndarray:
-    rng = np.random.default_rng(20260810 + (1 if name == "digits" else 2))
+    dataset_offsets = {
+        "digits": 1,
+        "breast_cancer": 2,
+        "diabetes": 3,
+        "wine": 4,
+    }
+    rng = np.random.default_rng(20260810 + dataset_offsets[name])
     direction = rng.normal(size=width)
     return direction / np.linalg.norm(direction)
 

@@ -131,8 +131,12 @@ def design_cells(groups: set[str]):
         for design in (
             "real_digits_misaligned",
             "real_breast_cancer_misaligned",
+            "real_diabetes_misaligned",
+            "real_wine_misaligned",
             "real_digits_aligned",
             "real_breast_cancer_aligned",
+            "real_diabetes_aligned",
+            "real_wine_aligned",
         ):
             for strength in (0.0, 1.0, 2.0):
                 yield "real", design, 6000, strength
