@@ -303,7 +303,6 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
     appendix = (paper_root / "appendices/empirical_checks.tex").read_text()
     required_inputs = (
         "section4_values",
-        "section4_unified_overview_table",
         "section4_unified_family_table",
         "section4_synthetic_diagnostic_table",
         "section4_low_high_response_ablation_table",
@@ -315,6 +314,8 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
     diagnostic_input = "section4_fixed_floor_tmle_diagnostic_table"
     if f"\\input{{sections/generated/{diagnostic_input}}}" not in appendix:
         raise SystemExit("appendix does not input fixed-floor TMLE diagnostic table")
+    if "\\input{sections/generated/section4_unified_overview_table}" in manuscript:
+        raise SystemExit("manuscript inputs the aggregate overview table")
     forbidden = (
         "section4_natural_table",
         "section4_emphasized_table",

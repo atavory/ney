@@ -59,7 +59,10 @@ def parse_args() -> argparse.Namespace:
 
 
 def pct(value: str | float, digits: int = 3) -> str:
-    return f"{100.0 * float(value):.{digits}f}"
+    rounded = round(100.0 * float(value), digits)
+    if rounded == 0:
+        rounded = 0.0
+    return f"{rounded:.{digits}f}"
 
 
 def rate(value: str | float) -> str:
@@ -114,6 +117,13 @@ def gain_cell(row: dict[str, str]) -> str:
     return (
         f"${pct(row['equal_cell_gain'])}\\%\\ "
         f"[{pct(row['equal_cell_gain_ci_low'])},{pct(row['equal_cell_gain_ci_high'])}]$"
+    )
+
+
+def setting_gain_cell(row: dict[str, str]) -> str:
+    return (
+        f"${pct(row['repaired_gain'], 1)}\\ "
+        f"[{pct(row['repaired_gain_ci_low'], 1)},{pct(row['repaired_gain_ci_high'], 1)}]$"
     )
 
 
@@ -182,8 +192,9 @@ def write_family_table(path: Path, rows: list[dict[str, str]]) -> None:
         "\\begin{table}[t]\n",
         "\\centering\n",
         "\\scriptsize\n",
-        "\\caption{Setting-level primary readout for the global-residual repair. Entries are percent MSE gains at $c=2$; Table~\\ref{tab:unified-global-residual-overview} gives aggregate uncertainty. The fixed-floor TMLE diagnostic is omitted from this primary table.}\n",
+        "\\caption{Setting-level primary readout for the global-residual repair. Entries are percent MSE gain with 95\\% paired percentile intervals at $c=2$. Positive values favor the repair. The fixed-floor TMLE diagnostic is omitted from this primary table.}\n",
         "\\label{tab:unified-global-residual-families}\n",
+        "\\resizebox{\\textwidth}{!}{%\n",
         "\\begin{tabular}{@{}lrrrr@{}}\n",
         "\\toprule\n",
         "setting & AIPW & selective ML & Ma DR-BC & C-TMLE \\\\\n",
@@ -196,13 +207,13 @@ def write_family_table(path: Path, rows: list[dict[str, str]]) -> None:
         for key in keys:
             setting = setting_label(next(iter(by_setting[key].values())))
             values = [
-                f"${pct(by_setting[key][method]['repaired_gain'])}$"
+                setting_gain_cell(by_setting[key][method])
                 for method, _, _ in SETTING_TABLE_METHODS
             ]
             lines.append(f"{setting} & " + " & ".join(values) + " \\\\\n")
         if group_label != "Public covariates":
             lines.append("\\addlinespace\n")
-    lines.extend(["\\bottomrule\n", "\\end{tabular}\n", "\\end{table}\n"])
+    lines.extend(["\\bottomrule\n", "\\end{tabular}%\n", "}\n", "\\end{table}\n"])
     path.write_text("".join(lines))
 
 
