@@ -21,6 +21,12 @@ PRIMARY_METHODS = (
     ("cui_selective_ml", "selective ML", "CuiSelectiveMl"),
     ("ma_dr_bc", "Ma DR-BC", "MaDrBc"),
 )
+SETTING_TABLE_METHODS = (
+    ("aipw", "AIPW", "Aipw"),
+    ("cui_selective_ml", "selective ML", "CuiSelectiveMl"),
+    ("ma_dr_bc", "Ma DR-BC", "MaDrBc"),
+    ("ctmle", "C-TMLE", "Ctmle"),
+)
 FAMILIES = (
     ("primary", "primary datasets", "Primary"),
     ("all", "full matrix", "All"),
@@ -150,7 +156,7 @@ def write_family_table(path: Path, rows: list[dict[str, str]]) -> None:
         row
         for row in rows
         if row["group"] in {"kang_schafer", "real"}
-        and row["method"] in {method for method, _, _ in PRIMARY_METHODS}
+        and row["method"] in {method for method, _, _ in SETTING_TABLE_METHODS}
     ]
     by_setting: dict[tuple[str, str, int, float], dict[str, dict[str, str]]] = {}
     for row in primary_rows:
@@ -158,7 +164,7 @@ def write_family_table(path: Path, rows: list[dict[str, str]]) -> None:
         by_setting.setdefault(key, {})[row["method"]] = row
     missing = []
     for key, methods in by_setting.items():
-        for method, _, _ in PRIMARY_METHODS:
+        for method, _, _ in SETTING_TABLE_METHODS:
             if method not in methods:
                 missing.append((key, method))
     if missing:
@@ -180,7 +186,7 @@ def write_family_table(path: Path, rows: list[dict[str, str]]) -> None:
         "\\label{tab:unified-global-residual-families}\n",
         "\\begin{tabular}{@{}lrrrr@{}}\n",
         "\\toprule\n",
-        "setting & AIPW & C-TMLE & selective ML & Ma DR-BC \\\\\n",
+        "setting & AIPW & selective ML & Ma DR-BC & C-TMLE \\\\\n",
         "\\midrule\n",
     ]
     for group_label, keys in (("Kang--Schafer", ks_keys), ("Public covariates", real_keys)):
@@ -191,7 +197,7 @@ def write_family_table(path: Path, rows: list[dict[str, str]]) -> None:
             setting = setting_label(next(iter(by_setting[key].values())))
             values = [
                 f"${pct(by_setting[key][method]['repaired_gain'])}$"
-                for method, _, _ in PRIMARY_METHODS
+                for method, _, _ in SETTING_TABLE_METHODS
             ]
             lines.append(f"{setting} & " + " & ".join(values) + " \\\\\n")
         if group_label != "Public covariates":
