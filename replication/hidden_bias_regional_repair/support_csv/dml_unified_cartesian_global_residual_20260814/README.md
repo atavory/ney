@@ -1,8 +1,11 @@
 # Unified Cartesian Global-Residual Reconstruction
 
 This directory records a 2026-08-30 reconstruction of the Aug. 14 v3 unified
-Cartesian baseline.  As of the 2026-08-30 manuscript cleanup, this is the
-paper-facing Section 4 result source for the single global-residual repair.
+Cartesian baseline.  As of the 2026-08-31 manuscript cleanup, this is the
+Section 4 source for the single global-residual repair.  The paper-facing
+primary readout uses the 20 Kang--Schafer and public-covariate settings; the
+alignment-stress and aligned-anchor settings remain in the release as
+diagnostics.
 
 Source Manifold objects:
 
@@ -34,7 +37,7 @@ python3 scripts/recreate_unified_cartesian_global_residual.py \
 ```
 
 The reconstruction passed fail-closed checks for 4,080 shard files, 16,320
-replication rows, and 170 expert-by-cell combinations.  Every row uses
+replication rows, and 170 expert-by-setting combinations.  Every row uses
 `repair_mode=if_residual`, `validation_loss_se=1.0`, `shrink_c=2.0`,
 `region_damp_grid=0.0|0.25|0.5|1.0`, and the frozen source SHA
 `98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce`.
@@ -42,10 +45,19 @@ replication rows, and 170 expert-by-cell combinations.  Every row uses
 Primary paper-facing readout at `c=2`:
 
 ```text
-AIPW all: +2.791% [1.957%, 3.528%]
-C-TMLE all: +0.028% [-0.040%, 0.119%]
-selective ML all: +1.723% [1.184%, 2.252%]
-Ma DR-BC all: +2.999% [2.337%, 3.656%]
+AIPW primary: +4.584% [3.186%, 5.832%]
+C-TMLE primary: +0.048% [-0.068%, 0.201%]
+selective ML primary: +2.485% [1.612%, 3.342%]
+Ma DR-BC primary: +5.077% [3.953%, 6.186%]
+```
+
+The full 34-setting matrix is still verified and retained for diagnostics:
+
+```text
+AIPW full matrix: +2.791% [1.957%, 3.528%]
+C-TMLE full matrix: +0.028% [-0.040%, 0.119%]
+selective ML full matrix: +1.723% [1.184%, 2.252%]
+Ma DR-BC full matrix: +2.999% [2.337%, 3.656%]
 ```
 
 The nonadaptive plain-TMLE arm is retained as a diagnostic fixed-floor
@@ -56,8 +68,8 @@ plain TMLE all: -0.410% [-1.203%, 0.235%]
 plain TMLE Kang-Schafer: -1.886% [-5.265%, 0.862%]
 ```
 
-The manuscript tables, including the fixed-floor diagnostic appendix table,
-are generated from `family_summary.csv` by
+The manuscript tables, including the synthetic-support diagnostic table and
+the fixed-floor diagnostic appendix table, are generated from `family_summary.csv` by
 `scripts/assemble_section4_unified_global_residual.py`.
 
 Companion generated ablation tables are stored outside this primary bundle:

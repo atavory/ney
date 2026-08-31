@@ -18,6 +18,18 @@
           "reps": 960,
           "unconditional_harm": 0.0010416666666666667
         },
+        "all": {
+          "cells": 34,
+          "equal_cell_gain": 0.027914454049427613,
+          "equal_cell_gain_ci_high": 0.03528144994662575,
+          "equal_cell_gain_ci_low": 0.01956893993942332,
+          "family": "all",
+          "final_activation": 0.04105392156862745,
+          "method": "aipw",
+          "path_activation": 0.17310049019607843,
+          "reps": 3264,
+          "unconditional_harm": 0.004901960784313725
+        },
         "anchor": {
           "cells": 4,
           "equal_cell_gain": 0.005204166102080687,
@@ -41,6 +53,18 @@
           "path_activation": 0.6653645833333334,
           "reps": 768,
           "unconditional_harm": 0.018229166666666668
+        },
+        "primary": {
+          "cells": 20,
+          "equal_cell_gain": 0.045842865523650404,
+          "equal_cell_gain_ci_high": 0.058316463505161134,
+          "equal_cell_gain_ci_low": 0.03185914412879439,
+          "family": "primary",
+          "final_activation": 0.06614583333333333,
+          "method": "aipw",
+          "path_activation": 0.278125,
+          "reps": 1920,
+          "unconditional_harm": 0.0078125
         },
         "real": {
           "cells": 12,
@@ -80,6 +104,18 @@
           "reps": 960,
           "unconditional_harm": 0.0
         },
+        "all": {
+          "cells": 34,
+          "equal_cell_gain": 0.00028379246792223204,
+          "equal_cell_gain_ci_high": 0.0011851654880649263,
+          "equal_cell_gain_ci_low": -0.00040289978655698525,
+          "family": "all",
+          "final_activation": 0.0012254901960784314,
+          "method": "ctmle",
+          "path_activation": 0.003982843137254902,
+          "reps": 3264,
+          "unconditional_harm": 0.0006127450980392157
+        },
         "anchor": {
           "cells": 4,
           "equal_cell_gain": 0.0,
@@ -103,6 +139,18 @@
           "path_activation": 0.015625,
           "reps": 768,
           "unconditional_harm": 0.0013020833333333333
+        },
+        "primary": {
+          "cells": 20,
+          "equal_cell_gain": 0.00048244719546779445,
+          "equal_cell_gain_ci_high": 0.0020147813297103747,
+          "equal_cell_gain_ci_low": -0.0006849296371468749,
+          "family": "primary",
+          "final_activation": 0.0020833333333333333,
+          "method": "ctmle",
+          "path_activation": 0.006770833333333333,
+          "reps": 1920,
+          "unconditional_harm": 0.0010416666666666667
         },
         "real": {
           "cells": 12,
@@ -142,6 +190,18 @@
           "reps": 960,
           "unconditional_harm": 0.005208333333333333
         },
+        "all": {
+          "cells": 34,
+          "equal_cell_gain": 0.017233521117469744,
+          "equal_cell_gain_ci_high": 0.022520399926446194,
+          "equal_cell_gain_ci_low": 0.011839800463957986,
+          "family": "all",
+          "final_activation": 0.057904411764705885,
+          "method": "cui_selective_ml",
+          "path_activation": 0.2711397058823529,
+          "reps": 3264,
+          "unconditional_harm": 0.010723039215686275
+        },
         "anchor": {
           "cells": 4,
           "equal_cell_gain": 0.007138353829270638,
@@ -165,6 +225,18 @@
           "path_activation": 0.515625,
           "reps": 768,
           "unconditional_harm": 0.03125
+        },
+        "primary": {
+          "cells": 20,
+          "equal_cell_gain": 0.024846158789684086,
+          "equal_cell_gain_ci_high": 0.03342216388588586,
+          "equal_cell_gain_ci_low": 0.016119897939802324,
+          "family": "primary",
+          "final_activation": 0.07395833333333333,
+          "method": "cui_selective_ml",
+          "path_activation": 0.325,
+          "reps": 1920,
+          "unconditional_harm": 0.015625
         },
         "real": {
           "cells": 12,
@@ -204,6 +276,18 @@
           "reps": 960,
           "unconditional_harm": 0.0
         },
+        "all": {
+          "cells": 34,
+          "equal_cell_gain": 0.029989987898879144,
+          "equal_cell_gain_ci_high": 0.03655646756816127,
+          "equal_cell_gain_ci_low": 0.02337262499935865,
+          "family": "all",
+          "final_activation": 0.06740196078431372,
+          "method": "ma_dr_bc",
+          "path_activation": 0.12377450980392156,
+          "reps": 3264,
+          "unconditional_harm": 0.014399509803921568
+        },
         "anchor": {
           "cells": 4,
           "equal_cell_gain": 0.0,
@@ -227,6 +311,18 @@
           "path_activation": 0.515625,
           "reps": 768,
           "unconditional_harm": 0.061197916666666664
+        },
+        "primary": {
+          "cells": 20,
+          "equal_cell_gain": 0.050773119197445225,
+          "equal_cell_gain_ci_high": 0.0618638300400446,
+          "equal_cell_gain_ci_low": 0.03952960721713733,
+          "family": "primary",
+          "final_activation": 0.1140625,
+          "method": "ma_dr_bc",
+          "path_activation": 0.2078125,
+          "reps": 1920,
+          "unconditional_harm": 0.024479166666666666
         },
         "real": {
           "cells": 12,
@@ -266,6 +362,18 @@
           "reps": 960,
           "unconditional_harm": 0.0020833333333333333
         },
+        "all": {
+          "cells": 34,
+          "equal_cell_gain": -0.004103539203087899,
+          "equal_cell_gain_ci_high": 0.002346239331873179,
+          "equal_cell_gain_ci_low": -0.01203298645716692,
+          "family": "all",
+          "final_activation": 0.024816176470588234,
+          "method": "tmle",
+          "path_activation": 0.15716911764705882,
+          "reps": 3264,
+          "unconditional_harm": 0.012254901960784314
+        },
         "anchor": {
           "cells": 4,
           "equal_cell_gain": 0.0012897093353005928,
@@ -289,6 +397,18 @@
           "path_activation": 0.6119791666666666,
           "reps": 768,
           "unconditional_harm": 0.049479166666666664
+        },
+        "primary": {
+          "cells": 20,
+          "equal_cell_gain": -0.007092914177909454,
+          "equal_cell_gain_ci_high": 0.003907300815215533,
+          "equal_cell_gain_ci_low": -0.02056115152275378,
+          "family": "primary",
+          "final_activation": 0.04010416666666667,
+          "method": "tmle",
+          "path_activation": 0.2546875,
+          "reps": 1920,
+          "unconditional_harm": 0.019791666666666666
         },
         "real": {
           "cells": 12,
@@ -332,14 +452,14 @@
       "xgboost_version": "3.4.0"
     },
     "draws": 20000,
-    "full_manifest": "/tmp/dml_unified_cartesian_20260814_extract_run/source/full/manifest.tsv",
+    "full_manifest": "manifest.tsv",
     "full_manifest_sha256": "65720b1fce2a24d55872ab9e008cf7ef62945b30b791272f1fdfe65280e2287f",
     "raw_reps_manifest_sha256": "08d0e7f95d71773fe54eb137107e73c9f0346955247432a8ebb0e0dd1d195e92",
     "replication_rows": 16320,
     "reps_files": 4080,
     "run_dirs": [
-      "/tmp/dml_unified_cartesian_20260814_extract_run/dml/cartesian_dml_ks_alignment_v3",
-      "/tmp/dml_unified_cartesian_20260814_extract_run/dml2/dml2_real_anchor_v3"
+      "cartesian_dml_ks_alignment_v3",
+      "dml2_real_anchor_v3"
     ],
     "run_provenance": [
       {

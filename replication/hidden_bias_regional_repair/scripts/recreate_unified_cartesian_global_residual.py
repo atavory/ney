@@ -23,6 +23,14 @@ from typing import Iterable
 
 METHODS = ("aipw", "tmle", "ctmle", "cui_selective_ml", "ma_dr_bc")
 GROUPS = ("kang_schafer", "alignment", "real", "anchor")
+SUMMARY_FAMILIES = (
+    ("primary", ("kang_schafer", "real")),
+    ("all", GROUPS),
+    ("kang_schafer", ("kang_schafer",)),
+    ("alignment", ("alignment",)),
+    ("real", ("real",)),
+    ("anchor", ("anchor",)),
+)
 CONFIG_KEYS = (
     "frozen_source_sha256",
     "wrapper_sha256",
@@ -218,7 +226,7 @@ def format_optional(value: object) -> str:
 
 def write_csv(path: Path, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
     with path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         for row in rows:
             writer.writerow({key: format_optional(row.get(key, "")) for key in fieldnames})
@@ -328,75 +336,53 @@ def main() -> None:
     summary_methods: dict[str, object] = {}
     for method in METHODS:
         method_cell_rows = [row for row in cell_rows if row["method"] == method]
-        method_draw_lists = [
-            cell_draws[(row["group"], row["design"], row["method"], int(row["n"]), float(row["strength"]))]
-            for row in method_cell_rows
-        ]
-        method_family_draws = [
-            mean([cell_draw[index] for cell_draw in method_draw_lists])
-            for index in range(args.draws)
-        ]
-        method_family_sorted = sorted(method_family_draws)
-        method_summary = {
-            "method": method,
-            "family": "all",
-            "cells": len(method_cell_rows),
-            "reps": sum(int(row["reps"]) for row in method_cell_rows),
-            "equal_cell_gain": mean([float(row["repaired_gain"]) for row in method_cell_rows]),
-            "equal_cell_gain_ci_low": percentile(method_family_sorted, 2.5),
-            "equal_cell_gain_ci_high": percentile(method_family_sorted, 97.5),
-            "path_activation": mean([float(row["path_activation"]) for row in method_cell_rows]),
-            "final_activation": mean([float(row["final_activation"]) for row in method_cell_rows]),
-            "unconditional_harm": mean([float(row["unconditional_harm"]) for row in method_cell_rows]),
-        }
-        family_rows.append(method_summary)
         families: dict[str, object] = {}
-        for group in GROUPS:
-            group_cell_rows = [
+        for family_name, groups in SUMMARY_FAMILIES:
+            family_cell_rows = [
                 row
                 for row in method_cell_rows
-                if row["group"] == group
+                if row["group"] in groups
             ]
-            group_draw_lists = [
+            family_draw_lists = [
                 cell_draws[(row["group"], row["design"], row["method"], int(row["n"]), float(row["strength"]))]
-                for row in group_cell_rows
+                for row in family_cell_rows
             ]
-            group_family_draws = [
-                mean([cell_draw[index] for cell_draw in group_draw_lists])
+            family_draws = [
+                mean([cell_draw[index] for cell_draw in family_draw_lists])
                 for index in range(args.draws)
             ]
-            group_family_sorted = sorted(group_family_draws)
-            group_summary = {
+            family_sorted = sorted(family_draws)
+            family_summary = {
                 "method": method,
-                "family": group,
-                "cells": len(group_cell_rows),
-                "reps": sum(int(row["reps"]) for row in group_cell_rows),
+                "family": family_name,
+                "cells": len(family_cell_rows),
+                "reps": sum(int(row["reps"]) for row in family_cell_rows),
                 "equal_cell_gain": mean(
-                    [float(row["repaired_gain"]) for row in group_cell_rows]
+                    [float(row["repaired_gain"]) for row in family_cell_rows]
                 ),
-                "equal_cell_gain_ci_low": percentile(group_family_sorted, 2.5),
-                "equal_cell_gain_ci_high": percentile(group_family_sorted, 97.5),
+                "equal_cell_gain_ci_low": percentile(family_sorted, 2.5),
+                "equal_cell_gain_ci_high": percentile(family_sorted, 97.5),
                 "path_activation": mean(
-                    [float(row["path_activation"]) for row in group_cell_rows]
+                    [float(row["path_activation"]) for row in family_cell_rows]
                 ),
                 "final_activation": mean(
-                    [float(row["final_activation"]) for row in group_cell_rows]
+                    [float(row["final_activation"]) for row in family_cell_rows]
                 ),
                 "unconditional_harm": mean(
-                    [float(row["unconditional_harm"]) for row in group_cell_rows]
+                    [float(row["unconditional_harm"]) for row in family_cell_rows]
                 ),
             }
-            family_rows.append(group_summary)
-            families[group] = group_summary
-        summary_methods[method] = {**method_summary, "families": families}
+            family_rows.append(family_summary)
+            families[family_name] = family_summary
+        summary_methods[method] = {**families["all"], "families": families}
 
     verification = {
         "status": "PASS",
         "draws": args.draws,
         "seed": args.seed,
-        "full_manifest": str(args.full_manifest),
+        "full_manifest": args.full_manifest.name,
         "full_manifest_sha256": manifest_sha,
-        "run_dirs": [str(path) for path in args.run_dir],
+        "run_dirs": [path.name for path in args.run_dir],
         "run_provenance": provenance,
         "reps_files": len(reps_files),
         "replication_rows": rows_seen,

@@ -31,6 +31,7 @@ EXPECTED_GENERATED = (
     "section4_values.tex",
     "section4_unified_overview_table.tex",
     "section4_unified_family_table.tex",
+    "section4_synthetic_diagnostic_table.tex",
     "section4_fixed_floor_tmle_diagnostic_table.tex",
 )
 AUXILIARY_GENERATED = {
@@ -49,7 +50,34 @@ EXPECTED_METHODS = {
     "ma_dr_bc",
 }
 EXPECTED_GROUPS = {"kang_schafer", "alignment", "real", "anchor"}
-EXPECTED_FAMILIES = EXPECTED_GROUPS | {"all"}
+EXPECTED_FAMILIES = EXPECTED_GROUPS | {"primary", "all"}
+EXPECTED_PRIMARY_ROWS = {
+    "aipw": {
+        "gain": 0.0458428655237,
+        "lo": 0.0318591441288,
+        "hi": 0.0583164635052,
+    },
+    "tmle": {
+        "gain": -0.00709291417791,
+        "lo": -0.0205611515228,
+        "hi": 0.00390730081522,
+    },
+    "ctmle": {
+        "gain": 0.000482447195468,
+        "lo": -0.000684929637147,
+        "hi": 0.00201478132971,
+    },
+    "cui_selective_ml": {
+        "gain": 0.0248461587897,
+        "lo": 0.0161198979398,
+        "hi": 0.0334221638859,
+    },
+    "ma_dr_bc": {
+        "gain": 0.0507731191974,
+        "lo": 0.0395296072171,
+        "hi": 0.06186383004,
+    },
+}
 EXPECTED_ALL_ROWS = {
     "aipw": {
         "gain": 0.0279144540494,
@@ -156,8 +184,8 @@ def verify_reconstruction_json(path: Path) -> dict[str, object]:
 def verify_family_summary(path: Path) -> list[dict[str, str]]:
     with path.open(newline="") as handle:
         rows = list(csv.DictReader(handle))
-    if len(rows) != 25:
-        raise SystemExit(f"family summary has {len(rows)} rows, expected 25")
+    if len(rows) != 30:
+        raise SystemExit(f"family summary has {len(rows)} rows, expected 30")
     keyed = {(row["method"], row["family"]): row for row in rows}
     expected_keys = {
         (method, family)
@@ -172,9 +200,9 @@ def verify_family_summary(path: Path) -> list[dict[str, str]]:
     for method, expected in EXPECTED_ALL_ROWS.items():
         row = keyed[(method, "all")]
         if int(row["cells"]) != 34:
-            raise SystemExit(f"{method} all-family cell count is not 34")
+            raise SystemExit(f"{method} full-matrix setting count is not 34")
         if int(row["reps"]) != 3264:
-            raise SystemExit(f"{method} all-family replication count is not 3264")
+            raise SystemExit(f"{method} full-matrix replication count is not 3264")
         require_close(f"{method} all gain", row["equal_cell_gain"], expected["gain"])
         require_close(
             f"{method} all lower CI",
@@ -186,6 +214,23 @@ def verify_family_summary(path: Path) -> list[dict[str, str]]:
             row["equal_cell_gain_ci_high"],
             expected["hi"],
         )
+    for method, expected in EXPECTED_PRIMARY_ROWS.items():
+        row = keyed[(method, "primary")]
+        if int(row["cells"]) != 20:
+            raise SystemExit(f"{method} primary setting count is not 20")
+        if int(row["reps"]) != 1920:
+            raise SystemExit(f"{method} primary replication count is not 1,920")
+        require_close(f"{method} primary gain", row["equal_cell_gain"], expected["gain"])
+        require_close(
+            f"{method} primary lower CI",
+            row["equal_cell_gain_ci_low"],
+            expected["lo"],
+        )
+        require_close(
+            f"{method} primary upper CI",
+            row["equal_cell_gain_ci_high"],
+            expected["hi"],
+        )
     return rows
 
 
@@ -193,13 +238,13 @@ def verify_cell_summary(path: Path) -> int:
     with path.open(newline="") as handle:
         rows = list(csv.DictReader(handle))
     if len(rows) != 170:
-        raise SystemExit(f"cell summary has {len(rows)} rows, expected 170")
+        raise SystemExit(f"setting summary has {len(rows)} rows, expected 170")
     if sum(int(row["reps"]) for row in rows) != 16320:
-        raise SystemExit("cell summary replication count is not 16,320")
+        raise SystemExit("setting summary replication count is not 16,320")
     if {row["method"] for row in rows} != EXPECTED_METHODS:
-        raise SystemExit("cell summary method set differs from the unified protocol")
+        raise SystemExit("setting summary method set differs from the unified protocol")
     if {row["group"] for row in rows} != EXPECTED_GROUPS:
-        raise SystemExit("cell summary group set differs from the unified protocol")
+        raise SystemExit("setting summary group set differs from the unified protocol")
     return len(rows)
 
 
@@ -260,6 +305,7 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
         "section4_values",
         "section4_unified_overview_table",
         "section4_unified_family_table",
+        "section4_synthetic_diagnostic_table",
         "section4_low_high_response_ablation_table",
         "section4_no_shrinkage_ablation_table",
     )
@@ -294,13 +340,19 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
     for token in forbidden_paper_tokens:
         if token in paper_text:
             raise SystemExit(f"paper text contains data-provenance token: {token}")
+    banned_words = ("deliberately", "frozen")
     for tex_path in paper_root.rglob("*.tex"):
-        if "deliberately" in tex_path.read_text(errors="replace").lower():
-            raise SystemExit(f"paper text contains banned wording: {tex_path}")
+        lower_text = tex_path.read_text(errors="replace").lower()
+        for word in banned_words:
+            if re.search(rf"\b{re.escape(word)}\b", lower_text):
+                raise SystemExit(
+                    f"paper text contains banned wording {word!r}: {tex_path}"
+                )
 
     values = (release / "section4_values.tex").read_text()
     overview = (release / "section4_unified_overview_table.tex").read_text()
     family = (release / "section4_unified_family_table.tex").read_text()
+    synthetic = (release / "section4_synthetic_diagnostic_table.tex").read_text()
     diagnostic = (
         release / "section4_fixed_floor_tmle_diagnostic_table.tex"
     ).read_text()
@@ -308,7 +360,7 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
         raise SystemExit("primary generated tables still include fixed-floor TMLE")
     if "fixed-floor TMLE" not in diagnostic:
         raise SystemExit("diagnostic table does not identify fixed-floor TMLE")
-    tables = "\n".join((overview, family, diagnostic))
+    tables = "\n".join((overview, family, synthetic, diagnostic))
     definitions = set(re.findall(r"\\newcommand\{\\(SFourUnified[A-Za-z]+)\}", values))
     uses = set(re.findall(r"\\(SFourUnified[A-Za-z]+)", manuscript + "\n" + tables))
     undefined = uses - definitions
@@ -339,7 +391,7 @@ def main() -> None:
 
     print(
         f"VERIFIED unified_release_files={release_files} "
-        f"family_rows={len(family_rows)} cell_rows={cell_rows} "
+        f"family_rows={len(family_rows)} setting_rows={cell_rows} "
         f"auxiliary_generated_files={auxiliary_files} macros_used={macros_used}"
     )
 

@@ -19,13 +19,13 @@
     "xgboost_version": "3.4.0"
   },
   "draws": 20000,
-  "full_manifest": "/tmp/dml_no_shrinkage_ablation_20260830_3344057/extract/full/manifest.tsv",
+  "full_manifest": "manifest.tsv",
   "full_manifest_sha256": "65720b1fce2a24d55872ab9e008cf7ef62945b30b791272f1fdfe65280e2287f",
   "replication_rows": 16320,
   "reps_files": 4080,
   "run_dirs": [
-    "/tmp/dml_no_shrinkage_ablation_20260830_3344057/extract/cartesian_dml_ks_alignment_v3",
-    "/tmp/dml_no_shrinkage_ablation_20260830_3344057/extract/dml2_real_anchor_v3"
+    "cartesian_dml_ks_alignment_v3",
+    "dml2_real_anchor_v3"
   ],
   "run_provenance": [
     {

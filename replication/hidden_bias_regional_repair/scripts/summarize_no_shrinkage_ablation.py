@@ -26,6 +26,14 @@ from recreate_unified_cartesian_global_residual import (
 
 METHODS = ("aipw", "tmle", "ctmle", "cui_selective_ml", "ma_dr_bc")
 GROUPS = ("kang_schafer", "alignment", "real", "anchor")
+SUMMARY_FAMILIES = (
+    ("primary", ("kang_schafer", "real")),
+    ("all", GROUPS),
+    ("kang_schafer", ("kang_schafer",)),
+    ("alignment", ("alignment",)),
+    ("real", ("real",)),
+    ("anchor", ("anchor",)),
+)
 METHOD_LABELS = {
     "aipw": "AIPW",
     "tmle": "fixed-floor TMLE",
@@ -156,7 +164,7 @@ def format_optional(value: object) -> str:
 
 def write_csv(path: Path, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
     with path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         for row in rows:
             writer.writerow({key: format_optional(row.get(key, "")) for key in fieldnames})
@@ -235,17 +243,17 @@ def table_value(row: dict[str, object], prefix: str) -> str:
 
 
 def write_latex_table(path: Path, family_rows: list[dict[str, object]]) -> None:
-    all_rows = {
+    primary_rows = {
         str(row["method"]): row
         for row in family_rows
-        if row["family"] == "all"
+        if row["family"] == "primary"
     }
     order = ("aipw", "ctmle", "cui_selective_ml", "ma_dr_bc", "tmle")
     lines = [
         r"\begin{table}[t]",
         r"\centering",
         r"\small",
-        r"\caption{Final shrinkage ablation.  We compare the selected, unshrunk candidate with the final \(c=2\) plug-in contrast-shrinkage rule used in the primary run. Values are equal-setting percent MSE gain with paired percentile intervals.}",
+        r"\caption{Final shrinkage ablation on the primary dataset settings.  We compare the selected, unshrunk candidate with the final \(c=2\) plug-in contrast-shrinkage rule used in the primary run. Values are equal-setting percent MSE gain with paired percentile intervals.}",
         r"\label{tab:no-shrinkage-ablation}",
         r"\begin{tabular}{@{}lrr@{}}",
         r"\toprule",
@@ -253,7 +261,7 @@ def write_latex_table(path: Path, family_rows: list[dict[str, object]]) -> None:
         r"\midrule",
     ]
     for method in order:
-        row = all_rows[method]
+        row = primary_rows[method]
         lines.append(
             f"{METHOD_LABELS[method]} & "
             f"{table_value(row, 'no_shrinkage')} & "
@@ -350,26 +358,18 @@ def main() -> None:
     family_rows: list[dict[str, object]] = []
     for method in METHODS:
         method_cell_rows = [row for row in cell_rows if row["method"] == method]
-        family_rows.append(
-            summarize_group(
-                method,
-                "all",
-                method_cell_rows,
-                group_draws(method_cell_rows, cell_draw_lookup, args.draws),
-            )
-        )
-        for group in GROUPS:
-            group_cell_rows = [
+        for family, groups in SUMMARY_FAMILIES:
+            family_cell_rows = [
                 row
                 for row in method_cell_rows
-                if row["group"] == group
+                if row["group"] in groups
             ]
             family_rows.append(
                 summarize_group(
                     method,
-                    group,
-                    group_cell_rows,
-                    group_draws(group_cell_rows, cell_draw_lookup, args.draws),
+                    family,
+                    family_cell_rows,
+                    group_draws(family_cell_rows, cell_draw_lookup, args.draws),
                 )
             )
 
@@ -418,9 +418,9 @@ def main() -> None:
         "status": "PASS",
         "draws": args.draws,
         "seed": args.seed,
-        "full_manifest": str(args.full_manifest),
+        "full_manifest": args.full_manifest.name,
         "full_manifest_sha256": manifest_sha,
-        "run_dirs": [str(path) for path in args.run_dir],
+        "run_dirs": [path.name for path in args.run_dir],
         "run_provenance": provenance,
         "reps_files": len(reps_files),
         "replication_rows": rows_seen,

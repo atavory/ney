@@ -2,16 +2,16 @@
 \begin{table}[t]
 \centering
 \small
-\caption{Primary single global-residual repair readout at the frozen $c=2$. Each row averages all 34 native dataset settings for one upstream estimator; intervals are paired percentile-bootstrap intervals, stratified by dataset setting.}
+\caption{Primary global-residual repair readout at the prespecified $c=2$. Each row averages the 20 primary dataset settings: eight Kang--Schafer settings and twelve public-covariate settings. Intervals are paired percentile-bootstrap intervals, stratified by dataset setting.}
 \label{tab:unified-global-residual-overview}
 \begin{tabular}{@{}lrrr@{}}
 \toprule
 upstream estimator & settings & MSE gain (95\% CI) & active / harm \\
 \midrule
-AIPW & 34 & $2.791\%\ [1.957,3.528]$ & 4.1\% / 0.5\% \\
-C-TMLE & 34 & $0.028\%\ [-0.040,0.119]$ & 0.1\% / 0.1\% \\
-selective ML & 34 & $1.723\%\ [1.184,2.252]$ & 5.8\% / 1.1\% \\
-Ma DR-BC & 34 & $2.999\%\ [2.337,3.656]$ & 6.7\% / 1.4\% \\
+AIPW & 20 & $4.584\%\ [3.186,5.832]$ & 6.6\% / 0.8\% \\
+C-TMLE & 20 & $0.048\%\ [-0.068,0.201]$ & 0.2\% / 0.1\% \\
+selective ML & 20 & $2.485\%\ [1.612,3.342]$ & 7.4\% / 1.6\% \\
+Ma DR-BC & 20 & $5.077\%\ [3.953,6.186]$ & 11.4\% / 2.4\% \\
 \bottomrule
 \end{tabular}
 \end{table}

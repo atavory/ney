@@ -19,14 +19,14 @@
     "xgboost_version": "3.4.0"
   },
   "draws": 20000,
-  "full_manifest": "/tmp/dml_unified_cartesian_20260814_extract_run/source/full/manifest.tsv",
+  "full_manifest": "manifest.tsv",
   "full_manifest_sha256": "65720b1fce2a24d55872ab9e008cf7ef62945b30b791272f1fdfe65280e2287f",
   "raw_reps_manifest_sha256": "08d0e7f95d71773fe54eb137107e73c9f0346955247432a8ebb0e0dd1d195e92",
   "replication_rows": 16320,
   "reps_files": 4080,
   "run_dirs": [
-    "/tmp/dml_unified_cartesian_20260814_extract_run/dml/cartesian_dml_ks_alignment_v3",
-    "/tmp/dml_unified_cartesian_20260814_extract_run/dml2/dml2_real_anchor_v3"
+    "cartesian_dml_ks_alignment_v3",
+    "dml2_real_anchor_v3"
   ],
   "run_provenance": [
     {
