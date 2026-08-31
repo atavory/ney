@@ -31,6 +31,7 @@ EXPECTED_GENERATED = (
     "section4_values.tex",
     "section4_unified_overview_table.tex",
     "section4_unified_family_table.tex",
+    "section4_fixed_floor_tmle_diagnostic_table.tex",
 )
 EXPECTED_METHODS = {
     "aipw",
@@ -223,6 +224,7 @@ def verify_generated_outputs(data_root: Path, release: Path, paper_root: Path) -
 
 def verify_manuscript(paper_root: Path, release: Path) -> int:
     manuscript = (paper_root / "sections/experiments_rule_quality.tex").read_text()
+    appendix = (paper_root / "appendices/empirical_checks.tex").read_text()
     if RELEASE not in manuscript:
         raise SystemExit(f"manuscript does not name {RELEASE}")
     required_inputs = (
@@ -233,6 +235,9 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
     for name in required_inputs:
         if f"\\input{{sections/generated/{name}}}" not in manuscript:
             raise SystemExit(f"manuscript does not input generated file: {name}")
+    diagnostic_input = "section4_fixed_floor_tmle_diagnostic_table"
+    if f"\\input{{sections/generated/{diagnostic_input}}}" not in appendix:
+        raise SystemExit("appendix does not input fixed-floor TMLE diagnostic table")
     forbidden = (
         "section4_natural_table",
         "section4_emphasized_table",
@@ -248,7 +253,16 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
         raise SystemExit("Section 4 contains a hand-maintained table environment")
 
     values = (release / "section4_values.tex").read_text()
-    tables = "\n".join((release / name).read_text() for name in EXPECTED_GENERATED[1:])
+    overview = (release / "section4_unified_overview_table.tex").read_text()
+    family = (release / "section4_unified_family_table.tex").read_text()
+    diagnostic = (
+        release / "section4_fixed_floor_tmle_diagnostic_table.tex"
+    ).read_text()
+    if "fixed-floor TMLE &" in overview or "fixed-floor TMLE &" in family:
+        raise SystemExit("primary generated tables still include fixed-floor TMLE")
+    if "fixed-floor TMLE" not in diagnostic:
+        raise SystemExit("diagnostic table does not identify fixed-floor TMLE")
+    tables = "\n".join((overview, family, diagnostic))
     definitions = set(re.findall(r"\\newcommand\{\\(SFourUnified[A-Za-z]+)\}", values))
     uses = set(re.findall(r"\\(SFourUnified[A-Za-z]+)", manuscript + "\n" + tables))
     undefined = uses - definitions

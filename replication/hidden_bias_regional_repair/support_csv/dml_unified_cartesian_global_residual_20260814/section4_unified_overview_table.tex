@@ -2,14 +2,13 @@
 \begin{table}[t]
 \centering
 \small
-\caption{Single global-residual repair at the frozen $c=2$. Each row averages all 34 native cells for one upstream estimator; intervals are paired percentile-bootstrap intervals, stratified by cell.}
+\caption{Primary single global-residual repair readout at the frozen $c=2$. Each row averages all 34 native cells for one upstream estimator; intervals are paired percentile-bootstrap intervals, stratified by cell.}
 \label{tab:unified-global-residual-overview}
 \begin{tabular}{@{}lrrr@{}}
 \toprule
 upstream estimator & cells & MSE gain (95\% CI) & active / harm \\
 \midrule
 AIPW & 34 & $2.791\%\ [1.957,3.528]$ & 4.1\% / 0.5\% \\
-fixed-floor TMLE & 34 & $-0.410\%\ [-1.203,0.235]$ & 2.5\% / 1.2\% \\
 C-TMLE & 34 & $0.028\%\ [-0.040,0.119]$ & 0.1\% / 0.1\% \\
 selective ML & 34 & $1.723\%\ [1.184,2.252]$ & 5.8\% / 1.1\% \\
 Ma DR-BC & 34 & $2.999\%\ [2.337,3.656]$ & 6.7\% / 1.4\% \\

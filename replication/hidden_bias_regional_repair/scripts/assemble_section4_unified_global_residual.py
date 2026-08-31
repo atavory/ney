@@ -15,6 +15,12 @@ METHODS = (
     ("cui_selective_ml", "selective ML", "CuiSelectiveMl"),
     ("ma_dr_bc", "Ma DR-BC", "MaDrBc"),
 )
+PRIMARY_METHODS = (
+    ("aipw", "AIPW", "Aipw"),
+    ("ctmle", "C-TMLE", "Ctmle"),
+    ("cui_selective_ml", "selective ML", "CuiSelectiveMl"),
+    ("ma_dr_bc", "Ma DR-BC", "MaDrBc"),
+)
 FAMILIES = (
     ("all", "all families", "All"),
     ("kang_schafer", "Kang--Schafer", "KangSchafer"),
@@ -89,14 +95,14 @@ def write_overview(path: Path, rows: dict[tuple[str, str], dict[str, str]]) -> N
         "\\begin{table}[t]\n",
         "\\centering\n",
         "\\small\n",
-        "\\caption{Single global-residual repair at the frozen $c=2$. Each row averages all 34 native cells for one upstream estimator; intervals are paired percentile-bootstrap intervals, stratified by cell.}\n",
+        "\\caption{Primary single global-residual repair readout at the frozen $c=2$. Each row averages all 34 native cells for one upstream estimator; intervals are paired percentile-bootstrap intervals, stratified by cell.}\n",
         "\\label{tab:unified-global-residual-overview}\n",
         "\\begin{tabular}{@{}lrrr@{}}\n",
         "\\toprule\n",
         "upstream estimator & cells & MSE gain (95\\% CI) & active / harm \\\\\n",
         "\\midrule\n",
     ]
-    for method, label, _ in METHODS:
+    for method, label, _ in PRIMARY_METHODS:
         row = rows[(method, "all")]
         lines.append(
             f"{label} & {int(row['cells'])} & {gain_cell(row)} & "
@@ -112,7 +118,7 @@ def write_family_table(path: Path, rows: dict[tuple[str, str], dict[str, str]]) 
         "\\begin{table}[t]\n",
         "\\centering\n",
         "\\scriptsize\n",
-        "\\caption{Family-level readout for the same single global-residual run. Entries are equal-cell MSE gains at $c=2$ with paired 95\\% intervals.}\n",
+        "\\caption{Family-level readout for the primary single global-residual run. Entries are equal-cell MSE gains at $c=2$ with paired 95\\% intervals.}\n",
         "\\label{tab:unified-global-residual-families}\n",
         "\\begin{tabular}{@{}llrp{.34\\linewidth}@{}}\n",
         "\\toprule\n",
@@ -120,13 +126,38 @@ def write_family_table(path: Path, rows: dict[tuple[str, str], dict[str, str]]) 
         "\\midrule\n",
     ]
     for family, family_label, _ in FAMILIES[1:]:
-        for method, method_label, _ in METHODS:
+        for method, method_label, _ in PRIMARY_METHODS:
             row = rows[(method, family)]
             lines.append(
                 f"{family_label} & {method_label} & {int(row['cells'])} & {gain_cell(row)} \\\\\n"
             )
         if family != FAMILIES[-1][0]:
             lines.append("\\addlinespace\n")
+    lines.extend(["\\bottomrule\n", "\\end{tabular}\n", "\\end{table}\n"])
+    path.write_text("".join(lines))
+
+
+def write_tmle_diagnostic_table(
+    path: Path, rows: dict[tuple[str, str], dict[str, str]]
+) -> None:
+    lines = [
+        COMMENT,
+        "\\begin{table}[t]\n",
+        "\\centering\n",
+        "\\small\n",
+        "\\caption{Diagnostic fixed-floor TMLE readout for the same single global-residual run. The fixed-floor arm uses a nonadaptive propensity floor of 0.05 and is not the primary TMLE comparator.}\n",
+        "\\label{tab:fixed-floor-tmle-diagnostic}\n",
+        "\\begin{tabular}{@{}lrrr@{}}\n",
+        "\\toprule\n",
+        "family & cells & MSE gain (95\\% CI) & active / harm \\\\\n",
+        "\\midrule\n",
+    ]
+    for family, family_label, _ in FAMILIES:
+        row = rows[("tmle", family)]
+        lines.append(
+            f"{family_label} & {int(row['cells'])} & {gain_cell(row)} & "
+            f"{rate(row['final_activation'])}\\% / {rate(row['unconditional_harm'])}\\% \\\\\n"
+        )
     lines.extend(["\\bottomrule\n", "\\end{tabular}\n", "\\end{table}\n"])
     path.write_text("".join(lines))
 
@@ -138,6 +169,9 @@ def main() -> None:
     write_values(args.out_dir / "section4_values.tex", rows)
     write_overview(args.out_dir / "section4_unified_overview_table.tex", rows)
     write_family_table(args.out_dir / "section4_unified_family_table.tex", rows)
+    write_tmle_diagnostic_table(
+        args.out_dir / "section4_fixed_floor_tmle_diagnostic_table.tex", rows
+    )
 
 
 if __name__ == "__main__":

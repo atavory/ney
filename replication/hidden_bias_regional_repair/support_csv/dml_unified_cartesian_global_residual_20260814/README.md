@@ -43,11 +43,19 @@ Primary paper-facing readout at `c=2`:
 
 ```text
 AIPW all: +2.791% [1.957%, 3.528%]
-plain TMLE all: -0.410% [-1.203%, 0.235%]
 C-TMLE all: +0.028% [-0.040%, 0.119%]
 selective ML all: +1.723% [1.184%, 2.252%]
 Ma DR-BC all: +2.999% [2.337%, 3.656%]
 ```
 
-The manuscript tables are generated from `family_summary.csv` by
+The nonadaptive plain-TMLE arm is retained as a diagnostic fixed-floor
+baseline:
+
+```text
+plain TMLE all: -0.410% [-1.203%, 0.235%]
+plain TMLE Kang-Schafer: -1.886% [-5.265%, 0.862%]
+```
+
+The manuscript tables, including the fixed-floor diagnostic appendix table,
+are generated from `family_summary.csv` by
 `scripts/assemble_section4_unified_global_residual.py`.
