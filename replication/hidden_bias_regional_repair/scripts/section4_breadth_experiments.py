@@ -10,6 +10,7 @@ delegated to the frozen public ``validated_reference_transfer.py``.
 from __future__ import annotations
 
 import argparse
+import csv
 import importlib.util
 import os
 import sys
@@ -96,6 +97,28 @@ def _standardize_columns(x: np.ndarray) -> np.ndarray:
 
 def _col(x: np.ndarray, index: int) -> np.ndarray:
     return x[:, min(index, x.shape[1] - 1)]
+
+
+def _read_numeric_csv(
+    path: Path, drop_prefixes: tuple[str, ...] = ()
+) -> tuple[list[str], np.ndarray]:
+    with path.open(newline="") as handle:
+        reader = csv.reader(handle)
+        header = next(reader)
+        keep = [
+            index
+            for index, name in enumerate(header)
+            if name and not any(name.startswith(prefix) for prefix in drop_prefixes)
+        ]
+        names = [header[index] for index in keep]
+        rows = []
+        for row in reader:
+            values = []
+            for index in keep:
+                value = row[index] if index < len(row) else ""
+                values.append(float(value) if value != "" else np.nan)
+            rows.append(values)
+    return names, np.asarray(rows, dtype=float)
 
 
 def _kang_schafer(n: int, seed: int):
@@ -254,6 +277,82 @@ def _acic2017_semisynthetic(
     return x, y, response, region, true_pi, theta, mu_pop[rows]
 
 
+@lru_cache(maxsize=None)
+def _twins_population() -> tuple[
+    np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray
+]:
+    root = SUPPORT_DATA / "twins"
+    x_path = root / "twin_pairs_X_3years_samesex.csv"
+    t_path = root / "twin_pairs_T_3years_samesex.csv"
+    y_path = root / "twin_pairs_Y_3years_samesex.csv"
+    if not x_path.exists() or not t_path.exists() or not y_path.exists():
+        raise FileNotFoundError(f"Twins data not found under {root}")
+    _, x_raw = _read_numeric_csv(x_path, ("Unnamed", "infant_id"))
+    t_names, t_raw = _read_numeric_csv(t_path)
+    y_names, y_raw = _read_numeric_csv(y_path)
+    col_medians = np.nanmedian(x_raw, axis=0)
+    x_raw = np.where(np.isnan(x_raw), col_medians, x_raw)
+    x = _standardize_columns(x_raw)
+    t = {name: t_raw[:, index] for index, name in enumerate(t_names)}
+    y = {name: y_raw[:, index] for index, name in enumerate(y_names)}
+    birthweight = _standardize_columns(
+        (t["dbirwt_0"] + t["dbirwt_1"]).reshape(-1, 1)
+    )[:, 0]
+    gap = _standardize_columns(
+        (t["dbirwt_1"] - t["dbirwt_0"]).reshape(-1, 1)
+    )[:, 0]
+    mortality = _standardize_columns(
+        (y["mort_0"] + y["mort_1"]).reshape(-1, 1)
+    )[:, 0]
+    base = (
+        -0.30 * birthweight
+        + 0.20 * gap
+        + 0.15 * mortality
+        + 0.25 * _col(x, 0)
+        - 0.20 * _col(x, 4)
+        + 0.20 * np.sin(_col(x, 13))
+    )
+    base = _standardize_columns(base.reshape(-1, 1))[:, 0]
+    score_region = (
+        0.7 * _col(x, 1)
+        - 0.6 * _col(x, 5)
+        + 0.5 * _col(x, 14)
+        - 0.4 * _col(x, 21)
+    )
+    score_signal = 0.7 * _col(x, 2) + 0.6 * _col(x, 9) - 0.5 * _col(x, 25)
+    response_region = score_region <= np.quantile(score_region, 0.15)
+    signal_region = score_signal <= np.quantile(score_signal, 0.18)
+    outside_rank = _rank01(0.5 * _col(x, 3) + 0.4 * _col(x, 18))
+    return x, base, response_region, signal_region, outside_rank
+
+
+def _twins_semisynthetic(
+    n: int, epsilon: float, strength: float, design: str, seed: int
+):
+    rng = np.random.default_rng(seed)
+    x_pop, base, response_region, signal_region, outside_rank = _twins_population()
+    rows = rng.integers(0, len(base), n)
+    x = x_pop[rows]
+    region = response_region[rows]
+    outside = np.clip(0.68 + 0.22 * outside_rank[rows], 0.05, 0.95)
+    true_pi = np.where(region, epsilon, outside)
+    response = rng.binomial(1, true_pi)
+    if design == "twins_semisynth":
+        signal_pop = response_region.astype(float) * (
+            0.70 + 0.50 * _rank01(_col(x_pop, 2))
+        )
+    elif design == "twins_misaligned":
+        signal_pop = signal_region.astype(float) * (
+            0.70 + 0.50 * _rank01(_col(x_pop, 6))
+        )
+    else:
+        raise ValueError(f"unknown Twins design: {design}")
+    mu_pop = base + 0.35 * strength * signal_pop
+    y = mu_pop[rows] + rng.standard_normal(n)
+    theta = float(mu_pop.mean())
+    return x, y, response, region, true_pi, theta, mu_pop[rows]
+
+
 def _column_selector(kind: str) -> FunctionTransformer:
     slc = slice(0, 4) if kind == "correct" else slice(4, 8)
     return FunctionTransformer(lambda values: values[:, slc], validate=False)
@@ -280,6 +379,8 @@ def _install_adapter(module) -> None:
             )
         if design in {"acic2017_semisynth", "acic2017_misaligned"}:
             return _acic2017_semisynthetic(n, epsilon, strength, design, seed)
+        if design in {"twins_semisynth", "twins_misaligned"}:
+            return _twins_semisynthetic(n, epsilon, strength, design, seed)
         return original_make_data(n, epsilon, strength, design, seed, mar_design)
 
     def nuisance_kind(which: int) -> str | None:
