@@ -95,11 +95,11 @@ def write_overview(path: Path, rows: dict[tuple[str, str], dict[str, str]]) -> N
         "\\begin{table}[t]\n",
         "\\centering\n",
         "\\small\n",
-        "\\caption{Primary single global-residual repair readout at the frozen $c=2$. Each row averages all 34 native cells for one upstream estimator; intervals are paired percentile-bootstrap intervals, stratified by cell.}\n",
+        "\\caption{Primary single global-residual repair readout at the frozen $c=2$. Each row averages all 34 native dataset settings for one upstream estimator; intervals are paired percentile-bootstrap intervals, stratified by dataset setting.}\n",
         "\\label{tab:unified-global-residual-overview}\n",
         "\\begin{tabular}{@{}lrrr@{}}\n",
         "\\toprule\n",
-        "upstream estimator & cells & MSE gain (95\\% CI) & active / harm \\\\\n",
+        "upstream estimator & settings & MSE gain (95\\% CI) & active / harm \\\\\n",
         "\\midrule\n",
     ]
     for method, label, _ in PRIMARY_METHODS:
@@ -118,11 +118,11 @@ def write_family_table(path: Path, rows: dict[tuple[str, str], dict[str, str]]) 
         "\\begin{table}[t]\n",
         "\\centering\n",
         "\\scriptsize\n",
-        "\\caption{Family-level readout for the primary single global-residual run. Entries are equal-cell MSE gains at $c=2$ with paired 95\\% intervals.}\n",
+        "\\caption{Family-level readout for the primary single global-residual run. Entries are equal-setting MSE gains at $c=2$ with paired 95\\% intervals.}\n",
         "\\label{tab:unified-global-residual-families}\n",
         "\\begin{tabular}{@{}llrp{.34\\linewidth}@{}}\n",
         "\\toprule\n",
-        "family & upstream estimator & cells & MSE gain (95\\% CI) \\\\\n",
+        "family & upstream estimator & settings & MSE gain (95\\% CI) \\\\\n",
         "\\midrule\n",
     ]
     for family, family_label, _ in FAMILIES[1:]:
@@ -149,7 +149,7 @@ def write_tmle_diagnostic_table(
         "\\label{tab:fixed-floor-tmle-diagnostic}\n",
         "\\begin{tabular}{@{}lrrr@{}}\n",
         "\\toprule\n",
-        "family & cells & MSE gain (95\\% CI) & active / harm \\\\\n",
+        "family & settings & MSE gain (95\\% CI) & active / harm \\\\\n",
         "\\midrule\n",
     ]
     for family, family_label, _ in FAMILIES:

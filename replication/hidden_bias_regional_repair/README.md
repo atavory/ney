@@ -75,7 +75,7 @@ A second companion bundle records the final-shrinkage ablation:
 
 This summary reuses the same 16,320 raw replication rows as the current
 paper-facing unified global-residual run and changes only the final contrast:
-the selected unshrunk candidate path versus the \(c=2\) plug-in shrinkage rule.
+the selected unshrunk candidate versus the \(c=2\) plug-in shrinkage rule.
 
 All-family equal-cell percent MSE gains:
 

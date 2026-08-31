@@ -144,7 +144,7 @@ remainder rather than silently substitute the clipped value for the truth.
 There is also an abstraction defect. `repair_expert()` itself consumes only an
 estimate, scores, and a proposal, but the current residual proposal adapter
 uses the same fitted propensity that was used to build the reference expert.
-Consequently the end-to-end residual procedure is not yet a strictly
+Consequently the residual procedure as run is not yet a strictly
 black-box repair of an already-fitted expert. Before the paper can claim that
 interface, we must do one of the following uniformly for every expert:
 

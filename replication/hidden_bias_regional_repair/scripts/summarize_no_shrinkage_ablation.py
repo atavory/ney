@@ -245,7 +245,7 @@ def write_latex_table(path: Path, family_rows: list[dict[str, object]]) -> None:
         r"\begin{table}[t]",
         r"\centering",
         r"\small",
-        r"\caption{Final shrinkage ablation.  We compare the selected, unshrunk candidate path with the final \(c=2\) plug-in contrast-shrinkage rule used in the primary run. Values are equal-cell percent MSE gain with paired percentile intervals.}",
+        r"\caption{Final shrinkage ablation.  We compare the selected, unshrunk candidate with the final \(c=2\) plug-in contrast-shrinkage rule used in the primary run. Values are equal-setting percent MSE gain with paired percentile intervals.}",
         r"\label{tab:no-shrinkage-ablation}",
         r"\begin{tabular}{@{}lrr@{}}",
         r"\toprule",

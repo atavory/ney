@@ -4,7 +4,7 @@ This bundle summarizes the final-shrinkage ablation for the unified
 global-residual Section 4 run.  It reuses the same 16,320 raw replication rows
 as the paper-facing run and changes only the last reporting contrast:
 
-- `no_shrinkage`: the selected candidate path before the final scalar
+- `no_shrinkage`: the selected candidate before the final scalar
   \(c=2\) attenuation.
 - `c2_shrinkage`: the final estimator reported in the primary Section 4
   tables.

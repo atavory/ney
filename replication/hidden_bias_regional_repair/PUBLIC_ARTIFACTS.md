@@ -135,7 +135,7 @@ The accepted 2026-08-31 derived ablation is:
     `3c07f867bca0b8f62c93ff62e5d2058ba829f37c6703be9cf00a8a79b9a5645e`
 
 This ablation reuses the Aug. 14 unified Cartesian raw rows and compares the
-selected unshrunk candidate path with the final \(c=2\) plug-in
+selected unshrunk candidate with the final \(c=2\) plug-in
 contrast-shrinkage rule.  No new estimator fitting is performed.
 
 Headline all-family equal-cell gains:

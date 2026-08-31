@@ -181,11 +181,11 @@ def write_latex_table(
         r"\begin{table}[t]",
         r"\centering",
         r"\small",
-        r"\caption{Repair-region placement control.  We hold the C-TMLE reference, data law, damping grid, one-standard-error gate, and \(c=2\) shrinkage fixed while moving the analysis region from the low-response box to a disjoint high-response placebo. Values are percent MSE gain with paired percentile intervals.}",
+        r"\caption{Repair-region placement control.  We hold the C-TMLE reference, data law, \(\Gamma=\{0,0.25,0.5,1\}\) in \eqref{eq:global-residual-candidates}, one-standard-error gate, and \(c=2\) shrinkage fixed while moving the analysis region from the low-response box to a disjoint high-response placebo. Values are percent MSE gain with paired percentile intervals.}",
         r"\label{tab:low-high-response-ablation}",
         r"\begin{tabular}{@{}lrrr@{}}",
         r"\toprule",
-        r"cells & low-response repair & high-response placebo & low minus high \\",
+        r"strength set & low-response repair & high-response placebo & low minus high \\",
         r"\midrule",
         (
             "signal strengths 3, 5, 8 & "
