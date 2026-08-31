@@ -143,13 +143,24 @@ def design_cells(groups: set[str]):
     if "anchor" in groups:
         for strength in (0.0, 3.0, 5.0, 8.0):
             yield "anchor", "regional_shift", 3000, strength
+    if "real_benchmark" in groups:
+        for design in (
+            "diabetes_semisynth",
+            "diabetes_misaligned",
+            "ihdp_semisynth",
+            "ihdp_misaligned",
+            "acic2016_semisynth",
+            "acic2016_misaligned",
+        ):
+            for strength in (0.0, 3.0):
+                yield "real_benchmark", design, 3000, strength
 
 
 def build_jobs(args) -> list[Job]:
     jobs: list[Job] = []
     index = 0
     for cell_index, (group, design, n, strength) in enumerate(
-        design_cells({"kang_schafer", "alignment", "real", "anchor"})
+        design_cells({"kang_schafer", "alignment", "real", "anchor", "real_benchmark"})
     ):
         # Seed identity is invariant to how the matrix is partitioned across
         # hosts: enumerate the full frozen cell universe, then filter work.
@@ -353,7 +364,7 @@ def parse_args():
     parser.add_argument(
         "--groups",
         nargs="+",
-        choices=["kang_schafer", "alignment", "real", "anchor"],
+        choices=["kang_schafer", "alignment", "real", "anchor", "real_benchmark"],
         required=True,
     )
     parser.add_argument(
