@@ -55,6 +55,10 @@ Ma DR-BC:     mean gain +4.67%, positive 20/24, interval above zero 7/24
 C-TMLE:       mean gain +0.05%, positive 1/24,  interval above zero 0/24
 ```
 
+The appendix fixed-floor TMLE diagnostic also uses the same 24 benchmark
+settings.  That arm is not a primary expert family; it is reported to show the
+nonadaptive-floor behavior separately from C-TMLE.
+
 ## High-Response Placebo Check
 
 A companion bundle records the current region-placement placebo diagnostic:

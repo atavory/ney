@@ -40,16 +40,16 @@ python3 scripts/recreate_unified_cartesian_global_residual.py \
 The reconstruction passed fail-closed checks for 4,080 shard files, 16,320
 replication rows, and 170 expert-by-setting combinations.  Every row uses
 `repair_mode=if_residual`, `validation_loss_se=1.0`, `shrink_c=2.0`,
-`region_damp_grid=0.0|0.25|0.5|1.0`, and the frozen source SHA
+`region_damp_grid=0.0|0.25|0.5|1.0`, and the source snapshot SHA
 `98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce`.
 
-Primary paper-facing readout at `c=2`:
+Primary paper-facing 24-setting summary at `c=2`:
 
 ```text
-AIPW primary: +4.584% [3.186%, 5.832%]
-C-TMLE primary: +0.048% [-0.068%, 0.201%]
-selective ML primary: +2.485% [1.612%, 3.342%]
-Ma DR-BC primary: +5.077% [3.953%, 6.186%]
+AIPW: mean gain +4.16%, positive 17/24, interval above zero 7/24
+selective ML: mean gain +2.08%, positive 14/24, interval above zero 5/24
+Ma DR-BC: mean gain +4.67%, positive 20/24, interval above zero 7/24
+C-TMLE: mean gain +0.05%, positive 1/24, interval above zero 0/24
 ```
 
 The full 34-setting matrix is still verified and retained for diagnostics:
@@ -62,7 +62,9 @@ Ma DR-BC full matrix: +2.999% [2.337%, 3.656%]
 ```
 
 The nonadaptive plain-TMLE arm is retained as a diagnostic fixed-floor
-baseline:
+baseline.  Its appendix table now reports the same 24 benchmark settings as the
+primary table.  The Kang--Schafer rows expose the fixed-floor over-activation
+pattern; the semi-synthetic benchmark rows are mostly close to the reference.
 
 ```text
 plain TMLE all: -0.410% [-1.203%, 0.235%]

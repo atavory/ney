@@ -27,7 +27,7 @@ The paper-facing scripts are:
     `a0676b1bcf3d854d5b15a60f0dc8e91d2dd12a70858c0aa76da90206a99fa235`
 - `scripts/assemble_section4_unified_global_residual.py`
   - SHA256:
-    `bcedc611bcb037300fdb69c10699ccacb20eb599b9e506019bf7348f7aa7b9fd`
+    `e36fb3b508ddf2de72b00f42935fd445e2f8ca2737e5931cc545df0aac9a1c55`
 - `scripts/dml_launch_section4_placebo_shards.py`
   - SHA256:
     `cc8b9cb5dbf1f3ebd0c7e8546bed46f1f192f0bcbe57ff6b3c7dd8d718fe524f`
@@ -39,11 +39,15 @@ The paper-facing scripts are:
     `ac994817b46089fe8812d42c73a0941b905168ffe64454689cfb5b78f8756dda`
 - `scripts/verify_section4_manuscript.py`
   - SHA256:
-    `fb5da082c65996296a4bf48bfd9c49a4ad368140ed5160b9f5385e191e59f070`
+    `5f348dccc26cc0329eaf08b434199ed8b4d72d978c0e384c68ed4ceff61fbaa1`
 
 The verifier confirms that the public bundle and an Overleaf paper checkout
 agree on the generated Section 4 files, including the companion ablation
 tables.
+
+The appendix fixed-floor TMLE diagnostic is generated setting-by-setting on the
+same 24 benchmark settings as the primary table.  C-TMLE remains the primary
+TMLE comparator in the manuscript.
 
 ## Manifold Source Objects
 

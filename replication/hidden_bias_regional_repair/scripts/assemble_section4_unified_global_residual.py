@@ -28,6 +28,9 @@ SETTING_TABLE_METHODS = (
     ("ma_dr_bc", "Ma DR-BC", "MaDrBc"),
     ("ctmle", "C-TMLE", "Ctmle"),
 )
+BENCHMARK_TABLE_METHODS = SETTING_TABLE_METHODS + (
+    ("tmle", "fixed-floor TMLE", "Tmle"),
+)
 BENCHMARK_DATASETS = (
     (
         "ihdp",
@@ -172,8 +175,8 @@ def read_benchmark_setting_rows() -> dict[tuple[str, str, str, str], dict[str, s
     if _BENCHMARK_SETTING_CACHE is not None:
         return _BENCHMARK_SETTING_CACHE
 
-    by_setting: dict[tuple[str, str, str, str], list[tuple[float, float]]] = {}
-    methods = {method for method, _, _ in SETTING_TABLE_METHODS}
+    by_setting: dict[tuple[str, str, str, str], list[dict[str, float]]] = {}
+    methods = {method for method, _, _ in BENCHMARK_TABLE_METHODS}
     for dataset_key, _label, raw_path, design_pairs in BENCHMARK_DATASETS:
         design_labels = dict(design_pairs)
         path = DATA_ROOT / raw_path
@@ -191,7 +194,14 @@ def read_benchmark_setting_rows() -> dict[tuple[str, str, str, str], dict[str, s
                 )
                 ref_loss = float(row["ref_error"]) ** 2
                 repaired_loss = float(row["shrink_error"]) ** 2
-                by_setting.setdefault(setting_key, []).append((ref_loss, repaired_loss))
+                by_setting.setdefault(setting_key, []).append(
+                    {
+                        "ref_loss": ref_loss,
+                        "repaired_loss": repaired_loss,
+                        "active": 1.0 if float(row["weight"]) > 0.0 else 0.0,
+                        "harm": 1.0 if repaired_loss > ref_loss else 0.0,
+                    }
+                )
 
     rows: dict[tuple[str, str, str, str], dict[str, str]] = {}
     for dataset_index, (dataset_key, _label, _raw_path, design_pairs) in enumerate(
@@ -200,7 +210,7 @@ def read_benchmark_setting_rows() -> dict[tuple[str, str, str, str], dict[str, s
         for design_index, (_design, design_label) in enumerate(design_pairs):
             for strength_index, strength in enumerate(("0.0", "3.0")):
                 for method_index, (method, _method_label, _macro) in enumerate(
-                    SETTING_TABLE_METHODS
+                    BENCHMARK_TABLE_METHODS
                 ):
                     values = by_setting.get((dataset_key, design_label, strength, method))
                     if values is None:
@@ -208,8 +218,10 @@ def read_benchmark_setting_rows() -> dict[tuple[str, str, str, str], dict[str, s
                             f"missing benchmark setting: "
                             f"{dataset_key}/{design_label}/{strength}/{method}"
                         )
-                    ref_mse = sum(ref for ref, _ in values) / len(values)
-                    repaired_mse = sum(repaired for _, repaired in values) / len(values)
+                    ref_mse = sum(value["ref_loss"] for value in values) / len(values)
+                    repaired_mse = (
+                        sum(value["repaired_loss"] for value in values) / len(values)
+                    )
                     rng = random.Random(
                         BENCHMARK_BOOTSTRAP_SEED
                         + 1000 * dataset_index
@@ -220,9 +232,10 @@ def read_benchmark_setting_rows() -> dict[tuple[str, str, str, str], dict[str, s
                     draws = []
                     for _ in range(BENCHMARK_BOOTSTRAP_DRAWS):
                         sample = [values[rng.randrange(len(values))] for _ in values]
-                        ref_draw = sum(ref for ref, _ in sample) / len(sample)
-                        repaired_draw = sum(repaired for _, repaired in sample) / len(
-                            sample
+                        ref_draw = sum(value["ref_loss"] for value in sample) / len(sample)
+                        repaired_draw = (
+                            sum(value["repaired_loss"] for value in sample)
+                            / len(sample)
                         )
                         draws.append(1.0 - repaired_draw / ref_draw)
 
@@ -230,6 +243,12 @@ def read_benchmark_setting_rows() -> dict[tuple[str, str, str, str], dict[str, s
                         "repaired_gain": str(1.0 - repaired_mse / ref_mse),
                         "repaired_gain_ci_low": str(percentile(draws, 0.025)),
                         "repaired_gain_ci_high": str(percentile(draws, 0.975)),
+                        "final_activation": str(
+                            sum(value["active"] for value in values) / len(values)
+                        ),
+                        "unconditional_harm": str(
+                            sum(value["harm"] for value in values) / len(values)
+                        ),
                     }
     _BENCHMARK_SETTING_CACHE = rows
     return rows
@@ -416,28 +435,76 @@ def write_synthetic_diagnostic_table(
     path.write_text("".join(lines))
 
 
-def write_tmle_diagnostic_table(
-    path: Path, rows: dict[tuple[str, str], dict[str, str]]
-) -> None:
+def activation_cell(row: dict[str, str]) -> str:
+    return f"{rate(row['final_activation'])}\\% / {rate(row['unconditional_harm'])}\\%"
+
+
+def fixed_floor_tmle_setting_groups(
+    rows: list[dict[str, str]]
+) -> list[tuple[str, list[tuple[str, dict[str, str]]]]]:
+    ks_rows = [
+        row
+        for row in rows
+        if row["group"] == "kang_schafer" and row["method"] == "tmle"
+    ]
+    by_setting: dict[tuple[str, str, int, float], dict[str, str]] = {}
+    for row in ks_rows:
+        key = (row["group"], row["design"], int(row["n"]), float(row["strength"]))
+        by_setting[key] = row
+    ks_keys = sorted(by_setting, key=lambda key: (key[1], key[2]))
+    if len(ks_keys) != 8:
+        raise SystemExit(f"fixed-floor TMLE KS settings differ: {len(ks_keys)}")
+
+    groups: list[tuple[str, list[tuple[str, dict[str, str]]]]] = []
+    groups.append(
+        (
+            "Kang--Schafer",
+            [
+                (setting_label(by_setting[key]), by_setting[key])
+                for key in ks_keys
+            ],
+        )
+    )
+
+    benchmark_rows = read_benchmark_setting_rows()
+    benchmark_group = []
+    for dataset_key, label, _raw_path, design_pairs in BENCHMARK_DATASETS:
+        for _design, design_label in design_pairs:
+            for strength in ("0.0", "3.0"):
+                strength_label = str(int(float(strength)))
+                row = benchmark_rows[(dataset_key, design_label, strength, "tmle")]
+                benchmark_group.append((f"{label} {design_label}, $s={strength_label}$", row))
+    groups.append(("Semi-synthetic benchmarks", benchmark_group))
+    return groups
+
+
+def write_tmle_diagnostic_table(path: Path, rows: list[dict[str, str]]) -> None:
     lines = [
         COMMENT,
         "\\begin{table}[t]\n",
         "\\centering\n",
-        "\\small\n",
-        "\\caption{Diagnostic fixed-floor TMLE readout for the global-residual run. The fixed-floor arm uses a nonadaptive propensity floor of 0.05 and is not the primary TMLE comparator.}\n",
+        "\\scriptsize\n",
+        "\\caption{Appendix diagnostic for fixed-floor TMLE on the same 24 benchmark settings as Table~\\ref{tab:unified-global-residual-families}. The fixed-floor arm uses a nonadaptive propensity floor of 0.05 and is not the primary TMLE comparator. Entries are percent MSE gain with 95\\% paired percentile intervals at $c=2$.}\n",
         "\\label{tab:fixed-floor-tmle-diagnostic}\n",
-        "\\begin{tabular}{@{}lrrr@{}}\n",
+        "\\resizebox{\\textwidth}{!}{%\n",
+        "\\begin{tabular}{@{}lrr@{}}\n",
         "\\toprule\n",
-        "family & settings & MSE gain (95\\% CI) & active / harm \\\\\n",
+        "benchmark setting & fixed-floor TMLE & active / harm \\\\\n",
         "\\midrule\n",
     ]
-    for family, family_label, _ in FAMILIES:
-        row = rows[("tmle", family)]
+    for group_index, (group_label, settings) in enumerate(
+        fixed_floor_tmle_setting_groups(rows)
+    ):
+        if group_index:
+            lines.append("\\addlinespace\n")
         lines.append(
-            f"{family_label} & {int(row['cells'])} & {gain_cell(row)} & "
-            f"{rate(row['final_activation'])}\\% / {rate(row['unconditional_harm'])}\\% \\\\\n"
+            f"\\multicolumn{{3}}{{@{{}}l}}{{\\textit{{{group_label}}}}} \\\\\n"
         )
-    lines.extend(["\\bottomrule\n", "\\end{tabular}\n", "\\end{table}\n"])
+        for setting, row in settings:
+            lines.append(
+                f"{setting} & {setting_gain_cell(row)} & {activation_cell(row)} \\\\\n"
+            )
+    lines.extend(["\\bottomrule\n", "\\end{tabular}%\n", "}\n", "\\end{table}\n"])
     path.write_text("".join(lines))
 
 
@@ -456,7 +523,7 @@ def main() -> None:
         args.out_dir / "section4_synthetic_diagnostic_table.tex", rows
     )
     write_tmle_diagnostic_table(
-        args.out_dir / "section4_fixed_floor_tmle_diagnostic_table.tex", rows
+        args.out_dir / "section4_fixed_floor_tmle_diagnostic_table.tex", cell_rows
     )
 
 

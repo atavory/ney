@@ -91,7 +91,7 @@ def compare_generated(data_root: Path, paper_root: Path) -> None:
             out_dir / "section4_synthetic_diagnostic_table.tex", rows
         )
         assembler.write_tmle_diagnostic_table(
-            out_dir / "section4_fixed_floor_tmle_diagnostic_table.tex", rows
+            out_dir / "section4_fixed_floor_tmle_diagnostic_table.tex", cell_rows
         )
         for name in GENERATED_FILES:
             paper_path = paper_root / "sections" / "generated" / name
