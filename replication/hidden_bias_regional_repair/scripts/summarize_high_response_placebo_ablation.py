@@ -205,13 +205,13 @@ def paired_draws(
         )
     low_ref = [as_float(low_by_pair[pair_id]["ref_error"]) ** 2 for pair_id in pair_ids]
     low_target = [
-        as_float(low_by_pair[pair_id]["shrink_error"]) ** 2 for pair_id in pair_ids
+        as_float(low_by_pair[pair_id]["rt_error"]) ** 2 for pair_id in pair_ids
     ]
     high_ref = [
         as_float(high_by_pair[pair_id]["ref_error"]) ** 2 for pair_id in pair_ids
     ]
     high_target = [
-        as_float(high_by_pair[pair_id]["shrink_error"]) ** 2 for pair_id in pair_ids
+        as_float(high_by_pair[pair_id]["rt_error"]) ** 2 for pair_id in pair_ids
     ]
     result = []
     for _ in range(draws):
@@ -238,8 +238,8 @@ def summarize_setting(
     rng: random.Random,
     draws: int,
 ) -> tuple[dict[str, object], list[tuple[float, float, float]]]:
-    low_ref, low_target = metric(low_rows, "shrink_error")
-    high_ref, high_target = metric(high_rows, "shrink_error")
+    low_ref, low_target = metric(low_rows, "rt_error")
+    high_ref, high_target = metric(high_rows, "rt_error")
     boot = paired_draws(low_rows, high_rows, rng, draws)
     group_label, setting_label, method, n, strength = key
     return (
@@ -260,20 +260,22 @@ def summarize_setting(
             "low_minus_high_gain_ci_low": percentile([draw[2] for draw in boot], 2.5),
             "low_minus_high_gain_ci_high": percentile([draw[2] for draw in boot], 97.5),
             "low_final_activation": mean(
-                1.0 if as_float(row["weight"]) > 0.0 else 0.0 for row in low_rows
+                1.0 if as_float(row["selected_region_damp"]) > 0.0 else 0.0
+                for row in low_rows
             ),
             "high_final_activation": mean(
-                1.0 if as_float(row["weight"]) > 0.0 else 0.0 for row in high_rows
+                1.0 if as_float(row["selected_region_damp"]) > 0.0 else 0.0
+                for row in high_rows
             ),
             "low_harm": mean(
                 1.0
-                if as_float(row["shrink_error"]) ** 2 > as_float(row["ref_error"]) ** 2
+                if as_float(row["rt_error"]) ** 2 > as_float(row["ref_error"]) ** 2
                 else 0.0
                 for row in low_rows
             ),
             "high_harm": mean(
                 1.0
-                if as_float(row["shrink_error"]) ** 2 > as_float(row["ref_error"]) ** 2
+                if as_float(row["rt_error"]) ** 2 > as_float(row["ref_error"]) ** 2
                 else 0.0
                 for row in high_rows
             ),

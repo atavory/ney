@@ -39,17 +39,19 @@ python3 scripts/recreate_unified_cartesian_global_residual.py \
 
 The reconstruction passed fail-closed checks for 4,080 shard files, 16,320
 replication rows, and 170 expert-by-setting combinations.  Every row uses
-`repair_mode=if_residual`, `validation_loss_se=1.0`, `shrink_c=2.0`,
+`repair_mode=if_residual`, `validation_loss_se=1.0`,
 `region_damp_grid=0.0|0.25|0.5|1.0`, and the source snapshot SHA
 `98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce`.
+The raw rows retain legacy scalar-damping fields for audit, but the current
+manuscript-facing generated tables report the selected candidate directly.
 
-Primary paper-facing 24-setting summary at `c=2`:
+Primary paper-facing 24-setting selected-candidate summary:
 
 ```text
-AIPW: mean gain +4.16%, positive 17/24, interval above zero 7/24
-selective ML: mean gain +2.08%, positive 14/24, interval above zero 5/24
-Ma DR-BC: mean gain +4.67%, positive 20/24, interval above zero 7/24
-C-TMLE: mean gain +0.05%, positive 1/24, interval above zero 0/24
+AIPW: mean gain +9.05%, positive 20/24, interval above zero 11/24
+selective ML: mean gain +4.95%, positive 17/24, interval above zero 6/24
+Ma DR-BC: mean gain +5.79%, positive 18/24, interval above zero 6/24
+C-TMLE: mean gain +0.04%, positive 1/24, interval above zero 0/24
 ```
 
 The full 34-setting matrix is still verified and retained for diagnostics:
@@ -86,6 +88,6 @@ Companion generated ablation tables are stored outside this primary bundle:
 - `support_csv/dml_high_response_placebo_ablation_20260831/` checks
   support-restricted low-response residual correction against a matched
   high-response placebo on the same 24 benchmark settings.
-- `support_csv/dml_no_shrinkage_ablation_20260830/` compares the selected
-  unshrunk candidate with the final `c=2` shrinkage rule on the same unified
-  raw rows.
+Historical scalar-damping comparisons are retained in separate archived
+bundles, but no scalar-damping ablation table is part of the current
+manuscript.

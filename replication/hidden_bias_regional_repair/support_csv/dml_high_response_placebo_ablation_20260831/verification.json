@@ -19,9 +19,9 @@
     "ctmle"
   ],
   "outputs": {
-    "high_response_placebo_cell_summary.csv": "00c7775553c1afba2628a6705b756c5ca20c7c4ed95d74efaca641517111a3a7",
-    "high_response_placebo_summary.csv": "be56a59d8088bc254cbbb8a9a92f794104dfc401b886160997fd3dae9aa650ce",
-    "section4_high_response_placebo_ablation_table.tex": "12c6b12fe1bfcb7addab9ba863b4a57d21cb5e9a1dafc30d9a5cc690990a42f9"
+    "high_response_placebo_cell_summary.csv": "f2f1cd8e07054431816e6835a15d1f123a736573fa529be79d4884fbf6a8d8bd",
+    "high_response_placebo_summary.csv": "59a9eb6c2a3c99963eb43e1218db2ae761e071858e0e4f35a76cdac089b043b0",
+    "section4_high_response_placebo_ablation_table.tex": "18e5f827545e4ac77c5dcc7e0a7ee7a3dec013de0a1e6957b87a082003f3a867"
   },
   "seed": 20260831,
   "setting_expert_groups": 96,

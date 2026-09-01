@@ -25,9 +25,6 @@ AUXILIARY_GENERATED = {
     "support_csv/dml_high_response_placebo_ablation_20260831": (
         "section4_high_response_placebo_ablation_table.tex",
     ),
-    "support_csv/dml_no_shrinkage_ablation_20260830": (
-        "section4_no_shrinkage_ablation_table.tex",
-    ),
 }
 BENCHMARK_RELEASES = {
     "support_csv/dml_real_benchmark_expansion_20260831": {
@@ -75,7 +72,7 @@ def compare_generated(data_root: Path, paper_root: Path) -> None:
         data_root / "scripts" / "assemble_section4_unified_global_residual.py"
     )
     release = data_root / RELEASE_DIR
-    rows = assembler.read_rows(release / "family_summary.csv")
+    rows = assembler.read_selected_family_rows()
     cell_rows = assembler.read_cell_rows(release / "cell_summary.csv")
     with tempfile.TemporaryDirectory() as tmpdir:
         out_dir = Path(tmpdir)
@@ -222,7 +219,6 @@ def verify_manuscript(paper_root: Path) -> tuple[int, int]:
         "sections/generated/section4_unified_family_table",
         "sections/generated/section4_unified_summary_table",
         "sections/generated/section4_high_response_placebo_ablation_table",
-        "sections/generated/section4_no_shrinkage_ablation_table",
     )
     for name in required_inputs:
         if f"\\input{{{name}}}" not in section4:
@@ -248,14 +244,6 @@ def verify_manuscript(paper_root: Path) -> tuple[int, int]:
     for token in forbidden_paper_tokens:
         if token in paper_text:
             raise SystemExit(f"paper text contains data-provenance token: {token}")
-    banned_words = ("deliberately", "frozen")
-    for tex_path in paper_root.rglob("*.tex"):
-        lower_text = tex_path.read_text(errors="replace").lower()
-        for word in banned_words:
-            if re.search(rf"\b{re.escape(word)}\b", lower_text):
-                raise SystemExit(
-                    f"paper text contains banned wording {word!r}: {tex_path}"
-                )
     if "fixed-floor TMLE &" in overview or "fixed-floor TMLE &" in family:
         raise SystemExit("primary Section 4 tables still include fixed-floor TMLE")
     if "fixed-floor TMLE" not in diagnostic:
@@ -263,10 +251,46 @@ def verify_manuscript(paper_root: Path) -> tuple[int, int]:
     if "primary TMLE comparator" not in section4 + "\n" + appendix:
         raise SystemExit("manuscript does not identify C-TMLE as primary comparator")
     manuscript_text = paper_text
-    if "\\texttt{bootstraps}=0" not in section4:
-        raise SystemExit("Section 4 does not record bootstraps=0")
-    if "plug-in selected score-contrast variance" not in manuscript_text:
-        raise SystemExit("appendix does not record plug-in selected-contrast variance")
+    normalized_manuscript_text = re.sub(r"\s+", " ", manuscript_text)
+    required_phrases = (
+        "The selected candidate is the returned estimate.",
+        "The selected candidate is the reported estimate.",
+    )
+    for phrase in required_phrases:
+        if phrase not in normalized_manuscript_text:
+            raise SystemExit(f"manuscript does not record selected-candidate rule: {phrase}")
+    forbidden_method_tokens = (
+        "section4_no_shrinkage_ablation_table",
+        "no-shrinkage",
+        "no shrinkage",
+        "shrinkage",
+        "shrunk",
+        "shrink",
+        "c=2",
+        "c=0",
+        "\\(c=2\\)",
+        "\\(c=0\\)",
+        "\\texttt{bootstraps}=0",
+        "plug-in selected score-contrast variance",
+    )
+    for token in forbidden_method_tokens:
+        if token in manuscript_text:
+            raise SystemExit(f"manuscript still contains removed scalar-damping token: {token}")
+    banned_words = ("deliberately", "frozen")
+    for tex_path in paper_root.rglob("*.tex"):
+        text = tex_path.read_text(errors="replace")
+        lower_text = text.lower()
+        for word in banned_words:
+            if re.search(rf"\b{re.escape(word)}\b", lower_text):
+                raise SystemExit(
+                    f"paper text contains banned wording {word!r}: {tex_path}"
+                )
+        for token in forbidden_method_tokens:
+            if token.lower() in lower_text:
+                raise SystemExit(
+                    f"paper text contains removed scalar-damping token {token!r}: "
+                    f"{tex_path}"
+                )
 
     definitions = set(re.findall(r"\\newcommand\{\\(SFour[A-Za-z]+)\}", values))
     generated_text = "\n".join((overview, family, synthetic, diagnostic))

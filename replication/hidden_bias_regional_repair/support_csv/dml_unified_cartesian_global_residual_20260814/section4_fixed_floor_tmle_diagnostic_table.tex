@@ -2,7 +2,7 @@
 \begin{table}[t]
 \centering
 \scriptsize
-\caption{Appendix diagnostic for fixed-floor TMLE on the same 24 benchmark settings as Table~\ref{tab:unified-global-residual-families}. The fixed-floor arm uses a nonadaptive propensity floor of 0.05 and is not the primary TMLE comparator. Entries are percent MSE gain with 95\% paired percentile intervals at $c=2$.}
+\caption{Appendix diagnostic for fixed-floor TMLE on the same 24 benchmark settings as Table~\ref{tab:unified-global-residual-families}. The fixed-floor arm uses a nonadaptive propensity floor of 0.05 and is not the primary TMLE comparator. Entries are percent MSE gain with 95\% paired percentile intervals.}
 \label{tab:fixed-floor-tmle-diagnostic}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lrr@{}}
@@ -10,32 +10,32 @@
 benchmark setting & fixed-floor TMLE & active / harm \\
 \midrule
 \multicolumn{3}{@{}l}{\textit{Kang--Schafer}} \\
-KS CC, $n=200$ & $-4.6\ [-10.6,-0.6]$ & 9.4\% / 7.3\% \\
-KS CC, $n=1000$ & $3.6\ [-2.9,11.7]$ & 9.4\% / 4.2\% \\
-KS CI, $n=200$ & $2.7\ [-3.0,8.6]$ & 13.5\% / 6.2\% \\
-KS CI, $n=1000$ & $-12.4\ [-34.7,4.4]$ & 18.8\% / 12.5\% \\
-KS IC, $n=200$ & $-1.1\ [-5.3,1.2]$ & 5.2\% / 2.1\% \\
-KS IC, $n=1000$ & $-2.2\ [-12.4,4.0]$ & 10.4\% / 3.1\% \\
-KS II, $n=200$ & $-1.1\ [-3.9,0.0]$ & 1.0\% / 1.0\% \\
-KS II, $n=1000$ & $0.0\ [-2.7,2.3]$ & 6.2\% / 3.1\% \\
+KS CC, $n=200$ & $-64.7\ [-108.3,-32.8]$ & 53.1\% / 38.5\% \\
+KS CC, $n=1000$ & $-50.0\ [-94.4,-16.6]$ & 96.9\% / 57.3\% \\
+KS CI, $n=200$ & $-35.0\ [-80.2,-1.2]$ & 68.8\% / 41.7\% \\
+KS CI, $n=1000$ & $-65.4\ [-118.8,-24.7]$ & 99.0\% / 60.4\% \\
+KS IC, $n=200$ & $-8.7\ [-30.1,6.1]$ & 31.2\% / 16.7\% \\
+KS IC, $n=1000$ & $-8.7\ [-31.1,7.0]$ & 52.1\% / 26.0\% \\
+KS II, $n=200$ & $2.9\ [-15.3,15.9]$ & 24.0\% / 5.2\% \\
+KS II, $n=1000$ & $-5.4\ [-17.0,4.8]$ & 64.6\% / 32.3\% \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textit{Semi-synthetic benchmarks}} \\
-IHDP A, $s=0$ & $0.4\ [-0.6,1.8]$ & 3.1\% / 2.1\% \\
-IHDP A, $s=3$ & $1.8\ [-2.6,5.7]$ & 9.4\% / 2.1\% \\
-IHDP B, $s=0$ & $0.2\ [0.0,0.7]$ & 2.1\% / 0.0\% \\
-IHDP B, $s=3$ & $1.5\ [0.0,4.7]$ & 1.0\% / 0.0\% \\
-ACIC 2016 A, $s=0$ & $0.9\ [-0.7,3.1]$ & 4.2\% / 1.0\% \\
-ACIC 2016 A, $s=3$ & $-0.1\ [-0.4,0.0]$ & 2.1\% / 1.0\% \\
-ACIC 2016 B, $s=0$ & $0.0\ [0.0,0.0]$ & 0.0\% / 0.0\% \\
-ACIC 2016 B, $s=3$ & $-0.5\ [-1.9,0.0]$ & 1.0\% / 1.0\% \\
-ACIC 2017 A, $s=0$ & $2.9\ [0.0,9.7]$ & 1.0\% / 0.0\% \\
-ACIC 2017 A, $s=3$ & $0.3\ [0.0,0.9]$ & 2.1\% / 0.0\% \\
-ACIC 2017 B, $s=0$ & $0.0\ [0.0,0.0]$ & 0.0\% / 0.0\% \\
-ACIC 2017 B, $s=3$ & $-0.4\ [-1.3,0.0]$ & 1.0\% / 1.0\% \\
+IHDP A, $s=0$ & $-1.0\ [-4.6,2.2]$ & 7.3\% / 4.2\% \\
+IHDP A, $s=3$ & $3.8\ [-2.2,9.4]$ & 18.8\% / 4.2\% \\
+IHDP B, $s=0$ & $2.3\ [0.1,5.4]$ & 12.5\% / 6.2\% \\
+IHDP B, $s=3$ & $2.6\ [-0.2,7.5]$ & 6.2\% / 2.1\% \\
+ACIC 2016 A, $s=0$ & $0.8\ [-2.9,4.7]$ & 6.2\% / 4.2\% \\
+ACIC 2016 A, $s=3$ & $-0.5\ [-1.8,0.8]$ & 6.2\% / 3.1\% \\
+ACIC 2016 B, $s=0$ & $-0.7\ [-1.9,0.1]$ & 5.2\% / 4.2\% \\
+ACIC 2016 B, $s=3$ & $-1.5\ [-4.9,0.7]$ & 7.3\% / 4.2\% \\
+ACIC 2017 A, $s=0$ & $3.9\ [-0.4,11.2]$ & 8.3\% / 3.1\% \\
+ACIC 2017 A, $s=3$ & $1.3\ [0.2,2.9]$ & 6.2\% / 1.0\% \\
+ACIC 2017 B, $s=0$ & $0.3\ [0.0,0.7]$ & 4.2\% / 0.0\% \\
+ACIC 2017 B, $s=3$ & $-0.8\ [-3.5,1.3]$ & 9.4\% / 4.2\% \\
 Twins A, $s=0$ & $0.0\ [0.0,0.0]$ & 0.0\% / 0.0\% \\
-Twins A, $s=3$ & $0.0\ [0.0,0.0]$ & 0.0\% / 0.0\% \\
-Twins B, $s=0$ & $-0.4\ [-1.4,0.0]$ & 1.0\% / 1.0\% \\
-Twins B, $s=3$ & $-0.3\ [-0.8,0.0]$ & 2.1\% / 2.1\% \\
+Twins A, $s=3$ & $0.2\ [0.0,0.8]$ & 2.1\% / 1.0\% \\
+Twins B, $s=0$ & $-0.9\ [-3.0,0.0]$ & 1.0\% / 1.0\% \\
+Twins B, $s=3$ & $-0.9\ [-3.6,0.9]$ & 3.1\% / 2.1\% \\
 \bottomrule
 \end{tabular}%
 }

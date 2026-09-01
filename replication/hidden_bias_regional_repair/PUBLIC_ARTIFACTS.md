@@ -27,26 +27,20 @@ The paper-facing scripts are:
     `a0676b1bcf3d854d5b15a60f0dc8e91d2dd12a70858c0aa76da90206a99fa235`
 - `scripts/assemble_section4_unified_global_residual.py`
   - SHA256:
-    `e36fb3b508ddf2de72b00f42935fd445e2f8ca2737e5931cc545df0aac9a1c55`
+    `d48834defc74119667519ecd54b6784b3980a4222087f3373ba934a4c7b39e71`
 - `scripts/dml_launch_section4_placebo_shards.py`
   - SHA256:
     `cc8b9cb5dbf1f3ebd0c7e8546bed46f1f192f0bcbe57ff6b3c7dd8d718fe524f`
 - `scripts/summarize_high_response_placebo_ablation.py`
   - SHA256:
-    `8f2c20a2f139c1d63646d03c70c0645c1824bd860dd418af765d7e6683940ac6`
-- `scripts/summarize_no_shrinkage_ablation.py`
-  - SHA256:
-    `ac994817b46089fe8812d42c73a0941b905168ffe64454689cfb5b78f8756dda`
-- `scripts/summarize_shrinkage_c_grid.py`
-  - SHA256:
-    `585cd5a93316d1a27e213c848a45e1595336ac59128f6ddb285198554f0b8f30`
+    `fe1c2cd363d347bb0b77341db35216018468272de1b466d383afdcafeea17df0`
 - `scripts/verify_section4_manuscript.py`
   - SHA256:
-    `5f348dccc26cc0329eaf08b434199ed8b4d72d978c0e384c68ed4ceff61fbaa1`
+    `37d66429eb4f70e33cd39436705cea5e1fae918f245c2a86f31d59977def4320`
 
 The verifier confirms that the public bundle and an Overleaf paper checkout
-agree on the generated Section 4 files, including the companion ablation
-tables.
+agree on the generated Section 4 files, including the current companion
+ablation table.
 
 The appendix fixed-floor TMLE diagnostic is generated setting-by-setting on the
 same 24 benchmark settings as the primary table.  C-TMLE remains the primary
@@ -135,18 +129,19 @@ residual correction in the selected low-response support with the same
 correction in a matched high-response support.
 
 ```text
-AIPW:         low +1.945% [1.262%, 2.602%], high -0.036% [-0.285%, 0.121%], low-high +1.981% [1.263%, 2.664%]
-selective ML: low +0.372% [-0.076%, 0.790%], high +0.195% [0.013%, 0.408%], low-high +0.178% [-0.294%, 0.596%]
-Ma DR-BC:     low +1.052% [0.373%, 1.687%], high +0.959% [0.596%, 1.306%], low-high +0.093% [-0.653%, 0.825%]
-C-TMLE:       low +0.124% [-0.046%, 0.357%], high +0.009% [-0.029%, 0.053%], low-high +0.115% [-0.064%, 0.351%]
+AIPW:         low +5.862% [4.448%, 7.033%], high +0.120% [-0.372%, 0.527%], low-high +5.742% [4.289%, 6.963%]
+selective ML: low +0.675% [-0.364%, 1.618%], high +0.535% [0.095%, 0.944%], low-high +0.140% [-0.952%, 1.130%]
+Ma DR-BC:     low +1.473% [0.582%, 2.267%], high +1.178% [0.743%, 1.591%], low-high +0.294% [-0.649%, 1.179%]
+C-TMLE:       low +0.117% [-0.116%, 0.392%], high +0.035% [-0.057%, 0.126%], low-high +0.082% [-0.170%, 0.372%]
 ```
 
 The 2026-08-30 C-TMLE-only low/high-response run remains in
 `support_csv/dml_low_high_response_ablation_20260830/` as archived provenance.
 
-### No-Shrinkage Ablation
+### Archived Scalar-Damping Diagnostics
 
-The accepted 2026-08-31 derived ablation is:
+These derived bundles are retained for audit, but they are not current
+manuscript tables or appendix targets:
 
 - Compact public bundle:
   `support_csv/dml_no_shrinkage_ablation_20260830/`
@@ -157,46 +152,12 @@ The accepted 2026-08-31 derived ablation is:
   - SHA256:
     `3c07f867bca0b8f62c93ff62e5d2058ba829f37c6703be9cf00a8a79b9a5645e`
 
-This ablation reuses the Aug. 14 unified Cartesian raw rows and compares the
-selected unshrunk candidate with the final \(c=2\) plug-in
-contrast-shrinkage rule.  No new estimator fitting is performed.
-
-Headline 24-setting benchmark gains:
-
-```text
-AIPW:         no shrinkage +9.049% [7.042%, 10.635%], c=2 +4.158% [2.943%, 5.241%]
-selective ML: no shrinkage +4.948% [3.497%, 6.258%],  c=2 +2.081% [1.259%, 2.915%]
-Ma DR-BC:     no shrinkage +5.793% [4.528%, 6.925%],  c=2 +4.667% [3.663%, 5.654%]
-C-TMLE:       no shrinkage +0.037% [-0.084%, 0.187%], c=2 +0.048% [-0.048%, 0.176%]
-```
-
-### Shrinkage-c Grid
-
-The 2026-09-01 derived grid is:
-
 - Compact public bundle:
   `support_csv/dml_shrinkage_c_grid_20260901/`
 - Summary script:
   `scripts/summarize_shrinkage_c_grid.py`
   - SHA256:
     `585cd5a93316d1a27e213c848a45e1595336ac59128f6ddb285198554f0b8f30`
-
-This grid reuses the same selected candidate movements as the 24-setting
-benchmark table and evaluates
-\(c\in\{0,0.25,\ldots,5,6,8,10\}\). It does not refit nuisance models or
-reselect the damping candidate.
-
-By equal-setting benchmark MSE, the best grid value is \(c=0\) for AIPW,
-selective ML, and Ma DR-BC. C-TMLE is essentially inert; its best grid value is
-\(c=1\), with an interval crossing zero. Positive \(c\) values reduce harmful
-moves and activation.
-
-```text
-AIPW:         best c=0, gain +9.049% [7.061%, 10.678%], harm 10.634%
-selective ML: best c=0, gain +4.948% [3.517%, 6.288%],  harm 12.587%
-Ma DR-BC:     best c=0, gain +5.793% [4.536%, 6.946%],  harm 8.116%
-C-TMLE:       best c=1, gain +0.051% [-0.051%, 0.188%], harm 0.130%
-```
 
 ### Old Mixed Section 4 Release
 
