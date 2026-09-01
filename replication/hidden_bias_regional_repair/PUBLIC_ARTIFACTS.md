@@ -34,6 +34,16 @@ The paper-facing scripts are:
 - `scripts/summarize_high_response_placebo_ablation.py`
   - SHA256:
     `fe1c2cd363d347bb0b77341db35216018468272de1b466d383afdcafeea17df0`
+- `scripts/dml_nuisance_cv_accuracy_by_response.py`
+  - Diagnostic script for cross-fitted response-score and outcome-prediction
+    accuracy by response bin.
+  - SHA256:
+    `9d276d09ad9ab7ab2df13be838b8e2fa5791a2d87acd83e77ff7311017ace02d`
+- `scripts/dml_reference_error_by_response.py`
+  - Diagnostic script for expert-reference outcome accuracy by response bin,
+    including the fixed-floor TMLE diagnostic arm.
+  - SHA256:
+    `7a8765f01805cef46788d24728a15f4d4ed97931ae52763ded8cf57193affb30`
 - `scripts/verify_section4_manuscript.py`
   - SHA256:
     `37d66429eb4f70e33cd39436705cea5e1fae918f245c2a86f31d59977def4320`
@@ -45,6 +55,12 @@ ablation table.
 The appendix fixed-floor TMLE diagnostic is generated setting-by-setting on the
 same 24 benchmark settings as the primary table.  C-TMLE remains the primary
 TMLE comparator in the manuscript.
+
+The diagnostic bundle
+`support_csv/dml_nuisance_cv_accuracy_by_response_20260901/` checks whether
+the cross-fitted response, outcome, and expert-reference nuisance fits behave
+differently across low- and high-response bins.  It is retained as
+theory/motivation evidence and does not feed the manuscript MSE tables.
 
 ## Manifold Source Objects
 

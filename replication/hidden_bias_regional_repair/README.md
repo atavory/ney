@@ -37,6 +37,8 @@ The corresponding public scripts are:
 - `scripts/assemble_section4_unified_global_residual.py`
 - `scripts/dml_launch_section4_placebo_shards.py`
 - `scripts/summarize_high_response_placebo_ablation.py`
+- `scripts/dml_nuisance_cv_accuracy_by_response.py`
+- `scripts/dml_reference_error_by_response.py`
 - `scripts/verify_section4_manuscript.py`
 
 Every row in the primary results uses the same repair mode and gate:
@@ -58,6 +60,14 @@ C-TMLE:       mean gain +0.04%, positive 1/24,  interval above zero 0/24
 The appendix fixed-floor TMLE diagnostic also uses the same 24 benchmark
 settings.  That arm is not a primary expert family; it is reported to show the
 nonadaptive-floor behavior separately from C-TMLE.
+
+## Nuisance Prediction Diagnostic
+
+The bundle
+`support_csv/dml_nuisance_cv_accuracy_by_response_20260901/` reports
+cross-fitted response-score, outcome-prediction, and expert-reference outcome
+accuracy by response bin for the 24 benchmark settings.  It is a diagnostic
+source, not a replacement for the primary MSE tables.
 
 ## High-Response Placebo Check
 
