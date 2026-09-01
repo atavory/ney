@@ -2002,29 +2002,23 @@ def _crossfit_selected(
                 seed + 16001 + int(1000 * tau),
                 folds,
             )
-            # The two residual rules are intentionally identical except for
-            # this support mask.  Both learn the same honest direction, use
-            # the same observed-outcome validation gate, and traverse the same
-            # damping path.  This makes global-versus-regional a complete
-            # protocol-level comparison rather than an estimator-specific
-            # adapter choice.
+            # The two residual rules are identical except for this support
+            # mask.  Both learn the same direction, use the same score-risk
+            # gate, and traverse the same damping path.
             if repair_mode == "regional_if_residual":
                 correction = correction * region.astype(float)
-
-            observed = response == 1
-            validation_weight = _observed_validation_weights(
-                p_oof[observed], region[observed], validation_region_weight
-            )
-            baseline_loss = (
-                validation_weight * (y[observed] - base_outcome[observed]) ** 2
-            )
-            losses[tau] = [float(np.mean(baseline_loss))]
 
             if reference_method == "ma_dr_bc":
                 trim_h = float(tau)
                 p_endpoint = np.clip(np.asarray(p_raw_values), 1e-12, 1.0)
+                base_selection_score = np.asarray(
+                    ma_projection_scores[tau], dtype=float
+                )
             else:
                 base_selection_score = _aipw_score(y, response, p_oof, base_outcome)
+            common_center = float(np.mean(base_selection_score))
+            baseline_loss = (base_selection_score - common_center) ** 2
+            losses[tau] = [float(np.mean(baseline_loss))]
 
             for region_damp in region_damp_grid:
                 candidate_outcome = base_outcome + region_damp * correction
@@ -2038,15 +2032,24 @@ def _crossfit_selected(
                         correction_order=1,
                         sieve_degree=3,
                     )
+                    candidate_selection_score = _crossfit_ma_dr_bc_score(
+                        y,
+                        response,
+                        p_endpoint,
+                        candidate_outcome,
+                        seed + 11003,
+                        folds,
+                        trim_h=trim_h,
+                        correction_order=1,
+                        sieve_degree=3,
+                    )
                 else:
                     candidate_aipw = _aipw_score(y, response, p_oof, candidate_outcome)
                     candidate_endpoint = (
                         base_endpoint + candidate_aipw - base_selection_score
                     )
-                candidate_loss = (
-                    validation_weight
-                    * (y[observed] - candidate_outcome[observed]) ** 2
-                )
+                    candidate_selection_score = candidate_aipw
+                candidate_loss = (candidate_selection_score - common_center) ** 2
                 rt_values[(tau, region_damp)] = candidate_endpoint
                 rt_outcome_values[(tau, region_damp)] = candidate_outcome
                 damp_losses[(tau, region_damp)] = candidate_loss.tolist()
@@ -2238,7 +2241,7 @@ def _crossfit_selected(
     return {
         "ref": returned_ref,
         "rt": returned_rt,
-        # Freeze the complete path so alternative gates can be recomputed
+        # Store the complete path so alternative gates can be recomputed
         # without refitting or retaining executable estimator objects.
         "fold_ids": labels.copy(),
         "initial_outcome": initial_outcome_values.copy(),
@@ -3138,7 +3141,7 @@ def main() -> None:
         choices=["obsval", "lepski", "glrisk"],
         default="obsval",
         help=(
-            "Rule for choosing the regional damping value: observed-outcome validation "
+            "Rule for choosing the regional damping value: held-out validation "
             "loss, the first Lepski-detectable contrast, or a full GL risk proxy."
         ),
     )

@@ -25,9 +25,12 @@ The paper-facing scripts are:
 - `scripts/validated_reference_transfer.py`
   - Main experiment runner.  Its `if_residual` branch fits the residual
     direction by responder-only weighted residual regression and chooses the
-    damping value with the configured observed-outcome validation loss.
+    damping value with the centered fitted-score loss used by the Aug. 14
+    experiment source snapshot.  The `validation_risk=balanced_mse` metadata
+    field is retained as a run label, but this branch's gate is the score-loss
+    gate in the source.
   - SHA256:
-    `87dee24a80eca9205c553428af13e848a3ed35cec382d1af7d61cf01f1563fda`
+    `3ab6bc1d0077316fe397d6cc97304b6e62d76eca969d9cf7a67a5a835b38db7e`
 - `scripts/recreate_unified_cartesian_global_residual.py`
   - SHA256:
     `a0676b1bcf3d854d5b15a60f0dc8e91d2dd12a70858c0aa76da90206a99fa235`
@@ -122,7 +125,7 @@ The maintained high-response-capable region-gated driver is:
 
 SHA:
 
-`67b24062027735ae3af70fe211e59ee484658a6b578c09f44f6e2befe8cd3287`
+`7d1478ce3529d8ab8391e8445ac121b08a269913679458e9ce91b4c32c8b9f50`
 
 This source gates the deployed `if_library` residual correction by the
 selected analysis region:

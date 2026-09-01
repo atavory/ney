@@ -41,11 +41,15 @@ The corresponding public scripts are:
 - `scripts/dml_reference_error_by_response.py`
 - `scripts/verify_section4_manuscript.py`
 
-Every row in the primary results uses the same repair mode and gate:
+Every row in the primary results uses the same repair mode and damping grid:
 `repair_mode=if_residual`, `validation_loss_se=1.0`, and
-`region_damp_grid=0.0|0.25|0.5|1.0`. The generated manuscript tables report
-the selected candidate directly. The Aug. 14 reconstruction checks 4,080
-shard files, 16,320 paired replication rows, and 170 expert-by-setting
+`region_damp_grid=0.0|0.25|0.5|1.0`. In the Aug. 14 source snapshot, the
+`if_residual` branch fits a responder-only weighted residual correction and
+uses a centered fitted-score loss as the one-SE damping gate. The
+`validation_risk=balanced_mse` field appears in the run metadata, but it does
+not control this branch's selection loss. The generated manuscript tables
+report the selected candidate directly. The Aug. 14 reconstruction checks
+4,080 shard files, 16,320 paired replication rows, and 170 expert-by-setting
 combinations.
 
 Primary 24-setting selected-candidate readout:
