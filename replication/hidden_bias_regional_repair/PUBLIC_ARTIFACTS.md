@@ -37,6 +37,9 @@ The paper-facing scripts are:
 - `scripts/summarize_no_shrinkage_ablation.py`
   - SHA256:
     `ac994817b46089fe8812d42c73a0941b905168ffe64454689cfb5b78f8756dda`
+- `scripts/summarize_shrinkage_c_grid.py`
+  - SHA256:
+    `585cd5a93316d1a27e213c848a45e1595336ac59128f6ddb285198554f0b8f30`
 - `scripts/verify_section4_manuscript.py`
   - SHA256:
     `5f348dccc26cc0329eaf08b434199ed8b4d72d978c0e384c68ed4ceff61fbaa1`
@@ -165,6 +168,34 @@ AIPW:         no shrinkage +9.049% [7.042%, 10.635%], c=2 +4.158% [2.943%, 5.241
 selective ML: no shrinkage +4.948% [3.497%, 6.258%],  c=2 +2.081% [1.259%, 2.915%]
 Ma DR-BC:     no shrinkage +5.793% [4.528%, 6.925%],  c=2 +4.667% [3.663%, 5.654%]
 C-TMLE:       no shrinkage +0.037% [-0.084%, 0.187%], c=2 +0.048% [-0.048%, 0.176%]
+```
+
+### Shrinkage-c Grid
+
+The 2026-09-01 derived grid is:
+
+- Compact public bundle:
+  `support_csv/dml_shrinkage_c_grid_20260901/`
+- Summary script:
+  `scripts/summarize_shrinkage_c_grid.py`
+  - SHA256:
+    `585cd5a93316d1a27e213c848a45e1595336ac59128f6ddb285198554f0b8f30`
+
+This grid reuses the same selected candidate movements as the 24-setting
+benchmark table and evaluates
+\(c\in\{0,0.25,\ldots,5,6,8,10\}\). It does not refit nuisance models or
+reselect the damping candidate.
+
+By equal-setting benchmark MSE, the best grid value is \(c=0\) for AIPW,
+selective ML, and Ma DR-BC. C-TMLE is essentially inert; its best grid value is
+\(c=1\), with an interval crossing zero. Positive \(c\) values reduce harmful
+moves and activation.
+
+```text
+AIPW:         best c=0, gain +9.049% [7.061%, 10.678%], harm 10.634%
+selective ML: best c=0, gain +4.948% [3.517%, 6.288%],  harm 12.587%
+Ma DR-BC:     best c=0, gain +5.793% [4.536%, 6.946%],  harm 8.116%
+C-TMLE:       best c=1, gain +0.051% [-0.051%, 0.188%], harm 0.130%
 ```
 
 ### Old Mixed Section 4 Release

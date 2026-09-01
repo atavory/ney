@@ -38,6 +38,7 @@ The corresponding public scripts are:
 - `scripts/dml_launch_section4_placebo_shards.py`
 - `scripts/summarize_high_response_placebo_ablation.py`
 - `scripts/summarize_no_shrinkage_ablation.py`
+- `scripts/summarize_shrinkage_c_grid.py`
 - `scripts/verify_section4_manuscript.py`
 
 Every row in the primary results uses the same repair mode and gate:
@@ -107,6 +108,29 @@ The no-shrinkage path is more aggressive.  It increases point gains for the
 responsive experts; fixed-floor TMLE remains in the summary CSV for audit.
 The \(c=2\) rule is therefore a stability guard, not a gain-maximizing
 postprocessing step.
+
+## Shrinkage-c Grid
+
+A derived companion bundle extends the no-shrinkage check:
+
+- `support_csv/dml_shrinkage_c_grid_20260901/`
+
+This grid reuses the same selected candidate movements as the 24-setting
+benchmark table and evaluates
+\(c\in\{0,0.25,\ldots,5,6,8,10\}\).  It does not refit nuisance models or
+reselect the damping candidate.
+
+Best equal-setting benchmark gains by MSE:
+
+```text
+AIPW:         c=0, gain +9.049% [7.061%, 10.678%], harm 10.634%
+selective ML: c=0, gain +4.948% [3.517%, 6.288%],  harm 12.587%
+Ma DR-BC:     c=0, gain +5.793% [4.536%, 6.946%],  harm 8.116%
+C-TMLE:       c=1, gain +0.051% [-0.051%, 0.188%], harm 0.130%
+```
+
+With harm capped at 5%, the best grid values are \(c=0.5\) for AIPW,
+\(c=1\) for selective ML, \(c=0.75\) for Ma DR-BC, and \(c=1\) for C-TMLE.
 
 ## Rebuild the Manuscript Tables
 
