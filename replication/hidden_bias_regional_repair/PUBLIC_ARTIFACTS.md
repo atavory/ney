@@ -23,14 +23,23 @@ rows for 24 benchmark settings per expert family.
 The paper-facing scripts are:
 
 - `scripts/validated_reference_transfer.py`
-  - Main experiment runner.  Its `if_residual` branch fits the residual
+  - Maintained experiment runner.  Its `if_residual` branch fits the residual
     direction by responder-only weighted residual regression and chooses the
     damping value with the centered fitted-score loss used by the Aug. 14
-    experiment source snapshot.  The `validation_risk=balanced_mse` metadata
-    field is retained as a run label, but this branch's gate is the score-loss
-    gate in the source.
+    experiment source snapshot.  Later public additions expose additional
+    benchmark and diagnostic support.
   - SHA256:
     `3ab6bc1d0077316fe397d6cc97304b6e62d76eca969d9cf7a67a5a835b38db7e`
+- `source_snapshots/20260814_unified_cartesian_v3/validated_reference_transfer.py`
+  - Byte-identical runner used for the Aug. 14 unified Cartesian source
+    snapshot.
+  - SHA256:
+    `98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce`
+- `source_snapshots/20260814_unified_cartesian_v3/section4_breadth_experiments.py`
+  - Byte-identical wrapper used for the Aug. 14 unified Cartesian source
+    snapshot.
+  - SHA256:
+    `b1b08b9fc32b03e969f2f24ba7816a850de12336bbf6a335f092238715ccb332`
 - `scripts/recreate_unified_cartesian_global_residual.py`
   - SHA256:
     `a0676b1bcf3d854d5b15a60f0dc8e91d2dd12a70858c0aa76da90206a99fa235`

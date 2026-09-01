@@ -41,6 +41,10 @@ The corresponding public scripts are:
 - `scripts/dml_reference_error_by_response.py`
 - `scripts/verify_section4_manuscript.py`
 
+The exact Aug. 14 source snapshot is stored under
+`source_snapshots/20260814_unified_cartesian_v3/`; its runner and wrapper
+hashes match the source hashes recorded in the release metadata.
+
 Every row in the primary results uses the same repair mode and damping grid:
 `repair_mode=if_residual`, `validation_loss_se=1.0`, and
 `region_damp_grid=0.0|0.25|0.5|1.0`. In the Aug. 14 source snapshot, the
