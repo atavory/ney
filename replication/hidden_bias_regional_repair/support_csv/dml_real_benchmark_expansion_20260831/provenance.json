@@ -1,0 +1,44 @@
+{
+  "bootstraps": 0,
+  "chunks": 24,
+  "created_utc": "2026-08-31T14:23:51.921610+00:00",
+  "design_filter": null,
+  "frozen_source": "/tmp/dml_unified_source_check.ycpy6z/replication/hidden_bias_regional_repair/scripts/validated_reference_transfer.py",
+  "frozen_source_sha256": "98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce",
+  "groups": [
+    "real_benchmark"
+  ],
+  "launcher_sha256": "0fbcdf09d1e0418ad64feb3626df9388fd88286750a9a076af9a96bc82a374bc",
+  "learner": "xgboost",
+  "manifest_only": false,
+  "manifest_sha256": "360ba6e3a91094610c619356fe60882c9ebba4312d79fba02cb58f947004078f",
+  "max_workers": 32,
+  "methods": [
+    "aipw",
+    "ctmle",
+    "cui_selective_ml",
+    "ma_dr_bc",
+    "tmle"
+  ],
+  "owner": "dml",
+  "python": "/usr/local/fbcode/platform010/bin/python3.12",
+  "region_damp_grid": [
+    0.0,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "region_detector_c": 4.0,
+  "region_selector_ablation": "legacy",
+  "repair_mode": "if_residual",
+  "reps_per_chunk": 4,
+  "seed_base": 1900000000,
+  "shrink_c": 2.0,
+  "source_commit": "f6b7d74",
+  "strength_filter": null,
+  "validation_loss_se": 1.0,
+  "validation_risk": "balanced_mse",
+  "wrapper": "/tmp/ney_global_recreate_20260830/replication/hidden_bias_regional_repair/scripts/section4_breadth_experiments.py",
+  "wrapper_sha256": "f65c857d54bf4128545d548b2e3830055264e2f54a7aee08dda20443a5bd4af2",
+  "xgboost_version": "3.4.0"
+}

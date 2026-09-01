@@ -1,0 +1,16 @@
+{
+  "archive_sha256": {},
+  "expected_c": 2.0,
+  "jobs": 480,
+  "nboot": 20000,
+  "outputs": {
+    "cell_summary.csv": "13b001edc7188d13d8f9d1368a600040c938e201927e3e483b92601ef8a0ae7d",
+    "family_summary.csv": "1e1cada7f9a78bfd46aec8e1d6d592d3912c742c5e44801f4d17f1eef32eee32",
+    "raw_rows.csv": "31c1933e3d493d6f37be8a48f3af552850bd1f42e5ead7885f0860fe0b6de0e1",
+    "release_manifest.csv": "43d2985c3d87f829775fd014654eded603ee5e2c7d841803304be1c628e845fa"
+  },
+  "reps_per_job": 4,
+  "rows": 1920,
+  "seed": 20260831,
+  "status": "COMPLETE"
+}

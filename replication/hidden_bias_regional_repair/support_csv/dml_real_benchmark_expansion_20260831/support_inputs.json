@@ -1,0 +1,31 @@
+{
+  "acic_source_commit": "282d266",
+  "acic_source_repo": "https://github.com/vdorie/aciccomp",
+  "inputs": {
+    "acic/acic2016_x.csv": {
+      "bytes": 687726,
+      "sha256": "6a12ed5e139b88e40001e603d8e57be83f4e61dd1c8d1f76e28bc995aa1998d0"
+    },
+    "acic/input_2016.RData": {
+      "bytes": 136557,
+      "sha256": "068453aac851f1f4620bc6c6dff9877cd7cdc9c785d22668a762a9b6ce7e365b"
+    },
+    "acic/parameters_2016.RData": {
+      "bytes": 454,
+      "sha256": "0ab47990af7b3c4872f36323812f9e1be2eae06842d4e5c9ff28f011df9831f0"
+    },
+    "ihdp/ihdp_npci_1-100.test.npz": {
+      "bytes": 1801570,
+      "sha256": "a70a8acbcc4e8deb677cc9bf9e9dabeb17caaa37cdbb1d7ba06be7ffb929c41c"
+    },
+    "ihdp/ihdp_npci_1-100.train.npz": {
+      "bytes": 16129570,
+      "sha256": "750697c71b4f8d7a3aafff771b56a4ac4cd83ec649bf69afb04f8a5aee41a240"
+    }
+  },
+  "rdata_parser_commit": "0edddf4",
+  "rdata_parser_repo": "https://github.com/vnmabus/rdata",
+  "status": "COMPLETE",
+  "support_data_archive_sha256": "e040a1721531757f8c1582be69555874fc81519eb1bf23f150c477a3a6810757",
+  "support_data_manifold": "manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_support_data_v1.tar.zst"
+}

@@ -6,25 +6,40 @@ hidden-bias regional-repair project.
 ## Current EJS Section 4 Source
 
 The current manuscript Section 4 is generated from the unified global-residual
-bundle:
+bundle plus the 2026-08-31 benchmark expansions:
 
 - `support_csv/dml_unified_cartesian_global_residual_20260814/`
+- `support_csv/dml_real_benchmark_expansion_20260831/`
+- `support_csv/dml_real_benchmark_acic2017_20260831/`
+- `support_csv/dml_real_benchmark_twins_20260831/`
 
 This is a compact public reconstruction of the Aug. 14 v3 Cartesian run.  It
-contains 170 expert-by-cell summaries, 25 family summaries, generated TeX for
-the manuscript tables/macros, reconstruction provenance, and public checksums.
+contains 170 expert-by-setting summaries, 30 family summaries, generated TeX
+for the manuscript macros and Kang--Schafer rows, reconstruction provenance,
+and public checksums.  The primary manuscript table combines its eight
+Kang--Schafer settings with IHDP, ACIC 2016, ACIC 2017, and Twins expansion
+rows for 24 benchmark settings per expert family.
 
 The paper-facing scripts are:
 
 - `scripts/recreate_unified_cartesian_global_residual.py`
   - SHA256:
-    `28e87aecded07604adf4de4187eecbb0c1212f2e142192f71c5b689c17aa87c7`
+    `a0676b1bcf3d854d5b15a60f0dc8e91d2dd12a70858c0aa76da90206a99fa235`
 - `scripts/assemble_section4_unified_global_residual.py`
   - SHA256:
-    `bc3b5edfdcb043bc0ee1afb875d707a142455f497645aed39401ad1baf4e3904`
+    `bcedc611bcb037300fdb69c10699ccacb20eb599b9e506019bf7348f7aa7b9fd`
+- `scripts/dml_launch_section4_placebo_shards.py`
+  - SHA256:
+    `cc8b9cb5dbf1f3ebd0c7e8546bed46f1f192f0bcbe57ff6b3c7dd8d718fe524f`
+- `scripts/summarize_high_response_placebo_ablation.py`
+  - SHA256:
+    `8f2c20a2f139c1d63646d03c70c0645c1824bd860dd418af765d7e6683940ac6`
+- `scripts/summarize_no_shrinkage_ablation.py`
+  - SHA256:
+    `ac994817b46089fe8812d42c73a0941b905168ffe64454689cfb5b78f8756dda`
 - `scripts/verify_section4_manuscript.py`
   - SHA256:
-    `21e71c3df6b21971b2533edeca52437ce9af0401267522061ab2e389b15335ff`
+    `fb5da082c65996296a4bf48bfd9c49a4ad368140ed5160b9f5385e191e59f070`
 
 The verifier confirms that the public bundle and an Overleaf paper checkout
 agree on the generated Section 4 files, including the companion ablation
@@ -33,12 +48,18 @@ tables.
 ## Manifold Source Objects
 
 The raw shard tarballs are too large for the public GitHub repository.  The
-compact bundle above was reconstructed from these Manifold objects:
+compact bundles above were reconstructed from these Manifold objects:
 
 ```text
 manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/dml_ks_alignment_v3/cartesian_dml_ks_alignment_v3.tar.zst
 manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/dml2_real_anchor_v3/cartesian_dml2_real_anchor_v3.tar.zst
 manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/source/unified_cartesian_bundle_20260814_v3.tar.zst
+manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_v1.tar.zst
+manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_support_data_v1.tar.zst
+manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_acic2017_v1.tar.zst
+manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_support_data_v2.tar.zst
+manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_twins_v1.tar.zst
+manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_support_data_v3.tar.zst
 ```
 
 Hashes:
@@ -49,7 +70,7 @@ dml2 real/anchor tarball: 102bb358543ec1adadd78cab863cbe328e069f6512d12b9d5c015e
 source bundle: 5ab6b5927e6a7634d4e6ed3d5658a5f4362ee0b13b02e51a1260601e70ac7c1a
 full scientific manifest: 65720b1fce2a24d55872ab9e008cf7ef62945b30b791272f1fdfe65280e2287f
 raw reps manifest: 08d0e7f95d71773fe54eb137107e73c9f0346955247432a8ebb0e0dd1d195e92
-frozen estimator source: 98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce
+estimator source snapshot: 98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce
 experiment wrapper: b1b08b9fc32b03e969f2f24ba7816a850de12336bbf6a335f092238715ccb332
 ```
 
@@ -90,36 +111,31 @@ candidate_outcome = base_outcome + gamma * correction * analysis_region
 Older runs where the deployed correction ignored the region are not valid
 high-response ablation results.
 
-### Low/High-Response Repair-Region Ablation
+### High-Response Placebo Ablation
 
-The accepted 2026-08-30 rerun is:
+The current 2026-08-31 region-placement diagnostic is:
 
 - Compact public bundle:
-  `support_csv/dml_low_high_response_ablation_20260830/`
+  `support_csv/dml_high_response_placebo_ablation_20260831/`
 - Full raw Manifold bundle:
-  `manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/low_high_response_ablation_20260830/ctmle_region_targeting_b50/`
-- Summary script:
-  `scripts/summarize_low_high_response_ablation.py`
-  - SHA256:
-    `9098358aa198669e0070a1b033ad57cef4948a43f7df639a86da47cf3357cd55`
+  `manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/high_response_placebo_ablation_20260831/dml_high_response_placebo_ablation_20260831_raw.tar.zst`
+- Raw archive SHA256:
+  `6b3b12b38797375846b99b7042de80e99402f798902e241f9a2c9f76f7a96e7b`
 
-The rerun reconstructs the pre-unified region-targeted C-TMLE driver at public
-commit `3e131a9` and changes only the repair region: the true low-response
-box versus a disjoint high-response placebo box.  It uses strengths
-`0,3,5,8`, 96 paired replications per strength and region, `B=50`,
-three-fold cross-fitting, XGBoost nuisances, damping grid
-`0,0.25,0.5,1`, one-SE selection, and `c=2` shrinkage.
-
-Headline over signal strengths 3, 5, and 8:
+This diagnostic uses the same 24 benchmark settings and four primary expert
+families as the manuscript table.  It compares a support-restricted regional
+residual correction in the selected low-response support with the same
+correction in a matched high-response support.
 
 ```text
-low-response repair:       +14.569% [11.688%, 17.693%]
-high-response placebo:      +0.001% [-0.013%, 0.014%]
-paired low-minus-high gain: +14.568% [11.697%, 17.774%]
+AIPW:         low +1.945% [1.262%, 2.602%], high -0.036% [-0.285%, 0.121%], low-high +1.981% [1.263%, 2.664%]
+selective ML: low +0.372% [-0.076%, 0.790%], high +0.195% [0.013%, 0.408%], low-high +0.178% [-0.294%, 0.596%]
+Ma DR-BC:     low +1.052% [0.373%, 1.687%], high +0.959% [0.596%, 1.306%], low-high +0.093% [-0.653%, 0.825%]
+C-TMLE:       low +0.124% [-0.046%, 0.357%], high +0.009% [-0.029%, 0.053%], low-high +0.115% [-0.064%, 0.351%]
 ```
 
-This is a mechanism check for region placement.  It is not the paper-facing
-unified global-residual Section 4 source.
+The 2026-08-30 C-TMLE-only low/high-response run remains in
+`support_csv/dml_low_high_response_ablation_20260830/` as archived provenance.
 
 ### No-Shrinkage Ablation
 
@@ -138,14 +154,13 @@ This ablation reuses the Aug. 14 unified Cartesian raw rows and compares the
 selected unshrunk candidate with the final \(c=2\) plug-in
 contrast-shrinkage rule.  No new estimator fitting is performed.
 
-Headline all-family equal-cell gains:
+Headline 24-setting benchmark gains:
 
 ```text
-AIPW:             no shrinkage +5.965% [4.586%, 7.041%], c=2 +2.791% [1.957%, 3.528%]
-C-TMLE:           no shrinkage +0.021% [-0.066%, 0.126%], c=2 +0.028% [-0.040%, 0.119%]
-selective ML:     no shrinkage +4.399% [3.414%, 5.305%], c=2 +1.723% [1.184%, 2.252%]
-Ma DR-BC:         no shrinkage +3.797% [2.977%, 4.542%], c=2 +2.999% [2.337%, 3.656%]
-fixed-floor TMLE: no shrinkage -6.837% [-9.784%, -4.532%], c=2 -0.410% [-1.203%, 0.235%]
+AIPW:         no shrinkage +9.049% [7.042%, 10.635%], c=2 +4.158% [2.943%, 5.241%]
+selective ML: no shrinkage +4.948% [3.497%, 6.258%],  c=2 +2.081% [1.259%, 2.915%]
+Ma DR-BC:     no shrinkage +5.793% [4.528%, 6.925%],  c=2 +4.667% [3.663%, 5.654%]
+C-TMLE:       no shrinkage +0.037% [-0.084%, 0.187%], c=2 +0.048% [-0.048%, 0.176%]
 ```
 
 ### Old Mixed Section 4 Release

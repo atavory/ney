@@ -1,0 +1,6921 @@
+{
+  "completed_jobs": 768,
+  "failed_jobs": 0,
+  "results": [
+    {
+      "chunk": 12,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.143,
+      "index": 13,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.203,
+      "index": 6,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.216,
+      "index": 11,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.215,
+      "index": 15,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.23,
+      "index": 7,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.223,
+      "index": 19,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.257,
+      "index": 1,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.258,
+      "index": 16,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.271,
+      "index": 20,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.29,
+      "index": 2,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.302,
+      "index": 3,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.303,
+      "index": 9,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.31,
+      "index": 5,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.308,
+      "index": 10,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.31,
+      "index": 18,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.314,
+      "index": 14,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.32,
+      "index": 17,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.328,
+      "index": 8,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.333,
+      "index": 4,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.483,
+      "index": 12,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.136,
+      "index": 21,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.154,
+      "index": 24,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.219,
+      "index": 22,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.221,
+      "index": 23,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.673,
+      "index": 27,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.745,
+      "index": 26,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.677,
+      "index": 39,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.736,
+      "index": 32,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.796,
+      "index": 28,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.757,
+      "index": 33,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.837,
+      "index": 25,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.753,
+      "index": 35,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.758,
+      "index": 38,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.815,
+      "index": 30,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.8,
+      "index": 36,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.845,
+      "index": 31,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.821,
+      "index": 37,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.847,
+      "index": 34,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.898,
+      "index": 29,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.069,
+      "index": 40,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.633,
+      "index": 41,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.581,
+      "index": 42,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.648,
+      "index": 43,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.677,
+      "index": 44,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.581,
+      "index": 47,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.69,
+      "index": 45,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.693,
+      "index": 46,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.672,
+      "index": 48,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.406,
+      "index": 49,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.461,
+      "index": 50,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.514,
+      "index": 52,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.518,
+      "index": 54,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.534,
+      "index": 53,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.51,
+      "index": 55,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.569,
+      "index": 51,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.502,
+      "index": 56,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.514,
+      "index": 57,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.482,
+      "index": 59,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.515,
+      "index": 58,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.025,
+      "index": 60,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.322,
+      "index": 62,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.44,
+      "index": 61,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.431,
+      "index": 64,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.526,
+      "index": 63,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.211,
+      "index": 73,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.169,
+      "index": 78,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.213,
+      "index": 75,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.252,
+      "index": 74,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.238,
+      "index": 77,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.316,
+      "index": 65,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.263,
+      "index": 76,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.362,
+      "index": 66,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.313,
+      "index": 79,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.428,
+      "index": 67,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.449,
+      "index": 68,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.383,
+      "index": 69,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.434,
+      "index": 70,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.43,
+      "index": 71,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.442,
+      "index": 72,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.486,
+      "index": 80,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.177,
+      "index": 81,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.174,
+      "index": 82,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.118,
+      "index": 83,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.187,
+      "index": 84,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.128,
+      "index": 86,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.06,
+      "index": 90,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.144,
+      "index": 87,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.186,
+      "index": 85,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.127,
+      "index": 89,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.189,
+      "index": 88,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.208,
+      "index": 91,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.214,
+      "index": 92,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.231,
+      "index": 93,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.173,
+      "index": 94,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.149,
+      "index": 95,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 2.152,
+      "index": 96,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.802,
+      "index": 97,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.766,
+      "index": 98,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.813,
+      "index": 100,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.899,
+      "index": 99,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.861,
+      "index": 101,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.833,
+      "index": 102,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.765,
+      "index": 103,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.959,
+      "index": 104,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.758,
+      "index": 108,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.838,
+      "index": 106,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.783,
+      "index": 109,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.924,
+      "index": 107,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.767,
+      "index": 112,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.867,
+      "index": 111,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.083,
+      "index": 105,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.056,
+      "index": 110,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.943,
+      "index": 113,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.85,
+      "index": 115,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.919,
+      "index": 114,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.75,
+      "index": 116,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.855,
+      "index": 117,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.885,
+      "index": 118,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.792,
+      "index": 119,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.97,
+      "index": 120,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.173,
+      "index": 122,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.401,
+      "index": 121,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.338,
+      "index": 123,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.136,
+      "index": 125,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.147,
+      "index": 127,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.297,
+      "index": 124,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.265,
+      "index": 126,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.135,
+      "index": 129,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.29,
+      "index": 128,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.161,
+      "index": 133,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.342,
+      "index": 130,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.203,
+      "index": 134,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.296,
+      "index": 135,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.447,
+      "index": 131,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.399,
+      "index": 132,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.378,
+      "index": 136,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.206,
+      "index": 137,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.206,
+      "index": 139,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.295,
+      "index": 138,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.139,
+      "index": 140,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.182,
+      "index": 141,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.158,
+      "index": 142,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.276,
+      "index": 143,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.199,
+      "index": 144,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.816,
+      "index": 145,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.809,
+      "index": 146,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.826,
+      "index": 147,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.572,
+      "index": 152,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.821,
+      "index": 149,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.951,
+      "index": 148,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.818,
+      "index": 151,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.867,
+      "index": 150,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.896,
+      "index": 153,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.905,
+      "index": 155,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.956,
+      "index": 154,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.961,
+      "index": 156,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.794,
+      "index": 158,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.871,
+      "index": 157,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.925,
+      "index": 159,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.866,
+      "index": 160,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.104,
+      "index": 169,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.044,
+      "index": 171,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.163,
+      "index": 170,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.059,
+      "index": 172,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.027,
+      "index": 173,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.046,
+      "index": 174,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.037,
+      "index": 175,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.852,
+      "index": 161,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.909,
+      "index": 162,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.879,
+      "index": 164,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.009,
+      "index": 176,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 6.057,
+      "index": 163,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.841,
+      "index": 166,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.813,
+      "index": 167,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 6.017,
+      "index": 165,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 5.966,
+      "index": 168,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.064,
+      "index": 177,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.212,
+      "index": 178,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.075,
+      "index": 179,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.068,
+      "index": 180,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.374,
+      "index": 194,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.318,
+      "index": 195,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.902,
+      "index": 183,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.432,
+      "index": 193,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.021,
+      "index": 181,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.268,
+      "index": 196,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.009,
+      "index": 184,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.118,
+      "index": 182,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.058,
+      "index": 185,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 3.916,
+      "index": 188,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.129,
+      "index": 186,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.166,
+      "index": 187,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.062,
+      "index": 189,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.26,
+      "index": 197,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.274,
+      "index": 198,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.257,
+      "index": 190,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.166,
+      "index": 191,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_cc",
+      "disposition": "ran",
+      "elapsed_seconds": 4.18,
+      "index": 192,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.334,
+      "index": 199,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.384,
+      "index": 200,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.164,
+      "index": 202,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.217,
+      "index": 206,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.291,
+      "index": 204,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.301,
+      "index": 203,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.276,
+      "index": 205,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.375,
+      "index": 201,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.328,
+      "index": 207,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.335,
+      "index": 208,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.239,
+      "index": 210,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.27,
+      "index": 209,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.27,
+      "index": 211,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.25,
+      "index": 212,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.232,
+      "index": 213,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.284,
+      "index": 214,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.294,
+      "index": 215,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.251,
+      "index": 216,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.813,
+      "index": 217,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.826,
+      "index": 219,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.884,
+      "index": 218,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.906,
+      "index": 220,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.816,
+      "index": 221,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.798,
+      "index": 225,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.886,
+      "index": 222,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.868,
+      "index": 223,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.836,
+      "index": 226,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.9,
+      "index": 224,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.717,
+      "index": 228,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.802,
+      "index": 227,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.848,
+      "index": 229,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.841,
+      "index": 230,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.807,
+      "index": 232,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.84,
+      "index": 231,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.831,
+      "index": 233,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.816,
+      "index": 234,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.861,
+      "index": 235,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.906,
+      "index": 236,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.712,
+      "index": 238,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.809,
+      "index": 237,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.764,
+      "index": 239,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.887,
+      "index": 240,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.506,
+      "index": 241,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.542,
+      "index": 244,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.619,
+      "index": 242,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.598,
+      "index": 243,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.586,
+      "index": 246,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.519,
+      "index": 248,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.643,
+      "index": 245,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.628,
+      "index": 247,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.496,
+      "index": 251,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.64,
+      "index": 250,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.663,
+      "index": 249,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.703,
+      "index": 252,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.539,
+      "index": 253,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.633,
+      "index": 254,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.605,
+      "index": 255,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.744,
+      "index": 256,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.567,
+      "index": 258,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.62,
+      "index": 257,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.56,
+      "index": 260,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.997,
+      "index": 259,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.224,
+      "index": 267,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.29,
+      "index": 265,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.298,
+      "index": 266,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.293,
+      "index": 268,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.179,
+      "index": 270,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.354,
+      "index": 271,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.393,
+      "index": 269,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.269,
+      "index": 272,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.293,
+      "index": 273,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.198,
+      "index": 274,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.56,
+      "index": 261,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.232,
+      "index": 275,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.458,
+      "index": 264,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.536,
+      "index": 262,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.564,
+      "index": 263,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.325,
+      "index": 276,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.255,
+      "index": 277,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.309,
+      "index": 278,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.244,
+      "index": 279,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.304,
+      "index": 280,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.271,
+      "index": 281,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.318,
+      "index": 283,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.344,
+      "index": 282,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.262,
+      "index": 284,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.197,
+      "index": 285,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.283,
+      "index": 286,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.363,
+      "index": 287,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 2.28,
+      "index": 288,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.978,
+      "index": 289,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.991,
+      "index": 290,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.977,
+      "index": 291,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.839,
+      "index": 293,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.051,
+      "index": 292,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.012,
+      "index": 294,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.994,
+      "index": 295,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.016,
+      "index": 296,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.831,
+      "index": 298,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.956,
+      "index": 297,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.014,
+      "index": 299,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.042,
+      "index": 300,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.946,
+      "index": 301,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.927,
+      "index": 302,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.054,
+      "index": 303,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.069,
+      "index": 304,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.038,
+      "index": 305,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.01,
+      "index": 306,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.013,
+      "index": 307,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.032,
+      "index": 308,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.958,
+      "index": 309,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.953,
+      "index": 310,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.102,
+      "index": 311,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.097,
+      "index": 312,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.344,
+      "index": 313,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.332,
+      "index": 314,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.376,
+      "index": 315,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.431,
+      "index": 316,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.412,
+      "index": 318,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.514,
+      "index": 317,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.427,
+      "index": 319,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.293,
+      "index": 321,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.601,
+      "index": 320,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.525,
+      "index": 322,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.377,
+      "index": 325,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.437,
+      "index": 324,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.463,
+      "index": 323,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.321,
+      "index": 328,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.417,
+      "index": 327,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.774,
+      "index": 326,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.334,
+      "index": 329,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.409,
+      "index": 330,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.344,
+      "index": 331,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.428,
+      "index": 332,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.386,
+      "index": 333,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.461,
+      "index": 334,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.405,
+      "index": 335,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.312,
+      "index": 336,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.874,
+      "index": 338,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.937,
+      "index": 337,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.994,
+      "index": 339,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.874,
+      "index": 340,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.823,
+      "index": 343,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.871,
+      "index": 342,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.838,
+      "index": 344,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.86,
+      "index": 345,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.78,
+      "index": 346,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.954,
+      "index": 347,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 6.483,
+      "index": 341,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.933,
+      "index": 348,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 6.057,
+      "index": 349,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 6.005,
+      "index": 350,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.876,
+      "index": 352,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 6.124,
+      "index": 351,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.099,
+      "index": 361,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.101,
+      "index": 362,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 6.013,
+      "index": 353,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.091,
+      "index": 363,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.868,
+      "index": 354,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.187,
+      "index": 364,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.916,
+      "index": 355,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.078,
+      "index": 365,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.986,
+      "index": 356,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.035,
+      "index": 366,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.046,
+      "index": 367,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.122,
+      "index": 368,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.953,
+      "index": 357,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.936,
+      "index": 358,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.932,
+      "index": 359,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 5.953,
+      "index": 360,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.009,
+      "index": 369,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.006,
+      "index": 370,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.074,
+      "index": 371,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.075,
+      "index": 372,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.331,
+      "index": 385,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.378,
+      "index": 386,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.383,
+      "index": 387,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.321,
+      "index": 388,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.987,
+      "index": 376,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.048,
+      "index": 373,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.032,
+      "index": 375,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.071,
+      "index": 374,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.003,
+      "index": 377,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.027,
+      "index": 379,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.984,
+      "index": 381,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.124,
+      "index": 378,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.072,
+      "index": 380,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.026,
+      "index": 383,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.36,
+      "index": 389,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 4.113,
+      "index": 382,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.396,
+      "index": 390,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ci",
+      "disposition": "ran",
+      "elapsed_seconds": 3.977,
+      "index": 384,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.306,
+      "index": 391,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.342,
+      "index": 392,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.313,
+      "index": 393,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.337,
+      "index": 394,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.389,
+      "index": 395,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.365,
+      "index": 396,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.268,
+      "index": 398,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.36,
+      "index": 397,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.325,
+      "index": 399,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.376,
+      "index": 400,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.376,
+      "index": 401,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.313,
+      "index": 402,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.315,
+      "index": 403,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.357,
+      "index": 404,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.334,
+      "index": 405,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.352,
+      "index": 406,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.387,
+      "index": 407,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.365,
+      "index": 408,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.895,
+      "index": 409,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.9,
+      "index": 410,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.973,
+      "index": 411,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.863,
+      "index": 412,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.905,
+      "index": 414,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.995,
+      "index": 413,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.898,
+      "index": 415,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.868,
+      "index": 417,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.935,
+      "index": 416,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.896,
+      "index": 418,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.914,
+      "index": 419,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.877,
+      "index": 421,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.898,
+      "index": 422,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.831,
+      "index": 425,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.029,
+      "index": 420,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.918,
+      "index": 423,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.886,
+      "index": 424,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.909,
+      "index": 426,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.905,
+      "index": 427,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.888,
+      "index": 428,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.881,
+      "index": 430,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.002,
+      "index": 429,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.927,
+      "index": 431,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.998,
+      "index": 432,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.708,
+      "index": 433,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.744,
+      "index": 434,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.77,
+      "index": 435,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.777,
+      "index": 436,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.791,
+      "index": 437,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.77,
+      "index": 439,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.754,
+      "index": 440,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.697,
+      "index": 441,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.84,
+      "index": 438,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.656,
+      "index": 444,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.68,
+      "index": 445,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.747,
+      "index": 443,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.644,
+      "index": 446,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.051,
+      "index": 442,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.735,
+      "index": 448,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.78,
+      "index": 447,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.672,
+      "index": 449,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.576,
+      "index": 450,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.673,
+      "index": 451,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.724,
+      "index": 452,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.368,
+      "index": 457,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.329,
+      "index": 458,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.349,
+      "index": 460,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.361,
+      "index": 459,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.321,
+      "index": 462,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.419,
+      "index": 461,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.31,
+      "index": 464,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.379,
+      "index": 463,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.34,
+      "index": 465,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.597,
+      "index": 453,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.397,
+      "index": 467,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.41,
+      "index": 466,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.404,
+      "index": 468,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.682,
+      "index": 454,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.683,
+      "index": 455,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.472,
+      "index": 470,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.761,
+      "index": 456,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.543,
+      "index": 469,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.506,
+      "index": 471,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.455,
+      "index": 472,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.507,
+      "index": 473,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.578,
+      "index": 474,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.548,
+      "index": 475,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.593,
+      "index": 476,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.663,
+      "index": 477,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.609,
+      "index": 478,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.566,
+      "index": 480,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 2.623,
+      "index": 479,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.319,
+      "index": 481,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.315,
+      "index": 482,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.308,
+      "index": 483,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.306,
+      "index": 485,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.362,
+      "index": 484,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.381,
+      "index": 486,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.228,
+      "index": 487,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.095,
+      "index": 490,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.215,
+      "index": 488,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.219,
+      "index": 489,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.228,
+      "index": 491,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.113,
+      "index": 492,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.143,
+      "index": 493,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.101,
+      "index": 494,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.121,
+      "index": 495,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.021,
+      "index": 499,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.121,
+      "index": 496,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.106,
+      "index": 500,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.139,
+      "index": 497,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.164,
+      "index": 498,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.996,
+      "index": 501,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.84,
+      "index": 504,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.935,
+      "index": 502,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.954,
+      "index": 503,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.344,
+      "index": 505,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.266,
+      "index": 506,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.257,
+      "index": 507,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.194,
+      "index": 508,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.306,
+      "index": 509,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.315,
+      "index": 510,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.325,
+      "index": 511,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.362,
+      "index": 512,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.298,
+      "index": 513,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.311,
+      "index": 514,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.299,
+      "index": 515,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.295,
+      "index": 517,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.328,
+      "index": 516,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.277,
+      "index": 518,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.257,
+      "index": 520,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.31,
+      "index": 519,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.338,
+      "index": 521,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.224,
+      "index": 524,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.318,
+      "index": 522,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.286,
+      "index": 523,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.293,
+      "index": 526,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.37,
+      "index": 525,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.185,
+      "index": 528,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.241,
+      "index": 527,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.76,
+      "index": 529,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.962,
+      "index": 530,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.836,
+      "index": 531,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.807,
+      "index": 532,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.862,
+      "index": 533,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.815,
+      "index": 534,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.799,
+      "index": 536,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.871,
+      "index": 535,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.773,
+      "index": 538,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.864,
+      "index": 537,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.821,
+      "index": 539,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.869,
+      "index": 540,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.793,
+      "index": 544,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.847,
+      "index": 542,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.934,
+      "index": 541,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.879,
+      "index": 543,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.794,
+      "index": 545,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.877,
+      "index": 546,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.918,
+      "index": 547,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.994,
+      "index": 553,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.904,
+      "index": 548,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.051,
+      "index": 554,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.042,
+      "index": 557,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.015,
+      "index": 558,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.116,
+      "index": 555,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.134,
+      "index": 556,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.063,
+      "index": 559,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.104,
+      "index": 560,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.774,
+      "index": 549,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.732,
+      "index": 550,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.823,
+      "index": 551,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 5.866,
+      "index": 552,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 3.992,
+      "index": 562,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.039,
+      "index": 561,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.048,
+      "index": 564,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.096,
+      "index": 563,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.393,
+      "index": 577,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.375,
+      "index": 578,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.184,
+      "index": 580,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.249,
+      "index": 579,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.132,
+      "index": 565,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.058,
+      "index": 566,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.011,
+      "index": 568,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.014,
+      "index": 569,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.07,
+      "index": 567,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.056,
+      "index": 570,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.092,
+      "index": 571,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.127,
+      "index": 572,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.174,
+      "index": 573,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.0,
+      "index": 576,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.131,
+      "index": 575,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ic",
+      "disposition": "ran",
+      "elapsed_seconds": 4.166,
+      "index": 574,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.384,
+      "index": 582,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.429,
+      "index": 581,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.34,
+      "index": 584,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.506,
+      "index": 583,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.399,
+      "index": 585,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.314,
+      "index": 586,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.357,
+      "index": 588,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.383,
+      "index": 587,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.323,
+      "index": 590,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.425,
+      "index": 589,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.208,
+      "index": 593,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.357,
+      "index": 591,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.367,
+      "index": 592,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.343,
+      "index": 594,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.246,
+      "index": 596,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.34,
+      "index": 595,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.306,
+      "index": 597,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.381,
+      "index": 598,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.378,
+      "index": 600,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.404,
+      "index": 599,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.907,
+      "index": 601,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.936,
+      "index": 602,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.976,
+      "index": 603,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.946,
+      "index": 604,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.955,
+      "index": 605,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.906,
+      "index": 606,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.026,
+      "index": 607,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.04,
+      "index": 608,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.942,
+      "index": 609,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.022,
+      "index": 610,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.047,
+      "index": 611,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.037,
+      "index": 612,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.857,
+      "index": 615,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.096,
+      "index": 613,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.057,
+      "index": 614,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.025,
+      "index": 616,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.027,
+      "index": 617,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.028,
+      "index": 620,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.157,
+      "index": 618,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.191,
+      "index": 619,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.904,
+      "index": 622,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.039,
+      "index": 621,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.965,
+      "index": 623,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.921,
+      "index": 624,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.45,
+      "index": 625,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.741,
+      "index": 626,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.721,
+      "index": 627,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.712,
+      "index": 628,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.647,
+      "index": 629,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.596,
+      "index": 631,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.713,
+      "index": 630,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.687,
+      "index": 632,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.644,
+      "index": 633,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.63,
+      "index": 634,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.659,
+      "index": 635,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.601,
+      "index": 636,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.689,
+      "index": 637,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.669,
+      "index": 638,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.543,
+      "index": 640,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.64,
+      "index": 639,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.611,
+      "index": 641,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.679,
+      "index": 642,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.712,
+      "index": 644,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.845,
+      "index": 643,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.358,
+      "index": 649,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.387,
+      "index": 650,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.337,
+      "index": 654,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.521,
+      "index": 651,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.379,
+      "index": 653,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.446,
+      "index": 652,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.764,
+      "index": 645,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.421,
+      "index": 655,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.473,
+      "index": 656,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.477,
+      "index": 657,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.788,
+      "index": 646,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.419,
+      "index": 658,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.467,
+      "index": 660,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.541,
+      "index": 659,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.724,
+      "index": 647,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.9,
+      "index": 648,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.496,
+      "index": 661,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.355,
+      "index": 662,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.56,
+      "index": 663,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.506,
+      "index": 664,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.394,
+      "index": 665,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.338,
+      "index": 666,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.359,
+      "index": 669,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.424,
+      "index": 668,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.464,
+      "index": 667,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.425,
+      "index": 670,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.375,
+      "index": 672,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 2.475,
+      "index": 671,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.254,
+      "index": 673,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.14,
+      "index": 675,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.144,
+      "index": 676,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.272,
+      "index": 674,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.229,
+      "index": 677,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.208,
+      "index": 678,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.236,
+      "index": 681,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.532,
+      "index": 679,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.366,
+      "index": 680,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.318,
+      "index": 682,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.633,
+      "index": 684,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.102,
+      "index": 685,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.706,
+      "index": 683,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.311,
+      "index": 688,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.554,
+      "index": 686,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.224,
+      "index": 692,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.436,
+      "index": 687,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.257,
+      "index": 691,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.311,
+      "index": 690,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.439,
+      "index": 689,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.475,
+      "index": 695,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.422,
+      "index": 696,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.533,
+      "index": 694,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.605,
+      "index": 693,
+      "method": "aipw",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.599,
+      "index": 697,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.812,
+      "index": 698,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.329,
+      "index": 701,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.432,
+      "index": 702,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.588,
+      "index": 700,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.897,
+      "index": 699,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.423,
+      "index": 703,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.523,
+      "index": 705,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.592,
+      "index": 704,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.566,
+      "index": 708,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.647,
+      "index": 710,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.8,
+      "index": 706,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.723,
+      "index": 711,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.656,
+      "index": 712,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.778,
+      "index": 709,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 6.044,
+      "index": 707,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.382,
+      "index": 715,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.429,
+      "index": 713,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.436,
+      "index": 714,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.592,
+      "index": 716,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.447,
+      "index": 717,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.355,
+      "index": 718,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.468,
+      "index": 720,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.766,
+      "index": 719,
+      "method": "ctmle",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 6.07,
+      "index": 721,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.904,
+      "index": 722,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 6.048,
+      "index": 723,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.977,
+      "index": 724,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.972,
+      "index": 725,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.873,
+      "index": 726,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.845,
+      "index": 727,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.874,
+      "index": 728,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.875,
+      "index": 729,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.878,
+      "index": 731,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.938,
+      "index": 732,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 6.183,
+      "index": 730,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.939,
+      "index": 733,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 6.064,
+      "index": 734,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 6.195,
+      "index": 735,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 6.172,
+      "index": 736,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 0,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.024,
+      "index": 745,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.882,
+      "index": 737,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 6.195,
+      "index": 738,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 1,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.978,
+      "index": 746,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.982,
+      "index": 739,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 3,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.914,
+      "index": 748,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 2,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.142,
+      "index": 747,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 4,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.042,
+      "index": 749,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 6.075,
+      "index": 740,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 5,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.102,
+      "index": 750,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.896,
+      "index": 741,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 7,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.122,
+      "index": 752,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 6,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.148,
+      "index": 751,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.85,
+      "index": 742,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.75,
+      "index": 743,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 5.873,
+      "index": 744,
+      "method": "cui_selective_ml",
+      "returncode": 0
+    },
+    {
+      "chunk": 8,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.985,
+      "index": 753,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 9,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.121,
+      "index": 754,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 10,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.007,
+      "index": 755,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 11,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.168,
+      "index": 756,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 12,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.974,
+      "index": 757,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 13,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.976,
+      "index": 758,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 15,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.898,
+      "index": 760,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 14,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.982,
+      "index": 759,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 17,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.879,
+      "index": 762,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 16,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.964,
+      "index": 761,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 20,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.944,
+      "index": 765,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 18,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.01,
+      "index": 763,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 19,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.018,
+      "index": 764,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 21,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 3.989,
+      "index": 766,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 23,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.024,
+      "index": 768,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    },
+    {
+      "chunk": 22,
+      "design": "kang_schafer_ii",
+      "disposition": "ran",
+      "elapsed_seconds": 4.038,
+      "index": 767,
+      "method": "ma_dr_bc",
+      "returncode": 0
+    }
+  ],
+  "started_utc": "2026-09-01T04:27:59.942864+00:00",
+  "total_jobs": 768,
+  "updated_utc": "2026-09-01T04:30:28.450878+00:00"
+}

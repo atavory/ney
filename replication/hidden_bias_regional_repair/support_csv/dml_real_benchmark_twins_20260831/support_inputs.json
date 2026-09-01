@@ -1,0 +1,25 @@
+{
+  "status": "COMPLETE",
+  "public_generator_commit": "fe7e8f2",
+  "archived_algorithm_source_sha256": "98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce",
+  "run_archive_manifold": "manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_twins_v1.tar.zst",
+  "run_archive_sha256": "7b9ae28e4b6fe4385baf77053f3ed246dceb519a9f2420b383b65ef3fc6a84a2",
+  "support_data_manifold": "manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_support_data_v3.tar.zst",
+  "support_data_archive_sha256": "72cbeac61f82630afcaea1c6f388b574e1b39ac8f2516e97a4f4d092ad584a86",
+  "twins_source_repo": "https://github.com/AMLab-Amsterdam/CEVAE",
+  "twins_source_commit": "9081f86",
+  "inputs": {
+    "twins/twin_pairs_X_3years_samesex.csv": {
+      "bytes": 13812350,
+      "sha256": "6ec6263e678f67205d584ebda083173c1ec44fb46ea7cfaafe3c87a31f612b86"
+    },
+    "twins/twin_pairs_T_3years_samesex.csv": {
+      "bytes": 1409691,
+      "sha256": "fbe6eb1cad27794c61cbbd8b11b72a26e96549e59d64fb88b07b30aaf2bae07d"
+    },
+    "twins/twin_pairs_Y_3years_samesex.csv": {
+      "bytes": 987735,
+      "sha256": "d03428d23ed308673f9151e3934aa7712df27c1fed244ed44ecc80a98a60836b"
+    }
+  }
+}

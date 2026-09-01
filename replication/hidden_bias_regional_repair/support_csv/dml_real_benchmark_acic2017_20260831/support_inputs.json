@@ -1,0 +1,27 @@
+{
+  "status": "COMPLETE",
+  "public_generator_commit": "88fee2e",
+  "archived_algorithm_source_sha256": "98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce",
+  "run_archive_manifold": "manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_acic2017_v1.tar.zst",
+  "run_archive_sha256": "5f874dfa02e808bb160a56c53431dfa7329f5a14cc7d9fcb1b9c994a6d26bdcb",
+  "support_data_manifold": "manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/real_benchmark_expansion_20260831/dml_real_benchmark_support_data_v2.tar.zst",
+  "support_data_archive_sha256": "de5a55054d6178840c6aca3b4440fa2e835502b6c5fec32e490095f355dfc494",
+  "acic_source_repo": "https://github.com/vdorie/aciccomp",
+  "acic_source_commit": "282d266",
+  "rdata_parser_repo": "https://github.com/vnmabus/rdata",
+  "rdata_parser_commit": "0edddf4",
+  "inputs": {
+    "acic/acic2017_x.csv": {
+      "bytes": 774596,
+      "sha256": "0de8a207d8bd37d15dc8db04ab7becbe0aedd0f9fa269cc2ea5151f778a18a9a"
+    },
+    "acic/input_2017.RData": {
+      "bytes": 127568,
+      "sha256": "47b998f368c18893a6770e173990aa639c12509bd13597f10e298dfc25bd2dd2"
+    },
+    "acic/parameters_2017.RData": {
+      "bytes": 272,
+      "sha256": "bfa230d794bb3b08eee5cf95f13930ce36f9ee897f927c6bbee7924ba0f00950"
+    }
+  }
+}

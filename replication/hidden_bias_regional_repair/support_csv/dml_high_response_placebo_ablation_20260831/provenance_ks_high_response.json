@@ -1,0 +1,46 @@
+{
+  "analysis_region": "estimated_residual_highp_matched_lowp_supported",
+  "bootstraps": 0,
+  "chunks": 24,
+  "created_utc": "2026-09-01T04:27:59.940522+00:00",
+  "design_filter": null,
+  "frozen_source": "/tmp/ney_global_recreate_20260830/replication/hidden_bias_regional_repair/scripts/validated_reference_transfer_canonical_region_if_library.py",
+  "frozen_source_sha256": "8db53d4b39d4874884cd810337030d6825f70c19fd891d21b16de2302228d119",
+  "groups": [
+    "kang_schafer"
+  ],
+  "launcher_sha256": "d5efcd4f748ad476ec63df25907f4d701e1cea5caf5cfef4772db06603ff7940",
+  "learner": "xgboost",
+  "manifest_only": false,
+  "manifest_sha256": "d34b7a4321fc73d52985478cdf7638fc7bf7395bc9a1b39b7068e6c4a1ee8284",
+  "max_workers": 20,
+  "methods": [
+    "aipw",
+    "ctmle",
+    "cui_selective_ml",
+    "ma_dr_bc"
+  ],
+  "owner": "dml",
+  "placebo_launcher": "/data/users/atavory/overleaf/data/scripts/dml_launch_section4_placebo_shards.py",
+  "placebo_launcher_sha256": "cc8b9cb5dbf1f3ebd0c7e8546bed46f1f192f0bcbe57ff6b3c7dd8d718fe524f",
+  "python": "/usr/local/fbcode/platform010/bin/python3.12",
+  "region_damp_grid": [
+    0.0,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "region_detector_c": 4.0,
+  "region_selector_ablation": "legacy",
+  "repair_mode": "regional_if_residual",
+  "reps_per_chunk": 4,
+  "seed_base": 1800000000,
+  "shrink_c": 2.0,
+  "source_commit": "fe7e8f2-regional-placebo",
+  "strength_filter": null,
+  "validation_loss_se": 1.0,
+  "validation_risk": "balanced_mse",
+  "wrapper": "/tmp/ney_global_recreate_20260830/replication/hidden_bias_regional_repair/scripts/section4_breadth_experiments.py",
+  "wrapper_sha256": "7319ddedd9618a83f17dc3f9cce7a2fd0048227750376ed88ff7903ada647e74",
+  "xgboost_version": "3.4.0"
+}

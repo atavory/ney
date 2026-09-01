@@ -1,4 +1,5 @@
 {
+  "benchmark_cells": 96,
   "cells": 170,
   "config": {
     "bootstraps": 0,

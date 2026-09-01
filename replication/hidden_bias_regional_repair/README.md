@@ -1,71 +1,84 @@
 # Hidden Bias and Residual Repair for Low-Response AIPW
 
-This directory is the public replication package for the EJS manuscript.  As
-of the 2026-08-30 manuscript cleanup, the paper-facing Section 4 source is the
-single global-residual repair run on the unified Cartesian matrix.
+This directory is the public replication package for the EJS manuscript. As of
+the 2026-08-31 manuscript cleanup, the paper-facing Section 4 source is the
+single global-residual repair run on the 24-setting benchmark matrix.
 
 ## Current Paper Source
 
-The authoritative compact bundle is:
+The authoritative compact bundles are:
 
 - `support_csv/dml_unified_cartesian_global_residual_20260814/`
+- `support_csv/dml_real_benchmark_expansion_20260831/`
+- `support_csv/dml_real_benchmark_acic2017_20260831/`
+- `support_csv/dml_real_benchmark_twins_20260831/`
 
-That bundle contains:
+The Aug. 14 bundle supplies the Kang--Schafer rows and fixed-floor TMLE
+diagnostic. The 2026-08-31 benchmark expansion bundles supply IHDP, ACIC 2016,
+ACIC 2017, and Twins rows. The primary table therefore contains eight
+Kang--Schafer settings and four settings for each of IHDP, ACIC 2016, ACIC
+2017, and Twins.
 
-- `cell_summary.csv`: 170 expert-by-cell summaries.
-- `family_summary.csv`: the sole source for the Section 4 tables and numbers.
+The main bundle contains:
+
+- `cell_summary.csv`: 170 expert-by-setting summaries.
+- `family_summary.csv`: Aug. 14 family summaries.
 - `summary.json`: nested method/family readout.
 - `verification.json`: reconstruction provenance and fail-closed checks.
 - `section4_values.tex`: generated manuscript macros.
 - `section4_unified_overview_table.tex`: generated all-family table.
 - `section4_unified_family_table.tex`: generated family table.
+- `section4_unified_summary_table.tex`: generated 24-setting summary table.
 - `SHA256SUMS`: checksums for the compact public bundle.
 
 The corresponding public scripts are:
 
 - `scripts/recreate_unified_cartesian_global_residual.py`
 - `scripts/assemble_section4_unified_global_residual.py`
+- `scripts/dml_launch_section4_placebo_shards.py`
+- `scripts/summarize_high_response_placebo_ablation.py`
+- `scripts/summarize_no_shrinkage_ablation.py`
 - `scripts/verify_section4_manuscript.py`
 
-Every row in the current Section 4 source uses the same repair mode and gate:
+Every row in the primary results uses the same repair mode and gate:
 `repair_mode=if_residual`, `validation_loss_se=1.0`, `shrink_c=2.0`, and
-`region_damp_grid=0.0|0.25|0.5|1.0`.  The run checks 4,080 shard files,
-16,320 paired replication rows, and 170 expert-by-cell combinations.
+`region_damp_grid=0.0|0.25|0.5|1.0`. The Aug. 14 reconstruction checks 4,080
+shard files, 16,320 paired replication rows, and 170 expert-by-setting
+combinations.
 
-Primary all-family readout at the frozen `c=2`:
+Primary 24-setting readout at `c=2`:
 
 ```text
-AIPW all: +2.791% [1.957%, 3.528%]
-plain TMLE all: -0.410% [-1.203%, 0.235%]
-C-TMLE all: +0.028% [-0.040%, 0.119%]
-selective ML all: +1.723% [1.184%, 2.252%]
-Ma DR-BC all: +2.999% [2.337%, 3.656%]
+AIPW:         mean gain +4.16%, positive 17/24, interval above zero 7/24
+selective ML: mean gain +2.08%, positive 14/24, interval above zero 5/24
+Ma DR-BC:     mean gain +4.67%, positive 20/24, interval above zero 7/24
+C-TMLE:       mean gain +0.05%, positive 1/24,  interval above zero 0/24
 ```
 
-## Low/High-Response Region-Placement Check
+## High-Response Placebo Check
 
-A companion bundle records the region-placement ablation:
+A companion bundle records the current region-placement placebo diagnostic:
 
-- `support_csv/dml_low_high_response_ablation_20260830/`
+- `support_csv/dml_high_response_placebo_ablation_20260831/`
 
-This run holds the C-TMLE reference, data law, region-targeted repair,
-damping grid, one-SE gate, and `c=2` shrinkage fixed, then changes only the
-repair region.  The low-response arm uses the true low-response box from the
-MAR law; the high-response placebo uses a disjoint box with mean response rate
-about 0.81 and zero overlap with the true low-response region.
+This diagnostic uses the same 24 benchmark settings and four primary expert
+families as the manuscript table. It runs a support-restricted regional
+residual correction in either the selected low-response support or a matched
+high-response support while keeping the residual construction, damping grid,
+one-SE rule, and `c=2` shrinkage rule fixed.
 
-Across non-null signal strengths 3, 5, and 8, the low-response repair gains
-14.569% MSE [11.688%, 17.693%], while the high-response placebo gains 0.001%
-[-0.013%, 0.014%].  The paired low-minus-high gain is 14.568%
-[11.697%, 17.774%].
+Equal-setting percent MSE gains over the 24 benchmark settings:
 
-This is a mechanism check for region placement.  It uses the pre-unified
-region-targeted C-TMLE driver at public commit `3e131a9` and is not pooled
-into the unified global-residual Section 4 tables.
+```text
+AIPW:         low +1.945% [1.262%, 2.602%], high -0.036% [-0.285%, 0.121%], low-high +1.981% [1.263%, 2.664%]
+selective ML: low +0.372% [-0.076%, 0.790%], high +0.195% [0.013%, 0.408%], low-high +0.178% [-0.294%, 0.596%]
+Ma DR-BC:     low +1.052% [0.373%, 1.687%], high +0.959% [0.596%, 1.306%], low-high +0.093% [-0.653%, 0.825%]
+C-TMLE:       low +0.124% [-0.046%, 0.357%], high +0.009% [-0.029%, 0.053%], low-high +0.115% [-0.064%, 0.351%]
+```
 
-The bundle includes `section4_low_high_response_ablation_table.tex`, generated
-by `scripts/summarize_low_high_response_ablation.py` from the committed
-replication rows.
+The bundle includes `section4_high_response_placebo_ablation_table.tex`,
+generated by `scripts/summarize_high_response_placebo_ablation.py` from the
+archived raw shard runs.
 
 ## No-Shrinkage Check
 
@@ -73,22 +86,21 @@ A second companion bundle records the final-shrinkage ablation:
 
 - `support_csv/dml_no_shrinkage_ablation_20260830/`
 
-This summary reuses the same 16,320 raw replication rows as the current
-paper-facing unified global-residual run and changes only the final contrast:
-the selected unshrunk candidate versus the \(c=2\) plug-in shrinkage rule.
+This summary uses the same 24 benchmark settings as the primary table and
+changes only the final contrast: the selected unshrunk candidate versus the
+\(c=2\) plug-in shrinkage rule.
 
-All-family equal-cell percent MSE gains:
+Benchmark equal-setting percent MSE gains:
 
 ```text
-AIPW:             no shrinkage +5.965% [4.586%, 7.041%], c=2 +2.791% [1.957%, 3.528%]
-C-TMLE:           no shrinkage +0.021% [-0.066%, 0.126%], c=2 +0.028% [-0.040%, 0.119%]
-selective ML:     no shrinkage +4.399% [3.414%, 5.305%], c=2 +1.723% [1.184%, 2.252%]
-Ma DR-BC:         no shrinkage +3.797% [2.977%, 4.542%], c=2 +2.999% [2.337%, 3.656%]
-fixed-floor TMLE: no shrinkage -6.837% [-9.784%, -4.532%], c=2 -0.410% [-1.203%, 0.235%]
+AIPW:         no shrinkage +9.049% [7.042%, 10.635%], c=2 +4.158% [2.943%, 5.241%]
+selective ML: no shrinkage +4.948% [3.497%, 6.258%],  c=2 +2.081% [1.259%, 2.915%]
+Ma DR-BC:     no shrinkage +5.793% [4.528%, 6.925%],  c=2 +4.667% [3.663%, 5.654%]
+C-TMLE:       no shrinkage +0.037% [-0.084%, 0.187%], c=2 +0.048% [-0.048%, 0.176%]
 ```
 
 The no-shrinkage path is more aggressive.  It increases point gains for the
-responsive experts but exposes the fixed-floor TMLE over-activation failure.
+responsive experts; fixed-floor TMLE remains in the summary CSV for audit.
 The \(c=2\) rule is therefore a stability guard, not a gain-maximizing
 postprocessing step.
 
@@ -104,6 +116,8 @@ python scripts/assemble_section4_unified_global_residual.py \
 
 The rebuilt files should match the primary generated TeX files in
 `support_csv/dml_unified_cartesian_global_residual_20260814/` byte for byte.
+The 24-setting table also reads the committed benchmark expansion bundles
+listed above.
 
 To verify the public bundle against an Overleaf paper clone:
 
@@ -135,7 +149,7 @@ dml2 real/anchor tarball: 102bb358543ec1adadd78cab863cbe328e069f6512d12b9d5c015e
 source bundle: 5ab6b5927e6a7634d4e6ed3d5658a5f4362ee0b13b02e51a1260601e70ac7c1a
 full scientific manifest: 65720b1fce2a24d55872ab9e008cf7ef62945b30b791272f1fdfe65280e2287f
 raw reps manifest: 08d0e7f95d71773fe54eb137107e73c9f0346955247432a8ebb0e0dd1d195e92
-frozen source: 98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce
+source snapshot: 98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce
 wrapper: b1b08b9fc32b03e969f2f24ba7816a850de12336bbf6a335f092238715ccb332
 ```
 
@@ -167,7 +181,7 @@ diagnostic.
 
 ## Protocol and Environment
 
-`unified_cartesian_protocol_20260814.md` records the frozen common-estimand
+`unified_cartesian_protocol_20260814.md` records the fixed common-estimand
 matrix and single-repair rule.  The experiment drivers use the full pinned
 stack, including scikit-learn and XGBoost.  The compact assemblers and
 verifier use only the Python standard library.

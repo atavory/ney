@@ -25,6 +25,7 @@ from recreate_unified_cartesian_global_residual import (
 
 
 METHODS = ("aipw", "tmle", "ctmle", "cui_selective_ml", "ma_dr_bc")
+PRIMARY_METHODS = ("aipw", "cui_selective_ml", "ma_dr_bc", "ctmle")
 GROUPS = ("kang_schafer", "alignment", "real", "anchor")
 SUMMARY_FAMILIES = (
     ("primary", ("kang_schafer", "real")),
@@ -41,6 +42,33 @@ METHOD_LABELS = {
     "cui_selective_ml": "selective ML",
     "ma_dr_bc": "Ma DR-BC",
 }
+BENCHMARK_DATASETS = (
+    (
+        "ihdp",
+        "IHDP",
+        "support_csv/dml_real_benchmark_expansion_20260831/raw_rows.csv",
+        (("ihdp_semisynth", "A"), ("ihdp_misaligned", "B")),
+    ),
+    (
+        "acic2016",
+        "ACIC 2016",
+        "support_csv/dml_real_benchmark_expansion_20260831/raw_rows.csv",
+        (("acic2016_semisynth", "A"), ("acic2016_misaligned", "B")),
+    ),
+    (
+        "acic2017",
+        "ACIC 2017",
+        "support_csv/dml_real_benchmark_acic2017_20260831/raw_rows.csv",
+        (("acic2017_semisynth", "A"), ("acic2017_misaligned", "B")),
+    ),
+    (
+        "twins",
+        "Twins",
+        "support_csv/dml_real_benchmark_twins_20260831/raw_rows.csv",
+        (("twins_semisynth", "A"), ("twins_misaligned", "B")),
+    ),
+)
+DATA_ROOT = Path(__file__).resolve().parents[1]
 
 
 def parse_args() -> argparse.Namespace:
@@ -197,6 +225,33 @@ def group_draws(
     ]
 
 
+def benchmark_group_draws(
+    cell_rows: list[dict[str, object]],
+    cell_draws: dict[tuple[str, str, str, int, float], list[tuple[float, float, float]]],
+    draws: int,
+) -> list[tuple[float, float, float]]:
+    draw_lists = [
+        cell_draws[
+            (
+                str(row["group"]),
+                str(row["design"]),
+                str(row["method"]),
+                int(row["n"]),
+                float(row["strength"]),
+            )
+        ]
+        for row in cell_rows
+    ]
+    return [
+        (
+            mean([draw[index][0] for draw in draw_lists]),
+            mean([draw[index][1] for draw in draw_lists]),
+            mean([draw[index][2] for draw in draw_lists]),
+        )
+        for index in range(draws)
+    ]
+
+
 def summarize_group(
     method: str,
     family: str,
@@ -230,6 +285,93 @@ def summarize_group(
     }
 
 
+def read_benchmark_cell_rows(
+    rng: random.Random,
+    draws: int,
+) -> tuple[
+    list[dict[str, object]],
+    dict[tuple[str, str, str, int, float], list[tuple[float, float, float]]],
+]:
+    raw_groups: dict[tuple[str, str, str, int, float], list[dict[str, str]]] = defaultdict(list)
+    for dataset_key, _label, raw_path, design_pairs in BENCHMARK_DATASETS:
+        design_labels = dict(design_pairs)
+        with (DATA_ROOT / raw_path).open(newline="") as handle:
+            for row in csv.DictReader(handle):
+                method = row["reference_method"]
+                design = row["design"]
+                if method not in PRIMARY_METHODS or design not in design_labels:
+                    continue
+                key = (
+                    dataset_key,
+                    design_labels[design],
+                    method,
+                    int(row["n"]),
+                    float(row["strength"]),
+                )
+                raw_groups[key].append(row)
+
+    expected = len(BENCHMARK_DATASETS) * 2 * 2 * len(PRIMARY_METHODS)
+    if len(raw_groups) != expected:
+        raise SystemExit(
+            f"benchmark no-shrinkage groups differ: {len(raw_groups)} != {expected}"
+        )
+
+    cell_rows: list[dict[str, object]] = []
+    cell_draw_lookup: dict[tuple[str, str, str, int, float], list[tuple[float, float, float]]] = {}
+    for key in sorted(raw_groups):
+        group, design, method, n, strength = key
+        row, cell_draws = summarize_cell(raw_groups[key], rng, draws)
+        cell_draw_lookup[key] = cell_draws
+        cell_rows.append(
+            {
+                "group": group,
+                "design": design,
+                "method": method,
+                "n": n,
+                "strength": strength,
+                **row,
+            }
+        )
+    return cell_rows, cell_draw_lookup
+
+
+def summarize_benchmark(
+    old_cell_rows: list[dict[str, object]],
+    old_cell_draw_lookup: dict[
+        tuple[str, str, str, int, float], list[tuple[float, float, float]]
+    ],
+    benchmark_cell_rows: list[dict[str, object]],
+    benchmark_cell_draw_lookup: dict[
+        tuple[str, str, str, int, float], list[tuple[float, float, float]]
+    ],
+    draws: int,
+) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    for method in PRIMARY_METHODS:
+        ks_rows = [
+            row
+            for row in old_cell_rows
+            if row["group"] == "kang_schafer" and row["method"] == method
+        ]
+        extra_rows = [row for row in benchmark_cell_rows if row["method"] == method]
+        method_rows = [*ks_rows, *extra_rows]
+        if len(method_rows) != 24:
+            raise SystemExit(
+                f"benchmark no-shrinkage row count for {method}: "
+                f"{len(method_rows)} != 24"
+            )
+        draw_lookup = {**old_cell_draw_lookup, **benchmark_cell_draw_lookup}
+        rows.append(
+            summarize_group(
+                method,
+                "benchmark",
+                method_rows,
+                benchmark_group_draws(method_rows, draw_lookup, draws),
+            )
+        )
+    return rows
+
+
 def fmt_pct(value: float) -> str:
     return f"{100.0 * value:.3f}"
 
@@ -242,25 +384,24 @@ def table_value(row: dict[str, object], prefix: str) -> str:
     )
 
 
-def write_latex_table(path: Path, family_rows: list[dict[str, object]]) -> None:
+def write_latex_table(path: Path, benchmark_rows: list[dict[str, object]]) -> None:
     primary_rows = {
         str(row["method"]): row
-        for row in family_rows
-        if row["family"] == "primary"
+        for row in benchmark_rows
+        if row["family"] == "benchmark"
     }
-    order = ("aipw", "ctmle", "cui_selective_ml", "ma_dr_bc", "tmle")
     lines = [
         r"\begin{table}[t]",
         r"\centering",
         r"\small",
-        r"\caption{Final shrinkage ablation on the primary dataset settings.  We compare the selected, unshrunk candidate with the final \(c=2\) plug-in contrast-shrinkage rule used in the primary run. Values are equal-setting percent MSE gain with paired percentile intervals.}",
+        r"\caption{Final shrinkage ablation on the 24 benchmark settings in Table~\ref{tab:unified-global-residual-families}.  We compare the selected, unshrunk candidate with the final \(c=2\) plug-in contrast-shrinkage rule used in the primary run. Values are equal-setting percent MSE gain with paired percentile intervals.}",
         r"\label{tab:no-shrinkage-ablation}",
         r"\begin{tabular}{@{}lrr@{}}",
         r"\toprule",
         r"expert & no shrinkage & \(c=2\) shrinkage \\",
         r"\midrule",
     ]
-    for method in order:
+    for method in PRIMARY_METHODS:
         row = primary_rows[method]
         lines.append(
             f"{METHOD_LABELS[method]} & "
@@ -373,6 +514,17 @@ def main() -> None:
                 )
             )
 
+    benchmark_cell_rows, benchmark_cell_draw_lookup = read_benchmark_cell_rows(
+        rng, args.draws
+    )
+    benchmark_rows = summarize_benchmark(
+        cell_rows,
+        cell_draw_lookup,
+        benchmark_cell_rows,
+        benchmark_cell_draw_lookup,
+        args.draws,
+    )
+
     fields = [
         "method",
         "family",
@@ -394,6 +546,7 @@ def main() -> None:
         "mean_shrink_weight",
     ]
     write_csv(args.out_dir / "no_shrinkage_family_summary.csv", family_rows, fields)
+    write_csv(args.out_dir / "no_shrinkage_benchmark_summary.csv", benchmark_rows, fields)
     write_csv(
         args.out_dir / "no_shrinkage_cell_summary.csv",
         cell_rows,
@@ -412,7 +565,7 @@ def main() -> None:
     )
     write_latex_table(
         args.out_dir / "section4_no_shrinkage_ablation_table.tex",
-        family_rows,
+        benchmark_rows,
     )
     verification = {
         "status": "PASS",
@@ -425,6 +578,7 @@ def main() -> None:
         "reps_files": len(reps_files),
         "replication_rows": rows_seen,
         "cells": len(cell_rows),
+        "benchmark_cells": 24 * len(PRIMARY_METHODS),
         "config": {key: provenance[0][key] for key in CONFIG_KEYS},
     }
     (args.out_dir / "verification.json").write_text(

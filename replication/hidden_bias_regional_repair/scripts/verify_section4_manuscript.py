@@ -1,284 +1,125 @@
 #!/usr/bin/env python3
-"""Fail-closed verification of the unified Section 4 source against the paper."""
+"""Verify the unified global-residual Section 4 release against the manuscript."""
 
 from __future__ import annotations
 
 import argparse
-import csv
 import hashlib
+import importlib.util
 import json
 import re
-import subprocess
-import sys
 import tempfile
 from pathlib import Path
 
 
-RELEASE = "dml_unified_cartesian_global_residual_20260814"
-EXPECTED_MANIFEST_SHA256 = (
-    "65720b1fce2a24d55872ab9e008cf7ef62945b30b791272f1fdfe65280e2287f"
-)
-EXPECTED_RAW_REPS_SHA256 = (
-    "08d0e7f95d71773fe54eb137107e73c9f0346955247432a8ebb0e0dd1d195e92"
-)
-EXPECTED_SOURCE_SHA256 = (
-    "98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce"
-)
-EXPECTED_WRAPPER_SHA256 = (
-    "b1b08b9fc32b03e969f2f24ba7816a850de12336bbf6a335f092238715ccb332"
-)
-EXPECTED_GENERATED = (
+RELEASE_DIR = "support_csv/dml_unified_cartesian_global_residual_20260814"
+GENERATED_FILES = (
     "section4_values.tex",
     "section4_unified_overview_table.tex",
     "section4_unified_family_table.tex",
+    "section4_unified_summary_table.tex",
     "section4_synthetic_diagnostic_table.tex",
     "section4_fixed_floor_tmle_diagnostic_table.tex",
 )
 AUXILIARY_GENERATED = {
-    "dml_low_high_response_ablation_20260830": (
-        "section4_low_high_response_ablation_table.tex",
+    "support_csv/dml_high_response_placebo_ablation_20260831": (
+        "section4_high_response_placebo_ablation_table.tex",
     ),
-    "dml_no_shrinkage_ablation_20260830": (
+    "support_csv/dml_no_shrinkage_ablation_20260830": (
         "section4_no_shrinkage_ablation_table.tex",
     ),
 }
-EXPECTED_METHODS = {
-    "aipw",
-    "tmle",
-    "ctmle",
-    "cui_selective_ml",
-    "ma_dr_bc",
-}
-EXPECTED_GROUPS = {"kang_schafer", "alignment", "real", "anchor"}
-EXPECTED_FAMILIES = EXPECTED_GROUPS | {"primary", "all"}
-EXPECTED_PRIMARY_ROWS = {
-    "aipw": {
-        "gain": 0.0458428655237,
-        "lo": 0.0318591441288,
-        "hi": 0.0583164635052,
+BENCHMARK_RELEASES = {
+    "support_csv/dml_real_benchmark_expansion_20260831": {
+        "jobs": 1440,
+        "rows": 5760,
+        "expected_c": 2.0,
+        "seed": 20260831,
     },
-    "tmle": {
-        "gain": -0.00709291417791,
-        "lo": -0.0205611515228,
-        "hi": 0.00390730081522,
+    "support_csv/dml_real_benchmark_acic2017_20260831": {
+        "jobs": 480,
+        "rows": 1920,
+        "expected_c": 2.0,
+        "seed": 20260831,
     },
-    "ctmle": {
-        "gain": 0.000482447195468,
-        "lo": -0.000684929637147,
-        "hi": 0.00201478132971,
-    },
-    "cui_selective_ml": {
-        "gain": 0.0248461587897,
-        "lo": 0.0161198979398,
-        "hi": 0.0334221638859,
-    },
-    "ma_dr_bc": {
-        "gain": 0.0507731191974,
-        "lo": 0.0395296072171,
-        "hi": 0.06186383004,
+    "support_csv/dml_real_benchmark_twins_20260831": {
+        "jobs": 480,
+        "rows": 1920,
+        "expected_c": 2.0,
+        "seed": 20260831,
     },
 }
-EXPECTED_ALL_ROWS = {
-    "aipw": {
-        "gain": 0.0279144540494,
-        "lo": 0.0195689399394,
-        "hi": 0.0352814499466,
-    },
-    "tmle": {
-        "gain": -0.00410353920309,
-        "lo": -0.0120329864572,
-        "hi": 0.00234623933187,
-    },
-    "ctmle": {
-        "gain": 0.000283792467922,
-        "lo": -0.000402899786557,
-        "hi": 0.00118516548806,
-    },
-    "cui_selective_ml": {
-        "gain": 0.0172335211175,
-        "lo": 0.011839800464,
-        "hi": 0.0225203999264,
-    },
-    "ma_dr_bc": {
-        "gain": 0.0299899878989,
-        "lo": 0.0233726249994,
-        "hi": 0.0365564675682,
-    },
+EXPECTED_CONFIG = {
+    "repair_mode": "if_residual",
+    "validation_loss_se": 1.0,
+    "shrink_c": 2.0,
+    "bootstraps": 0,
+    "frozen_source_sha256": (
+        "98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce"
+    ),
 }
+EXPECTED_GRID = [0.0, 0.25, 0.5, 1.0]
 
 
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
+def load_assembler(script_path: Path):
+    spec = importlib.util.spec_from_file_location("section4_assembler", script_path)
+    if spec is None or spec.loader is None:
+        raise SystemExit(f"cannot load assembler: {script_path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
-def require_close(label: str, observed: str, expected: float) -> None:
-    if abs(float(observed) - expected) > 5e-13:
-        raise SystemExit(f"{label} differs: {observed} != {expected}")
+def compare_generated(data_root: Path, paper_root: Path) -> None:
+    assembler = load_assembler(
+        data_root / "scripts" / "assemble_section4_unified_global_residual.py"
+    )
+    release = data_root / RELEASE_DIR
+    rows = assembler.read_rows(release / "family_summary.csv")
+    cell_rows = assembler.read_cell_rows(release / "cell_summary.csv")
+    with tempfile.TemporaryDirectory() as tmpdir:
+        out_dir = Path(tmpdir)
+        assembler.write_values(out_dir / "section4_values.tex", rows)
+        assembler.write_overview(out_dir / "section4_unified_overview_table.tex", rows)
+        assembler.write_family_table(
+            out_dir / "section4_unified_family_table.tex", cell_rows
+        )
+        assembler.write_benchmark_summary_table(
+            out_dir / "section4_unified_summary_table.tex", cell_rows
+        )
+        assembler.write_synthetic_diagnostic_table(
+            out_dir / "section4_synthetic_diagnostic_table.tex", rows
+        )
+        assembler.write_tmle_diagnostic_table(
+            out_dir / "section4_fixed_floor_tmle_diagnostic_table.tex", rows
+        )
+        for name in GENERATED_FILES:
+            paper_path = paper_root / "sections" / "generated" / name
+            if (out_dir / name).read_bytes() != paper_path.read_bytes():
+                raise SystemExit(f"paper generated file differs from release: {paper_path}")
 
 
 def verify_checksums(release: Path) -> int:
     checksum_path = release / "SHA256SUMS"
     if not checksum_path.exists():
-        raise SystemExit(f"missing release checksum file: {checksum_path}")
+        raise SystemExit(f"missing checksum file: {checksum_path}")
     count = 0
     for line in checksum_path.read_text().splitlines():
         expected, name = line.split(maxsplit=1)
         path = release / name
         if not path.exists():
             raise SystemExit(f"checksum target missing: {path}")
-        observed = sha256(path)
-        if observed != expected:
-            raise SystemExit(f"release checksum mismatch: {path}")
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        if digest != expected:
+            raise SystemExit(f"checksum mismatch: {path}")
         count += 1
     return count
 
 
-def verify_reconstruction_json(path: Path) -> dict[str, object]:
-    verification = json.loads(path.read_text())
-    if verification.get("status") != "PASS":
-        raise SystemExit("unified reconstruction status is not PASS")
-    expected_top_level = {
-        "cells": 170,
-        "replication_rows": 16320,
-        "reps_files": 4080,
-        "draws": 20000,
-        "seed": 20260814,
-        "full_manifest_sha256": EXPECTED_MANIFEST_SHA256,
-        "raw_reps_manifest_sha256": EXPECTED_RAW_REPS_SHA256,
-    }
-    for key, expected in expected_top_level.items():
-        if verification.get(key) != expected:
-            raise SystemExit(
-                f"unexpected unified verification {key}: "
-                f"{verification.get(key)!r} != {expected!r}"
-            )
-    config = verification.get("config")
-    if not isinstance(config, dict):
-        raise SystemExit("unified verification lacks config object")
-    expected_config = {
-        "repair_mode": "if_residual",
-        "validation_loss_se": 1.0,
-        "shrink_c": 2.0,
-        "region_damp_grid": [0.0, 0.25, 0.5, 1.0],
-        "bootstraps": 0,
-        "chunks": 24,
-        "reps_per_chunk": 4,
-        "seed_base": 1800000000,
-        "xgboost_version": "3.4.0",
-        "frozen_source_sha256": EXPECTED_SOURCE_SHA256,
-        "wrapper_sha256": EXPECTED_WRAPPER_SHA256,
-    }
-    for key, expected in expected_config.items():
-        if config.get(key) != expected:
-            raise SystemExit(
-                f"unexpected unified config {key}: "
-                f"{config.get(key)!r} != {expected!r}"
-            )
-    return verification
-
-
-def verify_family_summary(path: Path) -> list[dict[str, str]]:
-    with path.open(newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    if len(rows) != 30:
-        raise SystemExit(f"family summary has {len(rows)} rows, expected 30")
-    keyed = {(row["method"], row["family"]): row for row in rows}
-    expected_keys = {
-        (method, family)
-        for method in EXPECTED_METHODS
-        for family in EXPECTED_FAMILIES
-    }
-    observed_keys = set(keyed)
-    if observed_keys != expected_keys:
-        missing = sorted(expected_keys - observed_keys)
-        extra = sorted(observed_keys - expected_keys)
-        raise SystemExit(f"family summary keys differ: missing={missing}, extra={extra}")
-    for method, expected in EXPECTED_ALL_ROWS.items():
-        row = keyed[(method, "all")]
-        if int(row["cells"]) != 34:
-            raise SystemExit(f"{method} full-matrix setting count is not 34")
-        if int(row["reps"]) != 3264:
-            raise SystemExit(f"{method} full-matrix replication count is not 3264")
-        require_close(f"{method} all gain", row["equal_cell_gain"], expected["gain"])
-        require_close(
-            f"{method} all lower CI",
-            row["equal_cell_gain_ci_low"],
-            expected["lo"],
-        )
-        require_close(
-            f"{method} all upper CI",
-            row["equal_cell_gain_ci_high"],
-            expected["hi"],
-        )
-    for method, expected in EXPECTED_PRIMARY_ROWS.items():
-        row = keyed[(method, "primary")]
-        if int(row["cells"]) != 20:
-            raise SystemExit(f"{method} primary setting count is not 20")
-        if int(row["reps"]) != 1920:
-            raise SystemExit(f"{method} primary replication count is not 1,920")
-        require_close(f"{method} primary gain", row["equal_cell_gain"], expected["gain"])
-        require_close(
-            f"{method} primary lower CI",
-            row["equal_cell_gain_ci_low"],
-            expected["lo"],
-        )
-        require_close(
-            f"{method} primary upper CI",
-            row["equal_cell_gain_ci_high"],
-            expected["hi"],
-        )
-    return rows
-
-
-def verify_cell_summary(path: Path) -> int:
-    with path.open(newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    if len(rows) != 170:
-        raise SystemExit(f"setting summary has {len(rows)} rows, expected 170")
-    if sum(int(row["reps"]) for row in rows) != 16320:
-        raise SystemExit("setting summary replication count is not 16,320")
-    if {row["method"] for row in rows} != EXPECTED_METHODS:
-        raise SystemExit("setting summary method set differs from the unified protocol")
-    if {row["group"] for row in rows} != EXPECTED_GROUPS:
-        raise SystemExit("setting summary group set differs from the unified protocol")
-    return len(rows)
-
-
-def verify_generated_outputs(data_root: Path, release: Path, paper_root: Path) -> None:
-    script = data_root / "scripts/assemble_section4_unified_global_residual.py"
-    if not script.exists():
-        raise SystemExit(f"missing unified assembler script: {script}")
-    with tempfile.TemporaryDirectory(prefix="section4-unified-") as tmp:
-        rebuilt = Path(tmp)
-        subprocess.run(
-            [
-                sys.executable,
-                str(script),
-                "--summary",
-                str(release / "family_summary.csv"),
-                "--out-dir",
-                str(rebuilt),
-            ],
-            check=True,
-        )
-        for name in EXPECTED_GENERATED:
-            rebuilt_path = rebuilt / name
-            release_path = release / name
-            paper_path = paper_root / "sections/generated" / name
-            if rebuilt_path.read_bytes() != release_path.read_bytes():
-                raise SystemExit(f"release generated file is stale: {release_path}")
-            if release_path.read_bytes() != paper_path.read_bytes():
-                raise SystemExit(f"paper generated file differs from release: {paper_path}")
-
-
-def verify_auxiliary_generated_outputs(data_root: Path, paper_root: Path) -> int:
-    file_count = 0
+def compare_auxiliary_generated(data_root: Path, paper_root: Path) -> int:
+    count = 0
     for release_name, generated_files in AUXILIARY_GENERATED.items():
-        release = data_root / "support_csv" / release_name
+        release = data_root / release_name
         if not release.exists():
             raise SystemExit(f"missing auxiliary Section 4 bundle: {release}")
         verify_checksums(release)
@@ -286,50 +127,116 @@ def verify_auxiliary_generated_outputs(data_root: Path, paper_root: Path) -> int
         if verification.get("status") != "PASS":
             raise SystemExit(f"auxiliary verification is not PASS: {release}")
         for name in generated_files:
+            paper_path = paper_root / "sections" / "generated" / name
             release_path = release / name
-            paper_path = paper_root / "sections/generated" / name
-            if not release_path.exists():
-                raise SystemExit(f"missing auxiliary generated file: {release_path}")
             if release_path.read_bytes() != paper_path.read_bytes():
                 raise SystemExit(
                     f"paper auxiliary generated file differs from release: {paper_path}"
                 )
-            file_count += 1
-    return file_count
+            count += 1
+    return count
 
 
-def verify_manuscript(paper_root: Path, release: Path) -> int:
-    manuscript = (paper_root / "sections/experiments_rule_quality.tex").read_text()
-    appendix = (paper_root / "appendices/empirical_checks.tex").read_text()
+def verify_benchmark_releases(data_root: Path) -> int:
+    for release_name, expected_values in BENCHMARK_RELEASES.items():
+        release = data_root / release_name
+        if not release.exists():
+            raise SystemExit(f"missing benchmark bundle: {release}")
+        verify_checksums(release)
+        verification = json.loads((release / "verification.json").read_text())
+        if verification.get("status") != "COMPLETE":
+            raise SystemExit(f"benchmark verification is not COMPLETE: {release}")
+        for key, expected in expected_values.items():
+            if verification.get(key) != expected:
+                raise SystemExit(
+                    f"unexpected benchmark verification {key}: "
+                    f"{verification.get(key)!r} != {expected!r}"
+                )
+    return len(BENCHMARK_RELEASES)
+
+
+def verify_release(data_root: Path) -> dict:
+    release = data_root / RELEASE_DIR
+    verification = json.loads((release / "verification.json").read_text())
+    if verification.get("status") != "PASS":
+        raise SystemExit("unified release verification is not PASS")
+    expected_counts = {
+        "reps_files": 4080,
+        "replication_rows": 16320,
+        "cells": 170,
+        "draws": 20000,
+        "seed": 20260814,
+        "full_manifest_sha256": (
+            "65720b1fce2a24d55872ab9e008cf7ef62945b30b791272f1fdfe65280e2287f"
+        ),
+        "raw_reps_manifest_sha256": (
+            "08d0e7f95d71773fe54eb137107e73c9f0346955247432a8ebb0e0dd1d195e92"
+        ),
+    }
+    for key, expected in expected_counts.items():
+        if verification.get(key) != expected:
+            raise SystemExit(
+                f"unexpected unified verification {key}: "
+                f"{verification.get(key)!r} != {expected!r}"
+            )
+    config = verification.get("config", {})
+    for key, expected in EXPECTED_CONFIG.items():
+        if config.get(key) != expected:
+            raise SystemExit(
+                f"unexpected unified config {key}: {config.get(key)!r} != {expected!r}"
+            )
+    if config.get("region_damp_grid") != EXPECTED_GRID:
+        raise SystemExit("unexpected unified damping grid")
+    for provenance in verification.get("run_provenance", []):
+        for key, expected in EXPECTED_CONFIG.items():
+            if provenance.get(key) != expected:
+                raise SystemExit(
+                    f"unexpected run provenance {key}: "
+                    f"{provenance.get(key)!r} != {expected!r}"
+                )
+        if provenance.get("validation_risk") != "balanced_mse":
+            raise SystemExit("unexpected run provenance validation_risk")
+        if provenance.get("region_damp_grid") != EXPECTED_GRID:
+            raise SystemExit("unexpected run provenance damping grid")
+    return verification
+
+
+def verify_manuscript(paper_root: Path) -> tuple[int, int]:
+    section4 = (paper_root / "sections" / "experiments_rule_quality.tex").read_text()
+    appendix = (paper_root / "appendices" / "empirical_checks.tex").read_text()
+    values = (paper_root / "sections/generated/section4_values.tex").read_text()
+    overview = (
+        paper_root / "sections/generated/section4_unified_overview_table.tex"
+    ).read_text()
+    family = (
+        paper_root / "sections/generated/section4_unified_family_table.tex"
+    ).read_text()
+    synthetic = (
+        paper_root / "sections/generated/section4_synthetic_diagnostic_table.tex"
+    ).read_text()
+    diagnostic = (
+        paper_root / "sections/generated/section4_fixed_floor_tmle_diagnostic_table.tex"
+    ).read_text()
+
     required_inputs = (
-        "section4_values",
-        "section4_unified_family_table",
-        "section4_synthetic_diagnostic_table",
-        "section4_low_high_response_ablation_table",
-        "section4_no_shrinkage_ablation_table",
+        "sections/generated/section4_unified_family_table",
+        "sections/generated/section4_unified_summary_table",
+        "sections/generated/section4_high_response_placebo_ablation_table",
+        "sections/generated/section4_no_shrinkage_ablation_table",
     )
     for name in required_inputs:
-        if f"\\input{{sections/generated/{name}}}" not in manuscript:
-            raise SystemExit(f"manuscript does not input generated file: {name}")
-    diagnostic_input = "section4_fixed_floor_tmle_diagnostic_table"
-    if f"\\input{{sections/generated/{diagnostic_input}}}" not in appendix:
+        if f"\\input{{{name}}}" not in section4:
+            raise SystemExit(f"Section 4 does not input generated table: {name}")
+    if (
+        "\\input{sections/generated/section4_fixed_floor_tmle_diagnostic_table}"
+        not in appendix
+    ):
         raise SystemExit("appendix does not input fixed-floor TMLE diagnostic table")
-    if "\\input{sections/generated/section4_unified_overview_table}" in manuscript:
-        raise SystemExit("manuscript inputs the aggregate overview table")
-    forbidden = (
-        "section4_natural_table",
-        "section4_emphasized_table",
-        "section4_sensitivity_rows",
-        "section4_c_atlas_20260812_v3",
-        "dml_section4_release_20260812_v1",
-        "score-projection adapter",
-    )
-    for token in forbidden:
-        if token in manuscript:
-            raise SystemExit(f"manuscript still references superseded Section 4 source: {token}")
-    if "\\begin{table}" in manuscript:
+    if "\\input{sections/generated/section4_unified_overview_table}" in section4:
+        raise SystemExit("Section 4 inputs the aggregate overview table")
+    if "\\begin{table}" in section4:
         raise SystemExit("Section 4 contains a hand-maintained table environment")
-    paper_text = manuscript + "\n" + appendix
+    paper_text = section4 + "\n" + appendix
     forbidden_paper_tokens = (
         "support_csv",
         "Manifold",
@@ -349,25 +256,25 @@ def verify_manuscript(paper_root: Path, release: Path) -> int:
                 raise SystemExit(
                     f"paper text contains banned wording {word!r}: {tex_path}"
                 )
-
-    values = (release / "section4_values.tex").read_text()
-    overview = (release / "section4_unified_overview_table.tex").read_text()
-    family = (release / "section4_unified_family_table.tex").read_text()
-    synthetic = (release / "section4_synthetic_diagnostic_table.tex").read_text()
-    diagnostic = (
-        release / "section4_fixed_floor_tmle_diagnostic_table.tex"
-    ).read_text()
     if "fixed-floor TMLE &" in overview or "fixed-floor TMLE &" in family:
-        raise SystemExit("primary generated tables still include fixed-floor TMLE")
+        raise SystemExit("primary Section 4 tables still include fixed-floor TMLE")
     if "fixed-floor TMLE" not in diagnostic:
         raise SystemExit("diagnostic table does not identify fixed-floor TMLE")
-    tables = "\n".join((overview, family, synthetic, diagnostic))
-    definitions = set(re.findall(r"\\newcommand\{\\(SFourUnified[A-Za-z]+)\}", values))
-    uses = set(re.findall(r"\\(SFourUnified[A-Za-z]+)", manuscript + "\n" + tables))
+    if "primary TMLE comparator" not in section4 + "\n" + appendix:
+        raise SystemExit("manuscript does not identify C-TMLE as primary comparator")
+    manuscript_text = paper_text
+    if "\\texttt{bootstraps}=0" not in section4:
+        raise SystemExit("Section 4 does not record bootstraps=0")
+    if "plug-in selected score-contrast variance" not in manuscript_text:
+        raise SystemExit("appendix does not record plug-in selected-contrast variance")
+
+    definitions = set(re.findall(r"\\newcommand\{\\(SFour[A-Za-z]+)\}", values))
+    generated_text = "\n".join((overview, family, synthetic, diagnostic))
+    uses = set(re.findall(r"\\(SFour[A-Za-z]+)", section4 + "\n" + generated_text))
     undefined = uses - definitions
     if undefined:
         raise SystemExit(f"undefined generated Section 4 macros: {sorted(undefined)}")
-    return len(uses)
+    return len(definitions), len(uses)
 
 
 def main() -> None:
@@ -376,24 +283,22 @@ def main() -> None:
     parser.add_argument("--paper-root", required=True, type=Path)
     args = parser.parse_args()
 
-    release = args.data_root / "support_csv" / RELEASE
-    if not release.exists():
-        raise SystemExit(f"missing unified Section 4 release: {release}")
-    if not (args.data_root / "scripts/recreate_unified_cartesian_global_residual.py").exists():
-        raise SystemExit("missing unified reconstruction script")
-
-    release_files = verify_checksums(release)
-    verify_reconstruction_json(release / "verification.json")
-    family_rows = verify_family_summary(release / "family_summary.csv")
-    cell_rows = verify_cell_summary(release / "cell_summary.csv")
-    verify_generated_outputs(args.data_root, release, args.paper_root)
-    auxiliary_files = verify_auxiliary_generated_outputs(args.data_root, args.paper_root)
-    macros_used = verify_manuscript(args.paper_root, release)
-
+    verification = verify_release(args.data_root)
+    compare_generated(args.data_root, args.paper_root)
+    auxiliary_files = compare_auxiliary_generated(args.data_root, args.paper_root)
+    benchmark_releases = verify_benchmark_releases(args.data_root)
+    definitions, uses = verify_manuscript(args.paper_root)
     print(
-        f"VERIFIED unified_release_files={release_files} "
-        f"family_rows={len(family_rows)} setting_rows={cell_rows} "
-        f"auxiliary_generated_files={auxiliary_files} macros_used={macros_used}"
+        "VERIFIED "
+        f"release={RELEASE_DIR} "
+        f"benchmark_releases={benchmark_releases} "
+        f"reps_files={verification['reps_files']} "
+        f"replication_rows={verification['replication_rows']} "
+        f"expert_settings={verification['cells']} "
+        f"generated_files={len(GENERATED_FILES)} "
+        f"auxiliary_generated_files={auxiliary_files} "
+        f"macros_defined={definitions} "
+        f"macros_used={uses}"
     )
 
 

@@ -1,0 +1,30 @@
+{
+  "draws": 20000,
+  "high_raw_replication_rows_read": 9216,
+  "high_reps_files_read": 2304,
+  "high_run_dirs": [
+    "/tmp/dml_high_response_placebo_20260831/ks_high_regional",
+    "/tmp/dml_high_response_placebo_20260831/bench_high_regional"
+  ],
+  "low_raw_replication_rows_read": 9216,
+  "low_reps_files_read": 2304,
+  "low_run_dirs": [
+    "/tmp/dml_high_response_placebo_20260831/ks_low_regional",
+    "/tmp/dml_high_response_placebo_20260831/bench_low_regional"
+  ],
+  "methods": [
+    "aipw",
+    "cui_selective_ml",
+    "ma_dr_bc",
+    "ctmle"
+  ],
+  "outputs": {
+    "high_response_placebo_cell_summary.csv": "00c7775553c1afba2628a6705b756c5ca20c7c4ed95d74efaca641517111a3a7",
+    "high_response_placebo_summary.csv": "be56a59d8088bc254cbbb8a9a92f794104dfc401b886160997fd3dae9aa650ce",
+    "section4_high_response_placebo_ablation_table.tex": "12c6b12fe1bfcb7addab9ba863b4a57d21cb5e9a1dafc30d9a5cc690990a42f9"
+  },
+  "seed": 20260831,
+  "setting_expert_groups": 96,
+  "settings": 24,
+  "status": "PASS"
+}

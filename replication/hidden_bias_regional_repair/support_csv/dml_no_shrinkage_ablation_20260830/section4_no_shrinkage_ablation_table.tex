@@ -1,17 +1,16 @@
 \begin{table}[t]
 \centering
 \small
-\caption{Final shrinkage ablation on the primary dataset settings.  We compare the selected, unshrunk candidate with the final \(c=2\) plug-in contrast-shrinkage rule used in the primary run. Values are equal-setting percent MSE gain with paired percentile intervals.}
+\caption{Final shrinkage ablation on the 24 benchmark settings in Table~\ref{tab:unified-global-residual-families}.  We compare the selected, unshrunk candidate with the final \(c=2\) plug-in contrast-shrinkage rule used in the primary run. Values are equal-setting percent MSE gain with paired percentile intervals.}
 \label{tab:no-shrinkage-ablation}
 \begin{tabular}{@{}lrr@{}}
 \toprule
 expert & no shrinkage & \(c=2\) shrinkage \\
 \midrule
-AIPW & 9.754 [7.437, 11.533] & 4.584 [3.186, 5.832] \\
-C-TMLE & 0.035 [-0.112, 0.215] & 0.048 [-0.068, 0.201] \\
-selective ML & 6.277 [4.710, 7.713] & 2.485 [1.612, 3.342] \\
-Ma DR-BC & 6.412 [5.014, 7.682] & 5.077 [3.953, 6.186] \\
-fixed-floor TMLE & -11.674 [-16.682, -7.766] & -0.709 [-2.056, 0.391] \\
+AIPW & 9.049 [7.042, 10.635] & 4.158 [2.943, 5.241] \\
+selective ML & 4.948 [3.497, 6.258] & 2.081 [1.259, 2.915] \\
+Ma DR-BC & 5.793 [4.528, 6.925] & 4.667 [3.663, 5.654] \\
+C-TMLE & 0.037 [-0.084, 0.187] & 0.048 [-0.048, 0.176] \\
 \bottomrule
 \end{tabular}
 \end{table}
