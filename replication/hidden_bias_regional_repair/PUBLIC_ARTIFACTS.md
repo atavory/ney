@@ -22,6 +22,12 @@ rows for 24 benchmark settings per expert family.
 
 The paper-facing scripts are:
 
+- `scripts/validated_reference_transfer.py`
+  - Main experiment runner.  Its `if_residual` branch fits the residual
+    direction by responder-only weighted residual regression and chooses the
+    damping value with the configured observed-outcome validation loss.
+  - SHA256:
+    `87dee24a80eca9205c553428af13e848a3ed35cec382d1af7d61cf01f1563fda`
 - `scripts/recreate_unified_cartesian_global_residual.py`
   - SHA256:
     `a0676b1bcf3d854d5b15a60f0dc8e91d2dd12a70858c0aa76da90206a99fa235`
@@ -116,7 +122,7 @@ The maintained high-response-capable region-gated driver is:
 
 SHA:
 
-`8db53d4b39d4874884cd810337030d6825f70c19fd891d21b16de2302228d119`
+`67b24062027735ae3af70fe211e59ee484658a6b578c09f44f6e2befe8cd3287`
 
 This source gates the deployed `if_library` residual correction by the
 selected analysis region:
