@@ -12,6 +12,11 @@ The paper-facing primary source is:
 support_csv/dml_weighted_residual_gamma_selection_ablation_20260903/
 ```
 
+The full run contract is in `REPRODUCIBILITY.md`.  It records the
+authoritative bundle, public-versus-archived inputs, benchmark construction,
+learner settings, expert implementations, seeds, aggregation rule, and
+verification command.
+
 It replays the archived Aug. 14 candidate paths, keeps the same upstream fits
 and candidate grid, and selects the candidate by held-out response-weighted
 residual loss.  The primary table contains eight Kang--Schafer settings and

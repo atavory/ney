@@ -3,6 +3,11 @@
 This file records the public-facing code and compact data locations for the
 hidden-bias residual-repair project.
 
+For the complete EJS run contract, including the public-versus-archived input
+boundary, DGP definitions, learner settings, comparator settings, replication
+counts, seeds, aggregation rule, and verification command, see
+`REPRODUCIBILITY.md`.
+
 ## Current EJS Section 4 Source
 
 The current manuscript Section 4 is generated from:
