@@ -1,0 +1,25 @@
+benchmark,setting,fixed_floor_tmle_gain_pct,fixed_floor_tmle_lo_pct,fixed_floor_tmle_hi_pct,fixed_floor_tmle_activation_pct,fixed_floor_tmle_harm_pct
+Kang-Schafer,"KS CC, n=200",-56.397,-99.767,-24.882,50.0,35.4
+Kang-Schafer,"KS CC, n=1000",-43.259,-84.494,-11.433,96.9,57.3
+Kang-Schafer,"KS CI, n=200",-32.849,-78.487,0.222,66.7,39.6
+Kang-Schafer,"KS CI, n=1000",-50.431,-96.151,-16.788,99.0,59.4
+Kang-Schafer,"KS IC, n=200",-9.889,-29.685,2.706,30.2,15.6
+Kang-Schafer,"KS IC, n=1000",-6.159,-27.712,8.821,51.0,24.0
+Kang-Schafer,"KS II, n=200",9.033,1.034,18.060,24.0,5.2
+Kang-Schafer,"KS II, n=1000",-5.547,-17.239,4.397,61.5,29.2
+IHDP,"IHDP A, strength=0",0.020,-3.820,4.061,8.3,4.2
+IHDP,"IHDP A, strength=3",4.199,-1.936,9.889,21.9,4.2
+IHDP,"IHDP B, strength=0",2.518,0.268,5.677,13.5,6.2
+IHDP,"IHDP B, strength=3",2.650,-0.353,7.491,11.5,4.2
+ACIC 2016,"ACIC 2016 A, strength=0",0.761,-2.980,4.626,6.2,4.2
+ACIC 2016,"ACIC 2016 A, strength=3",-0.462,-1.849,0.760,6.2,3.1
+ACIC 2016,"ACIC 2016 B, strength=0",-0.706,-1.943,0.140,5.2,4.2
+ACIC 2016,"ACIC 2016 B, strength=3",-1.517,-4.763,0.733,7.3,4.2
+ACIC 2017,"ACIC 2017 A, strength=0",4.204,0.073,11.651,7.3,2.1
+ACIC 2017,"ACIC 2017 A, strength=3",1.332,0.180,2.901,6.2,1.0
+ACIC 2017,"ACIC 2017 B, strength=0",0.272,0.001,0.740,4.2,0.0
+ACIC 2017,"ACIC 2017 B, strength=3",-0.796,-3.389,1.363,9.4,4.2
+Twins,"Twins A, strength=0",0.000,0.000,0.000,0.0,0.0
+Twins,"Twins A, strength=3",0.232,-0.003,0.852,2.1,1.0
+Twins,"Twins B, strength=0",-0.895,-3.009,0.000,1.0,1.0
+Twins,"Twins B, strength=3",-0.382,-3.186,1.828,4.2,2.1

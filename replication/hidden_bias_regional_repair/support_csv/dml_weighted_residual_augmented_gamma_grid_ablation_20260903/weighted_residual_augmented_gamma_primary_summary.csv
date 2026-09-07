@@ -1,0 +1,2 @@
+summary,methods,reps,current_gain,augmented_gain,augmented_gain_ci_low,augmented_gain_ci_high,augmented_minus_current_gain,augmented_minus_current_gain_ci_low,augmented_minus_current_gain_ci_high,current_activation,augmented_activation,gamma_change_rate,selected_075_rate
+primary_equal_replication,aipw|ctmle|cui_selective_ml|ma_dr_bc,9216,0.18741083652586732,0.19302145254830283,0.15240480159900113,0.23259721994662796,0.005610616022435511,-0.002515851673132066,0.013998421251167287,0.2914496527777778,0.2914496527777778,0.0849609375,0.0849609375

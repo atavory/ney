@@ -1,0 +1,2 @@
+summary,methods,reps,current_gain,residual_gain,residual_gain_ci_low,residual_gain_ci_high,residual_minus_current_gain,residual_minus_current_gain_ci_low,residual_minus_current_gain_ci_high,current_activation,residual_activation,gamma_change_rate
+primary_equal_replication,aipw|ctmle|cui_selective_ml|ma_dr_bc,9216,0.17202656058856258,0.18741083652586732,0.14768492000929903,0.22781716920814915,0.015384275937304737,-0.005042407362281281,0.03912981546736565,0.2080078125,0.2914496527777778,0.18348524305555555

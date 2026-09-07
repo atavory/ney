@@ -1,0 +1,24 @@
+{
+  "aug14_run_dir": "/tmp/dml_section3_verify_extract/cartesian_dml_ks_alignment_v3",
+  "breadth_script": "/tmp/dml_ney_source_20260906.AVcdUj/replication/hidden_bias_regional_repair/scripts/section4_breadth_experiments.py",
+  "breadth_script_sha256": "7319ddedd9618a83f17dc3f9cce7a2fd0048227750376ed88ff7903ada647e74",
+  "diagnostic": "Section 3.2 average-variance and Section 3.3 squared-bias bound replay",
+  "gate_script": "/data/users/atavory/overleaf/data/scripts/dml_universal_leverage_gate_diagnostic.py",
+  "gate_script_sha256": "f07098e0b5df5e7e04bbd393ec19f24abb53dae68dddbe7ca7f82c8778c97970",
+  "methods": [
+    "aipw",
+    "ctmle",
+    "cui_selective_ml",
+    "ma_dr_bc"
+  ],
+  "retrospective_truth": "uses true pi and mu from simulation designs",
+  "reuse_replication_rows": "/data/users/atavory/overleaf/data/support_csv/dml_section3_bounds_diagnostic_20260906_buck_v1/section3_bounds_replication_rows.csv",
+  "rho_script": "/data/users/atavory/overleaf/data/scripts/dml_weighted_residual_rho_helper.py",
+  "rho_script_sha256": "75c687b96723a4a605f508c7df3c6813b399af0e95957057b90e3c1bdd0a2293",
+  "rows": 9216,
+  "sample_groups": 0,
+  "sigma2": 1.0,
+  "source_script": "/tmp/dml_section3_verify_extract/replication/hidden_bias_regional_repair/scripts/validated_reference_transfer.py",
+  "source_script_sha256": "98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce",
+  "support_data": "/tmp/dml_real_benchmark_support_data_v3_extract.gGCo59/dml_real_benchmark_support_data"
+}

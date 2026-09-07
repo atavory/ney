@@ -1,193 +1,105 @@
 # Hidden Bias and Residual Repair for Low-Response AIPW
 
-This directory is the public replication package for the EJS manuscript. As of
-the 2026-08-31 manuscript cleanup, the paper-facing Section 4 source is the
-single global-residual repair run on the 24-setting benchmark matrix.
+This directory is the public replication package for the EJS manuscript.  The
+current Section 4 tables use the weighted-residual gamma-selection replay on a
+24-setting benchmark matrix.
 
 ## Current Paper Source
 
-The authoritative compact bundles are:
-
-- `support_csv/dml_unified_cartesian_global_residual_20260814/`
-- `support_csv/dml_real_benchmark_expansion_20260831/`
-- `support_csv/dml_real_benchmark_acic2017_20260831/`
-- `support_csv/dml_real_benchmark_twins_20260831/`
-
-The Aug. 14 bundle supplies the Kang--Schafer rows and fixed-floor TMLE
-diagnostic. The 2026-08-31 benchmark expansion bundles supply IHDP, ACIC 2016,
-ACIC 2017, and Twins rows. The primary table therefore contains eight
-Kang--Schafer settings and four settings for each of IHDP, ACIC 2016, ACIC
-2017, and Twins.
-
-The main bundle contains:
-
-- `cell_summary.csv`: 170 expert-by-setting summaries.
-- `family_summary.csv`: Aug. 14 family summaries.
-- `summary.json`: nested method/family readout.
-- `verification.json`: reconstruction provenance and fail-closed checks.
-- `section4_values.tex`: generated manuscript macros.
-- `section4_unified_overview_table.tex`: generated all-family table.
-- `section4_unified_family_table.tex`: generated family table.
-- `section4_unified_summary_table.tex`: generated 24-setting summary table.
-- `SHA256SUMS`: checksums for the compact public bundle.
-
-The corresponding public scripts are:
-
-- `scripts/recreate_unified_cartesian_global_residual.py`
-- `scripts/assemble_section4_unified_global_residual.py`
-- `scripts/dml_launch_section4_placebo_shards.py`
-- `scripts/summarize_high_response_placebo_ablation.py`
-- `scripts/dml_nuisance_cv_accuracy_by_response.py`
-- `scripts/dml_reference_error_by_response.py`
-- `scripts/verify_section4_manuscript.py`
-
-The exact Aug. 14 source snapshot is stored under
-`source_snapshots/20260814_unified_cartesian_v3/`; its runner and wrapper
-hashes match the source hashes recorded in the release metadata.
-
-Every row in the primary results uses the same repair mode and damping grid:
-`repair_mode=if_residual`, `validation_loss_se=1.0`, and
-`region_damp_grid=0.0|0.25|0.5|1.0`. In the Aug. 14 source snapshot, the
-`if_residual` branch fits a responder-only weighted residual correction and
-uses a centered fitted-score loss as the one-SE damping gate. The
-`validation_risk=balanced_mse` field appears in the run metadata, but it does
-not control this branch's selection loss. The generated manuscript tables
-report the selected candidate directly. The Aug. 14 reconstruction checks
-4,080 shard files, 16,320 paired replication rows, and 170 expert-by-setting
-combinations.
-
-Primary 24-setting selected-candidate readout:
+The paper-facing primary source is:
 
 ```text
-AIPW:         mean gain +9.05%, positive 20/24, interval above zero 11/24
-selective ML: mean gain +4.95%, positive 17/24, interval above zero 6/24
-Ma DR-BC:     mean gain +5.79%, positive 18/24, interval above zero 6/24
-C-TMLE:       mean gain +0.04%, positive 1/24,  interval above zero 0/24
+support_csv/dml_weighted_residual_gamma_selection_ablation_20260903/
 ```
 
-The appendix fixed-floor TMLE diagnostic also uses the same 24 benchmark
-settings.  That arm is not a primary expert family; it is reported to show the
-nonadaptive-floor behavior separately from C-TMLE.
+It replays the archived Aug. 14 candidate paths, keeps the same upstream fits
+and candidate grid, and selects the candidate by held-out response-weighted
+residual loss.  The primary table contains eight Kang--Schafer settings and
+four settings for each of IHDP, ACIC 2016, ACIC 2017, and Twins.
 
-## Nuisance Prediction Diagnostic
-
-The bundle
-`support_csv/dml_nuisance_cv_accuracy_by_response_20260901/` reports
-cross-fitted response-score, outcome-prediction, and expert-reference outcome
-accuracy by response bin for the 24 benchmark settings.  It is a diagnostic
-source, not a replacement for the primary MSE tables.
-
-## High-Response Placebo Check
-
-A companion bundle records the current region-placement placebo diagnostic:
-
-- `support_csv/dml_high_response_placebo_ablation_20260831/`
-
-This diagnostic uses the same 24 benchmark settings and four primary expert
-families as the manuscript table. It runs a support-restricted regional
-residual correction in either the selected low-response support or a matched
-high-response support while keeping the residual construction, damping grid,
-and one-SE rule fixed. The summary reports the selected candidate directly.
-
-Equal-setting percent MSE gains over the 24 benchmark settings:
+Primary 24-setting equal-setting readout:
 
 ```text
-AIPW:         low +5.862% [4.448%, 7.033%], high +0.120% [-0.372%, 0.527%], low-high +5.742% [4.289%, 6.963%]
-selective ML: low +0.675% [-0.364%, 1.618%], high +0.535% [0.095%, 0.944%], low-high +0.140% [-0.952%, 1.130%]
-Ma DR-BC:     low +1.473% [0.582%, 2.267%], high +1.178% [0.743%, 1.591%], low-high +0.294% [-0.649%, 1.179%]
-C-TMLE:       low +0.117% [-0.116%, 0.392%], high +0.035% [-0.057%, 0.126%], low-high +0.082% [-0.170%, 0.372%]
+AIPW:          mean gain +8.95%, positive 20/24, negative 4/24, interval above zero 11/24
+selective ML:  mean gain +5.19%, positive 16/24, negative 8/24, interval above zero 8/24
+Ma DR-BC:      mean gain +7.66%, positive 18/24, negative 6/24, interval above zero 7/24
+C-TMLE:        mean gain +4.98%, positive 9/24,  negative 0/24, interval above zero 8/24
 ```
 
-The bundle includes `section4_high_response_placebo_ablation_table.tex`,
-generated by `scripts/summarize_high_response_placebo_ablation.py` from the
-archived raw shard runs.
+The generated files consumed by the paper are:
 
-## Archived Scalar-Damping Diagnostics
-
-These derived bundles are retained for audit, but they are not current
-manuscript tables or appendix targets:
-
-- `support_csv/dml_no_shrinkage_ablation_20260830/`
-- `support_csv/dml_shrinkage_c_grid_20260901/`
-
-## Rebuild the Manuscript Tables
-
-From this directory:
-
-```bash
-python scripts/assemble_section4_unified_global_residual.py \
-  --summary support_csv/dml_unified_cartesian_global_residual_20260814/family_summary.csv \
-  --out-dir /tmp/section4_unified_rebuilt
+```text
+support_csv/dml_weighted_residual_gamma_selection_ablation_20260903/section4_unified_family_table.tex
+support_csv/dml_weighted_residual_gamma_selection_ablation_20260903/section4_unified_summary_table.tex
+support_csv/dml_weighted_residual_gamma_selection_ablation_20260903/section4_fixed_floor_tmle_diagnostic_table.tex
+support_csv/dml_weighted_residual_high_response_placebo_ablation_20260903/section4_weighted_residual_high_response_placebo_ablation_table.tex
+support_csv/dml_weighted_residual_mse_gain_by_rho_20260903_v2/section4_response_bin_action_reward_figure.tex
 ```
 
-The rebuilt files should match the primary generated TeX files in
-`support_csv/dml_unified_cartesian_global_residual_20260814/` byte for byte.
-The 24-setting table also reads the committed benchmark expansion bundles
-listed above.
+## Current Diagnostics
 
-To verify the public bundle against an Overleaf paper clone:
+The current companion bundles are:
+
+```text
+support_csv/dml_weighted_residual_mse_gain_by_rho_20260903_v2/
+support_csv/dml_weighted_residual_high_response_placebo_ablation_20260903/
+support_csv/dml_weighted_residual_augmented_gamma_grid_ablation_20260903/
+support_csv/dml_weighted_residual_upstream_trust_gate_diagnostic_20260903_v2/
+support_csv/dml_section3_bounds_diagnostic_20260906_buck_v1/
+support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260906_buck_v1/
+```
+
+The high-response placebo diagnostic compares the selected low-response
+support to a matched high-response support under the weighted-residual
+selector.  The response-bin diagnostic decomposes where the global repair acts
+and pays off: the lowest true-response quartile has 42.2% of raw action, 85.4%
+of response-weighted action, and 92.1% of response-weighted residual-square
+reward.
+
+The Section 3 bounds diagnostics replay the selected candidates against known
+simulation truth.  For the four primary expert families they report zero
+variance-bound violations and zero squared-bias-bound violations over 9,216
+rows.  The fixed-floor TMLE diagnostic also has zero bound violations, but its
+active moves have much weaker hidden-squared-bias improvement and frequent
+realized harm.
+
+The fixed-floor TMLE arm is appendix-only.  The upstream-trust gate bundle is a
+retrospective diagnostic that shows fixed-floor TMLE can be made to stand down;
+it is not part of the submitted Algorithm 1 unless the protocol is changed.
+
+## Scripts
+
+Current paper-facing scripts:
+
+```text
+scripts/dml_render_weighted_residual_gamma_tables.py
+scripts/dml_weighted_residual_gamma_selection_ablation.py
+scripts/dml_weighted_residual_high_response_placebo_ablation.py
+scripts/dml_weighted_residual_augmented_gamma_grid_ablation.py
+scripts/dml_upstream_trust_gate_diagnostic.py
+scripts/dml_mse_gain_by_rho.py
+scripts/dml_section3_bounds_diagnostic.py
+scripts/dml_weighted_residual_rho_helper.py
+scripts/verify_section4_manuscript.py
+```
+
+The compact verifier uses only the Python standard library:
 
 ```bash
-python scripts/verify_section4_manuscript.py \
+python3 scripts/verify_section4_manuscript.py \
   --data-root . \
   --paper-root /path/to/overleaf-paper
 ```
 
-The verifier checks the bundle checksums, reconstruction invariants, summary
-shape, headline values, generated TeX bytes, and Section 4 manuscript inputs.
+## Historical Sources
 
-## Recreate the Compact Bundle from Manifold
-
-The raw shard tarballs are not committed to GitHub.  They are recoverable from
-these Manifold objects:
+The Aug. 14 centered-score selected-candidate reconstruction remains in:
 
 ```text
-manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/dml_ks_alignment_v3/cartesian_dml_ks_alignment_v3.tar.zst
-manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/dml2_real_anchor_v3/cartesian_dml2_real_anchor_v3.tar.zst
-manifold://aai_research_tlv/tree/atavory/dml_reference_transfer/unified_cartesian_20260814/source/unified_cartesian_bundle_20260814_v3.tar.zst
+support_csv/dml_unified_cartesian_global_residual_20260814/
 ```
 
-Verify the tarballs before extraction:
-
-```text
-dml KS/alignment tarball: 1a6db65195d507ac2c4e1a21c62010b876f015ca0333bb6467c8dcf6d22ab6aa
-dml2 real/anchor tarball: 102bb358543ec1adadd78cab863cbe328e069f6512d12b9d5c015e2ebce49fa6
-source bundle: 5ab6b5927e6a7634d4e6ed3d5658a5f4362ee0b13b02e51a1260601e70ac7c1a
-full scientific manifest: 65720b1fce2a24d55872ab9e008cf7ef62945b30b791272f1fdfe65280e2287f
-raw reps manifest: 08d0e7f95d71773fe54eb137107e73c9f0346955247432a8ebb0e0dd1d195e92
-source snapshot: 98987b31cf7c883d4776996ae7b28f7f1b9fe134d6da323e95250f00232842ce
-wrapper: b1b08b9fc32b03e969f2f24ba7816a850de12336bbf6a335f092238715ccb332
-```
-
-After extracting the three tarballs, recreate the compact public bundle with:
-
-```bash
-python scripts/recreate_unified_cartesian_global_residual.py \
-  --run-dir /tmp/dml_unified_cartesian_20260814_extract_run/dml/cartesian_dml_ks_alignment_v3 \
-  --run-dir /tmp/dml_unified_cartesian_20260814_extract_run/dml2/dml2_real_anchor_v3 \
-  --full-manifest /tmp/dml_unified_cartesian_20260814_extract_run/source/full/manifest.tsv \
-  --out-dir support_csv/dml_unified_cartesian_global_residual_20260814 \
-  --draws 20000 \
-  --seed 20260814
-```
-
-Then regenerate the manuscript tables with
-`scripts/assemble_section4_unified_global_residual.py` as shown above and
-refresh `SHA256SUMS`.
-
-## Archived Section 4 Bundles
-
-The older `dml_section4_release_20260812_v1` and c-atlas bundles remain in
-`support_csv/` as archived provenance.  They are not the current EJS Section 4
-source and should not be pooled into the unified global-residual tables.
-
-The standalone Ma DiD experiment is also not part of the unified Cartesian
-matrix because it has a different estimand.  It remains a separate historical
-diagnostic.
-
-## Protocol and Environment
-
-`unified_cartesian_protocol_20260814.md` records the fixed common-estimand
-matrix and single-repair rule.  The experiment drivers use the full pinned
-stack, including scikit-learn and XGBoost.  The compact assemblers and
-verifier use only the Python standard library.
+It supplies candidate-path provenance and historical comparison only.  It is
+not the current manuscript readout.  Older mixed-release, regional-residual,
+scalar-damping, and no-shrinkage bundles are retained as audit trail and should
+not be pooled into the current Section 4 tables.
