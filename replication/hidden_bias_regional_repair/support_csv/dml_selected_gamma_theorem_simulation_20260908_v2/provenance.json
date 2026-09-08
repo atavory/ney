@@ -1,0 +1,16 @@
+{
+  "gamma_grid": [
+    0.0,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "large_reps": 1000,
+  "medium_reps": 3000,
+  "scope": "finite-support theorem simulation; not a Section 4 benchmark run",
+  "script": "/data/users/atavory/overleaf/data/scripts/dml_selected_gamma_theorem_simulation.py",
+  "script_sha256": "273e4dfe396194435cd5ae6014a5620a7e9adefeadcda63ca618c6aeca06cdde",
+  "seed": 20260908,
+  "small_reps": 6000,
+  "write_replication_rows": true
+}

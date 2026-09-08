@@ -60,8 +60,12 @@ support_csv/dml_weighted_residual_mse_gain_by_rho_20260903_v2/
 support_csv/dml_weighted_residual_high_response_placebo_ablation_20260903/
 support_csv/dml_weighted_residual_augmented_gamma_grid_ablation_20260903/
 support_csv/dml_weighted_residual_upstream_trust_gate_diagnostic_20260903_v2/
-support_csv/dml_section3_bounds_diagnostic_20260906_buck_v1/
-support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260906_buck_v1/
+support_csv/dml_section3_bounds_diagnostic_20260908_theorem_fit_public_v1/
+support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260908_theorem_fit_public_v1/
+support_csv/dml_selected_gamma_theorem_simulation_20260908_v2/
+support_csv/dml_honest_split_selected_gamma_20260908_v2/
+support_csv/dml_current_algorithm_selection_penalty_20260908_v1/
+support_csv/dml_section4_same_sample_selection_penalty_20260908_v2/
 ```
 
 Key diagnostics:
@@ -72,6 +76,7 @@ High-response placebo: low-response placement dominates high-response placement 
 Gamma 0.75 sensitivity: primary pooled gain changes by 0.561 percentage points; interval crosses zero.
 Section 3 primary bounds: zero variance-bound and zero squared-bias-bound violations over 9,216 rows.
 Fixed-floor TMLE bounds: zero bound violations, but active-move hidden squared bias improves only 59.8% and realized harm occurs 52.5%.
+Section 4 same-sample bridge: primary experts have actual MSE gain 18.741% versus fixed-candidate replay gain 18.729%; fixed-floor TMLE has -21.372% versus 7.240%.
 Upstream-trust gate: retrospective only; moves fixed-floor TMLE from -21.37% to -0.21% without erasing primary pooled gains.
 ```
 
@@ -87,6 +92,10 @@ scripts/dml_weighted_residual_augmented_gamma_grid_ablation.py
 scripts/dml_upstream_trust_gate_diagnostic.py
 scripts/dml_mse_gain_by_rho.py
 scripts/dml_section3_bounds_diagnostic.py
+scripts/dml_selected_gamma_theorem_simulation.py
+scripts/dml_honest_split_selected_gamma_experiment.py
+scripts/dml_current_algorithm_selection_penalty_experiment.py
+scripts/dml_summarize_section4_same_sample_penalty.py
 scripts/dml_weighted_residual_rho_helper.py
 scripts/verify_section4_manuscript.py
 ```

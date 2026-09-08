@@ -43,6 +43,28 @@ support_csv/dml_weighted_residual_gamma_selection_ablation_20260903/weighted_res
 The public package also contains the scripts that render the manuscript tables
 and verify the paper values.
 
+The public package also contains compact companion diagnostics used by
+Section 4 and the empirical appendix:
+
+```text
+support_csv/dml_weighted_residual_mse_gain_by_rho_20260903_v2/
+support_csv/dml_weighted_residual_high_response_placebo_ablation_20260903/
+support_csv/dml_weighted_residual_augmented_gamma_grid_ablation_20260903/
+support_csv/dml_weighted_residual_upstream_trust_gate_diagnostic_20260903_v2/
+support_csv/dml_section3_bounds_diagnostic_20260908_theorem_fit_public_v1/
+support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260908_theorem_fit_public_v1/
+support_csv/dml_selected_gamma_theorem_simulation_20260908_v2/
+support_csv/dml_honest_split_selected_gamma_20260908_v2/
+support_csv/dml_current_algorithm_selection_penalty_20260908_v1/
+support_csv/dml_section4_same_sample_selection_penalty_20260908_v2/
+```
+
+The Section 4 same-sample bridge reports a 0.012 percentage-point gap between
+actual same-sample MSE gain and fixed-candidate replay gain for the four
+primary expert families: 18.741% versus 18.729%.  The appendix fixed-floor
+TMLE arm is the exception: -21.372% actual same-sample gain versus 7.240%
+fixed-candidate replay gain.
+
 A full fresh refit from raw data is not self-contained in this GitHub package.
 The original shard archives and the raw IHDP, ACIC, and Twins covariate files
 are tracked in the project data archive and Manifold records.  They are not

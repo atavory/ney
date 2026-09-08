@@ -1,0 +1,30 @@
+{
+  "dependency": "/data/users/atavory/overleaf/data/scripts/dml_honest_split_selected_gamma_experiment.py",
+  "dependency_sha256": "a1b0e30203129d9805253e4ffda609b08ff5158fdbb2413818bd9f0d94b0b295",
+  "folds": 3,
+  "gamma_grid": [
+    0.0,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "n_grid": [
+    {
+      "n_total": 2000,
+      "reps": 4000
+    },
+    {
+      "n_total": 8000,
+      "reps": 1500
+    },
+    {
+      "n_total": 32000,
+      "reps": 400
+    }
+  ],
+  "scope": "finite-support current Algorithm 1 same-sample selection-penalty diagnostic; not a Section 4 benchmark run",
+  "script": "/data/users/atavory/overleaf/data/scripts/dml_current_algorithm_selection_penalty_experiment.py",
+  "script_sha256": "38e40598e9b754292035942dafa7858cfb3186377921eb47e06351315e5d4426",
+  "seed": 20260908,
+  "write_replication_rows": true
+}

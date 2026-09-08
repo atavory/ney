@@ -45,8 +45,12 @@ REQUIRED_RELEASES = (
     "support_csv/dml_weighted_residual_high_response_placebo_ablation_20260903",
     "support_csv/dml_weighted_residual_augmented_gamma_grid_ablation_20260903",
     "support_csv/dml_weighted_residual_upstream_trust_gate_diagnostic_20260903_v2",
-    "support_csv/dml_section3_bounds_diagnostic_20260906_buck_v1",
-    "support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260906_buck_v1",
+    "support_csv/dml_section3_bounds_diagnostic_20260908_theorem_fit_public_v1",
+    "support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260908_theorem_fit_public_v1",
+    "support_csv/dml_selected_gamma_theorem_simulation_20260908_v2",
+    "support_csv/dml_honest_split_selected_gamma_20260908_v2",
+    "support_csv/dml_current_algorithm_selection_penalty_20260908_v1",
+    "support_csv/dml_section4_same_sample_selection_penalty_20260908_v2",
 )
 PRIMARY_METHODS = (
     ("aipw", "AIPW", "aipw"),
@@ -214,7 +218,8 @@ def verify_manuscript(paper_root: Path) -> int:
     normalized_manuscript_text = re.sub(r"\s+", " ", paper_text)
     required_phrases = (
         "The selected candidate is the returned estimate.",
-        "The selected candidate is the reported estimate.",
+        "The selected candidate is the reported estimate",
+        "same cross-fitted scores used for selection",
         "cross-fitted response-weighted residual loss",
     )
     for phrase in required_phrases:

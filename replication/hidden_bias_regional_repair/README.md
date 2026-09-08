@@ -50,8 +50,12 @@ support_csv/dml_weighted_residual_mse_gain_by_rho_20260903_v2/
 support_csv/dml_weighted_residual_high_response_placebo_ablation_20260903/
 support_csv/dml_weighted_residual_augmented_gamma_grid_ablation_20260903/
 support_csv/dml_weighted_residual_upstream_trust_gate_diagnostic_20260903_v2/
-support_csv/dml_section3_bounds_diagnostic_20260906_buck_v1/
-support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260906_buck_v1/
+support_csv/dml_section3_bounds_diagnostic_20260908_theorem_fit_public_v1/
+support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260908_theorem_fit_public_v1/
+support_csv/dml_selected_gamma_theorem_simulation_20260908_v2/
+support_csv/dml_honest_split_selected_gamma_20260908_v2/
+support_csv/dml_current_algorithm_selection_penalty_20260908_v1/
+support_csv/dml_section4_same_sample_selection_penalty_20260908_v2/
 ```
 
 The high-response placebo diagnostic compares the selected low-response
@@ -67,6 +71,13 @@ variance-bound violations and zero squared-bias-bound violations over 9,216
 rows.  The fixed-floor TMLE diagnostic also has zero bound violations, but its
 active moves have much weaker hidden-squared-bias improvement and frequent
 realized harm.
+
+The same-sample diagnostics check the difference between the selected
+candidate's fixed-candidate replay risk and the actual same-sample estimator.
+For the four primary expert families, the Section 4 benchmark gap is 0.012
+percentage points: actual same-sample MSE gain 18.741% versus fixed-candidate
+replay gain 18.729%.  Fixed-floor TMLE is the exception, with actual
+same-sample MSE gain -21.372% versus fixed-candidate replay gain 7.240%.
 
 The fixed-floor TMLE arm is appendix-only.  The upstream-trust gate bundle is a
 retrospective diagnostic that shows fixed-floor TMLE can be made to stand down;
@@ -84,6 +95,10 @@ scripts/dml_weighted_residual_augmented_gamma_grid_ablation.py
 scripts/dml_upstream_trust_gate_diagnostic.py
 scripts/dml_mse_gain_by_rho.py
 scripts/dml_section3_bounds_diagnostic.py
+scripts/dml_selected_gamma_theorem_simulation.py
+scripts/dml_honest_split_selected_gamma_experiment.py
+scripts/dml_current_algorithm_selection_penalty_experiment.py
+scripts/dml_summarize_section4_same_sample_penalty.py
 scripts/dml_weighted_residual_rho_helper.py
 scripts/verify_section4_manuscript.py
 ```

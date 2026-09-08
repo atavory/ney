@@ -1,0 +1,33 @@
+{
+  "gamma_grid": [
+    0.0,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "scope": "finite-support honest split selected-gamma experiment; not a Section 4 benchmark run",
+  "script": "/data/users/atavory/overleaf/data/scripts/dml_honest_split_selected_gamma_experiment.py",
+  "script_sha256": "a1b0e30203129d9805253e4ffda609b08ff5158fdbb2413818bd9f0d94b0b295",
+  "seed": 20260908,
+  "splits": [
+    {
+      "n_estimation": 500,
+      "n_train": 1000,
+      "n_validation": 500,
+      "reps": 3000
+    },
+    {
+      "n_estimation": 2000,
+      "n_train": 4000,
+      "n_validation": 2000,
+      "reps": 1200
+    },
+    {
+      "n_estimation": 8000,
+      "n_train": 16000,
+      "n_validation": 8000,
+      "reps": 300
+    }
+  ],
+  "write_replication_rows": true
+}

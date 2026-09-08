@@ -1,0 +1,21 @@
+{
+  "aug14_run_dir": "/tmp/dml_theorem_fit_20260908_extract_1450894/dml/cartesian_dml_ks_alignment_v3",
+  "breadth_script": "/tmp/dml_ney_public_20260908_1724943/replication/hidden_bias_regional_repair/scripts/section4_breadth_experiments.py",
+  "breadth_script_sha256": "7319ddedd9618a83f17dc3f9cce7a2fd0048227750376ed88ff7903ada647e74",
+  "diagnostic": "Section 3.2 average-variance and Section 3.3 squared-bias bound replay",
+  "gate_script": "/data/users/atavory/overleaf/data/scripts/dml_universal_leverage_gate_diagnostic.py",
+  "gate_script_sha256": "f07098e0b5df5e7e04bbd393ec19f24abb53dae68dddbe7ca7f82c8778c97970",
+  "methods": [
+    "tmle"
+  ],
+  "retrospective_truth": "uses true pi and mu from simulation designs",
+  "reuse_replication_rows": null,
+  "rho_script": "/data/users/atavory/overleaf/data/scripts/dml_weighted_residual_rho_helper.py",
+  "rho_script_sha256": "75c687b96723a4a605f508c7df3c6813b399af0e95957057b90e3c1bdd0a2293",
+  "rows": 2304,
+  "sample_groups": 2304,
+  "sigma2": 1.0,
+  "source_script": "/tmp/dml_ney_public_20260908_1724943/replication/hidden_bias_regional_repair/scripts/validated_reference_transfer.py",
+  "source_script_sha256": "3ab6bc1d0077316fe397d6cc97304b6e62d76eca969d9cf7a67a5a835b38db7e",
+  "support_data": "/tmp/dml_theorem_fit_20260908_support_extract_1452687/dml_real_benchmark_support_data"
+}

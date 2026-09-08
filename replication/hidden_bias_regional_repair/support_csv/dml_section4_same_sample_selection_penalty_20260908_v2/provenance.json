@@ -1,0 +1,9 @@
+{
+  "primary_rows": "support_csv/dml_section3_bounds_diagnostic_20260908_theorem_fit_public_v1/section3_bounds_replication_rows.csv",
+  "primary_rows_sha256": "08a44cb575bcc052f1dd5b8ca35de623a5671d7fc31cd4719c42fca2a7beac10",
+  "scope": "derived same-sample selection penalty summary from Section 3 bound replay rows",
+  "script": "/data/users/atavory/overleaf/data/scripts/dml_summarize_section4_same_sample_penalty.py",
+  "script_sha256": "34f03eb8d8807517d61122a457e925283d56671ddffc410bd4f5aa265b7e38ca",
+  "tmle_rows": "support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260908_theorem_fit_public_v1/section3_bounds_replication_rows.csv",
+  "tmle_rows_sha256": "d80ed3891e9f010e08c17494ce1ed44ce18f5325eba8889cc3a697c82f52ce5a"
+}
