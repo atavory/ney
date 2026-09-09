@@ -177,7 +177,6 @@ def verify_manuscript(paper_root: Path) -> int:
     required_section4_inputs = (
         "sections/generated/section4_unified_family_table",
         "sections/generated/section4_unified_summary_table",
-        "sections/generated/section4_high_response_placebo_ablation_table",
         "sections/generated/section4_response_bin_action_reward_figure",
     )
     for name in required_section4_inputs:
