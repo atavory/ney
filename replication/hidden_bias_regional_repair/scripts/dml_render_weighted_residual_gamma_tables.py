@@ -297,7 +297,7 @@ def write_primary_tex(
         "\\begin{table}[t]\n",
         "\\centering\n",
         "\\scriptsize\n",
-        "\\caption{Primary benchmark readout for the weighted-residual repair. Entries are percent MSE gain with 95\\% paired percentile intervals. Positive values favor the repair.}\n",
+        "\\caption{Primary benchmark results for the weighted-residual repair. Entries are percent MSE gain with 95\\% paired percentile intervals. Positive values favor the repair.}\n",
         "\\label{tab:unified-global-residual-families}\n",
         "\\resizebox{\\textwidth}{!}{%\n",
         "\\begin{tabular}{@{}llrrrr@{}}\n",
