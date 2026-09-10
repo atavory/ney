@@ -55,7 +55,7 @@ support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260908_theorem_fit
 support_csv/dml_selected_gamma_theorem_simulation_20260908_v2/
 support_csv/dml_honest_split_selected_gamma_20260908_v2/
 support_csv/dml_current_algorithm_selection_penalty_20260908_v1/
-support_csv/dml_section4_same_sample_selection_penalty_20260908_v2/
+support_csv/dml_section4_same_sample_selection_penalty_20260909_v3/
 ```
 
 The high-response placebo diagnostic compares the selected low-response
@@ -74,10 +74,12 @@ realized harm.
 
 The same-sample diagnostics check the difference between the selected
 candidate's fixed-candidate replay risk and the actual same-sample estimator.
-For the four primary expert families, the Section 4 benchmark gap is 0.012
-percentage points: actual same-sample MSE gain 18.741% versus fixed-candidate
-replay gain 18.729%.  Fixed-floor TMLE is the exception, with actual
-same-sample MSE gain -21.372% versus fixed-candidate replay gain 7.240%.
+After computing gains within each setting--expert cell and weighting all cells
+equally, the four primary expert families have actual same-sample MSE gain
+6.693% versus fixed-candidate replay gain 4.899%, a 1.794 percentage-point gap.
+Fixed-floor TMLE has actual same-sample MSE gain -7.670% versus fixed-candidate
+replay gain 3.741%, a -11.411 percentage-point gap.  The earlier pooled
+ratio-of-means calculation is retained only as a sensitivity result.
 
 The fixed-floor TMLE arm is appendix-only.  The upstream-trust gate bundle is a
 retrospective diagnostic that shows fixed-floor TMLE can be made to stand down;

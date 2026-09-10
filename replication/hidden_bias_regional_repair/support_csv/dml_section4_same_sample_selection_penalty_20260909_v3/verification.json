@@ -1,0 +1,16 @@
+{
+  "checks": {
+    "fixed_floor_tmle_setting_method_cells": 24,
+    "identical_24_setting_coverage": true,
+    "pooled_ratio_is_sensitivity_only": true,
+    "primary_estimand": "equal_setting_method_cells",
+    "primary_setting_method_cells": 96,
+    "replications_per_setting_method_cell": 96,
+    "required_input_columns": true,
+    "setting_cluster_bootstrap_draws": 20000,
+    "setting_cluster_bootstrap_seed_fixed_floor_tmle": 20260910,
+    "setting_cluster_bootstrap_seed_primary": 20260909,
+    "unique_replication_identities": true
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,23 @@
+{
+  "coverage": {
+    "fixed_floor_tmle_cells": 24,
+    "primary_cells": 96,
+    "primary_methods": [
+      "aipw",
+      "ctmle",
+      "cui_selective_ml",
+      "ma_dr_bc"
+    ],
+    "replications_per_cell": 96,
+    "settings": 24
+  },
+  "fixed_candidate_aggregation": "within each dataset-setting-method cell, compute 100*(mean(bias0_sq+A0)-mean(biasg_sq+Ag))/mean(bias0_sq+A0); then average cell gains with equal weight",
+  "primary_aggregation": "within each dataset-setting-method cell, compute 100*(mean(ref_error^2)-mean(selected_error^2))/mean(ref_error^2); then average cell gains with equal weight",
+  "primary_rows": "/Users/atavory/fbsource/dml/data/support_csv/dml_section3_bounds_diagnostic_20260908_theorem_fit_public_v1/section3_bounds_replication_rows.csv",
+  "primary_rows_sha256": "08a44cb575bcc052f1dd5b8ca35de623a5671d7fc31cd4719c42fca2a7beac10",
+  "scope": "derived same-sample selection penalty audit from Section 3 bound replay rows",
+  "script": "/Users/atavory/fbsource/dml/data/scripts/dml_summarize_section4_same_sample_penalty.py",
+  "script_sha256": "6ae6574244fd234b57e07b731a1fec51e766d4ddd835c18aee1f25e94a4378d9",
+  "tmle_rows": "/Users/atavory/fbsource/dml/data/support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260908_theorem_fit_public_v1/section3_bounds_replication_rows.csv",
+  "tmle_rows_sha256": "d80ed3891e9f010e08c17494ce1ed44ce18f5325eba8889cc3a697c82f52ce5a"
+}

@@ -56,14 +56,16 @@ support_csv/dml_section3_bounds_diagnostic_fixed_floor_tmle_20260908_theorem_fit
 support_csv/dml_selected_gamma_theorem_simulation_20260908_v2/
 support_csv/dml_honest_split_selected_gamma_20260908_v2/
 support_csv/dml_current_algorithm_selection_penalty_20260908_v1/
-support_csv/dml_section4_same_sample_selection_penalty_20260908_v2/
+support_csv/dml_section4_same_sample_selection_penalty_20260909_v3/
 ```
 
-The Section 4 same-sample bridge reports a 0.012 percentage-point gap between
-actual same-sample MSE gain and fixed-candidate replay gain for the four
-primary expert families: 18.741% versus 18.729%.  The appendix fixed-floor
-TMLE arm is the exception: -21.372% actual same-sample gain versus 7.240%
-fixed-candidate replay gain.
+The Section 4 same-sample bridge computes gains within each setting--expert
+cell and weights all cells equally.  It reports a 1.794 percentage-point gap
+for the four primary expert families: 6.693% actual same-sample MSE gain versus
+4.899% fixed-candidate replay gain.  The appendix fixed-floor TMLE arm has
+-7.670% actual same-sample gain versus 3.741% fixed-candidate replay gain, a
+-11.411 percentage-point gap.  Pooled ratio-of-means values are retained only
+as a labelled sensitivity calculation.
 
 A full fresh refit from raw data is not self-contained in this GitHub package.
 The original shard archives and the raw IHDP, ACIC, and Twins covariate files
