@@ -64,7 +64,7 @@ def zhao_problem(cell: str, seed: int) -> tuple[np.ndarray, ...]:
     rng = np.random.default_rng(seed)
     uniforms = rng.uniform(0.0, 1.0, size=(n, 2))
     normals = rng.multivariate_normal(
-        mean=np.zeros(2), covariance=np.asarray([[1.0, 0.3], [0.3, 1.0]]), size=n
+        mean=np.zeros(2), cov=np.asarray([[1.0, 0.3], [0.3, 1.0]]), size=n
     )
     x = np.column_stack([uniforms, normals])
     p_treated = logistic(0.35 - 0.3 * np.sum(x, axis=1))

@@ -45,6 +45,21 @@ class LiteratureSotaTest(unittest.TestCase):
         )
         self.assertNotIn("tmle", runner.METHODS)
 
+    def test_all_locked_dgps_construct_with_analytic_truth(self) -> None:
+        runner = load("literature_sota_runner_dgps", HERE / "dml_literature_sota_experiment.py")
+        for cell in runner.CELLS:
+            data = runner.make_problem(cell, 202609160 + runner.CELL_OFFSETS[cell])
+            x, y, response, region, true_pi, theta, mu = data
+            expected_n = 2000 if cell.startswith("zhao") else int(cell.rsplit("n", 1)[1])
+            self.assertEqual(x.shape[0], expected_n)
+            self.assertEqual(len(y), expected_n)
+            self.assertEqual(len(response), expected_n)
+            self.assertEqual(len(region), expected_n)
+            self.assertEqual(len(true_pi), expected_n)
+            self.assertEqual(len(mu), expected_n)
+            self.assertTrue(0.0 < theta < 200.0)
+            self.assertTrue(((true_pi > 0.0) & (true_pi < 1.0)).all())
+
 
 if __name__ == "__main__":
     unittest.main()
