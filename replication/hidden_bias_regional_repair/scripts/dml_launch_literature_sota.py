@@ -10,6 +10,7 @@ import datetime as dt
 import hashlib
 import json
 import os
+import platform
 import subprocess
 import time
 from dataclasses import asdict, dataclass
@@ -125,6 +126,7 @@ def main() -> int:
     parser.add_argument("--chunk-size", type=int, default=20)
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--seed-base", type=int, default=202609160)
+    parser.add_argument("--public-commit", required=True)
     parser.add_argument("--manifest-only", action="store_true")
     args = parser.parse_args()
     if args.reps != 200:
@@ -161,7 +163,20 @@ def main() -> int:
             "scope": "new AISTATS literature-DGP SOTA experiment only"
         },
         "scalar_shrink": False,
+        "public_commit": args.public_commit,
         "python": str(args.python.absolute()), "versions": json.loads(versions),
+        "compute_environment": {
+            "platform": platform.platform(),
+            "machine": platform.machine(),
+            "processor": platform.processor(),
+            "logical_cpu_count": os.cpu_count(),
+            "worker_processes": args.workers,
+            "thread_limits": {
+                "OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1",
+                "MKL_NUM_THREADS": "1", "NUMEXPR_NUM_THREADS": "1"
+            },
+            "dyld_library_path": os.environ.get("DYLD_LIBRARY_PATH", "")
+        },
         "runner": str(args.runner.resolve()), "runner_sha256": sha256(args.runner.resolve()),
         "launcher_sha256": sha256(Path(__file__).resolve()),
         "upstream_source": str(args.upstream_source.resolve()),
