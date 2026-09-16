@@ -98,6 +98,24 @@ Ma's published DGP2 and DGP3 target an ATT-like difference-in-differences
 estimand. They are a separately labeled dataset family. The same repair API is
 estimand-agnostic and consumes Ma's full and CV expert snapshots.
 
+### Zhao/Kallus literature-DGP adaptations: 5 cells
+
+The AISTATS comparison adapts published data-generating ingredients to the
+superpopulation missing-outcome mean. It is not a reproduction of the source
+papers' estimands or methods.
+
+- Zhao et al. (2024) vanilla Y(0) and Y(1), each at `n=2000`.
+- Kallus et al. (2023) lognormal Y(1), at `n=200,800,3200`.
+- Exactly four upstream families: `aipw`, `cui_selective_ml`, `ma_dr_bc`, and
+  adaptive `ctmle`. Plain/fixed-floor `tmle` is excluded.
+- Every cell uses 200 common-seed replications, analytic superpopulation truth,
+  estimated response scores, three folds, XGBoost 3.4.0, and the unchanged
+  global residual path `{0,.25,.5,1}` with one-SE stand-down.
+
+The driver is `scripts/dml_literature_sota_experiment.py`. It uses the existing
+upstream constructors and candidate-path fitter without modification, then
+applies the current response-weighted residual selector to that emitted path.
+
 ## Function registry
 
 | Responsibility | File | Public/operative function |
