@@ -155,6 +155,11 @@ def main() -> int:
         "response_model": "estimated", "learner": "xgboost",
         "aipw_floor": 0.05, "ma_floor": 0.05,
         "ctmle_floor_grid": [0.05, 0.10, 0.25, 0.50],
+        "selective_ml_correction": {
+            "legacy_behavior": "candidate named logistic_l1 used sklearn default L2 because penalty was omitted",
+            "corrected_behavior": "solver=saga, penalty=elasticnet, l1_ratio=1, C=1, max_iter=2000",
+            "scope": "new AISTATS literature-DGP SOTA experiment only"
+        },
         "scalar_shrink": False,
         "python": str(args.python.absolute()), "versions": json.loads(versions),
         "runner": str(args.runner.resolve()), "runner_sha256": sha256(args.runner.resolve()),

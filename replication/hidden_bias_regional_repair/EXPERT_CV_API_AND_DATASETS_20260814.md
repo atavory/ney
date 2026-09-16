@@ -115,6 +115,12 @@ papers' estimands or methods.
 The driver is `scripts/dml_literature_sota_experiment.py`. It uses the existing
 upstream constructors and candidate-path fitter without modification, then
 applies the current response-weighted residual selector to that emitted path.
+For this new comparison it also corrects the legacy selective-ML candidate
+named `logistic_l1`: the old constructor omitted `penalty="elasticnet"` and
+therefore fit sklearn's default L2 model despite the label. The corrected
+candidate fixes `solver="saga"`, `penalty="elasticnet"`, and `l1_ratio=1`
+while leaving `C=1`, `max_iter=2000`, seeds, and the other eight library
+candidates unchanged. Legacy artifacts are not rewritten.
 
 ## Function registry
 

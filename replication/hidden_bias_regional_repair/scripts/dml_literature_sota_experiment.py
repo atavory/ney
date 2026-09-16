@@ -124,6 +124,34 @@ def load_upstream(path: Path) -> Any:
     return module
 
 
+def install_corrected_selective_logistic(upstream: Any) -> None:
+    """Correct the legacy `logistic_l1` candidate to its documented L1 fit."""
+    original = upstream._cui_candidate_propensity
+
+    def corrected(name: str, seed: int) -> Any:
+        if name != "logistic_l1":
+            return original(name, seed)
+        return upstream.make_pipeline(
+            upstream.StandardScaler(),
+            upstream.LogisticRegression(
+                penalty="elasticnet",
+                l1_ratio=1.0,
+                solver="saga",
+                C=1.0,
+                max_iter=2000,
+                random_state=seed,
+            ),
+        )
+
+    upstream._cui_candidate_propensity = corrected
+    candidate = corrected("logistic_l1", 17)
+    params = candidate.steps[-1][1].get_params()
+    expected = {"penalty": "elasticnet", "l1_ratio": 1.0, "solver": "saga"}
+    actual = {key: params[key] for key in expected}
+    if actual != expected:
+        raise AssertionError(f"selective-ML L1 correction inactive: {actual}")
+
+
 def mean_and_se(values: np.ndarray) -> tuple[float, float]:
     if len(values) < 2:
         return float(np.mean(values)), float("inf")
@@ -251,6 +279,9 @@ def run_one(
         "nominal_xgboost_fits": fit_counts["xgboost"],
         "nominal_native_library_fits": fit_counts["native_library"],
         "floor_candidates": fit_counts["floor_candidates"],
+        "selective_logistic_penalty": (
+            "elasticnet_l1_ratio_1" if method == "cui_selective_ml" else ""
+        ),
     }
 
 
@@ -268,6 +299,7 @@ def failed_row(cell: str, method: str, rep: int, seed: int, exc: Exception) -> d
         "cui_selected_propensity_learner": "", "cui_selected_outcome_learner": "",
         "ma_trimmed_fraction": "", "elapsed_seconds": "", "nominal_xgboost_fits": "",
         "nominal_native_library_fits": "", "floor_candidates": "",
+        "selective_logistic_penalty": "",
     }
 
 
@@ -300,6 +332,7 @@ def main() -> int:
         raise RuntimeError(f"expected xgboost 3.4.0, found {xgboost.__version__}")
     os.environ["USHMOO_VALIDATION_RISK"] = "aipw_variance"
     upstream = load_upstream(args.upstream_source.resolve())
+    install_corrected_selective_logistic(upstream)
     rows: list[dict[str, Any]] = []
     for rep in range(args.rep_start, args.rep_stop):
         seed = args.seed_base + CELL_OFFSETS[args.cell] + rep
